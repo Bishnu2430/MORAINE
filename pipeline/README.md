@@ -16,19 +16,21 @@ Google Earth Engine, and only small tables come back.
    <https://code.earthengine.google.com/register>, choose unpaid, non-commercial use for academic
    research, and create or pick a Google Cloud project. Note the project ID.
 
-3. **Sign in on this laptop.** A browser window opens; use the same Google account.
+3. **Sign in on this laptop and save the project.** A browser window opens for the first
+   command; use the same Google account.
 
    ```
    .venv\Scripts\earthengine authenticate
+   .venv\Scripts\earthengine set_project YOUR-PROJECT-ID
    ```
 
 ## P0 spike: South Lhonak lake area
 
 ```
-.venv\Scripts\python pipeline\scripts\p0_lake_area.py --project YOUR-PROJECT-ID
+.venv\Scripts\python pipeline\scripts\p0_lake_area.py
 ```
 
-It takes a few minutes. You can also set `EE_PROJECT` once instead of passing `--project`.
+It takes a few minutes. To use a different project for one run, add `--project OTHER-ID`.
 
 What a good run looks like:
 

@@ -1,6 +1,6 @@
 """P0 spike: South Lhonak lake area in every clear autumn since 1984, measured on Google Earth Engine.
 
-    .venv\\Scripts\\python pipeline\\scripts\\p0_lake_area.py --project YOUR-CLOUD-PROJECT
+    .venv\\Scripts\\python pipeline\\scripts\\p0_lake_area.py [--project YOUR-CLOUD-PROJECT]
 
 Writes to pipeline/out/p0_lake_area/: scenes_raw.csv (what Earth Engine returned), scenes.csv,
 yearly.csv, aoi.geojson and south_lhonak_area.png. Then prints three checks against published
@@ -24,17 +24,19 @@ sys.path.insert(0, str(PIPELINE))
 from moraine import plot, references, summary  # noqa: E402
 
 
-def fetch(project: str, lake: dict, out: Path) -> pd.DataFrame:
+def fetch(project: str | None, lake: dict, out: Path) -> pd.DataFrame:
     import ee
 
     from moraine import lakes
 
     try:
+        # With no project given, Earth Engine uses the one saved by `earthengine set_project`
         ee.Initialize(project=project)
     except Exception as exc:  # the client raises plain Exceptions for missing sign-in or project access
         sys.exit(
             f"Earth Engine would not start: {exc}\n"
-            "Sign in with  .venv\\Scripts\\earthengine authenticate  and check that the project is "
+            "Sign in with  .venv\\Scripts\\earthengine authenticate , save your project with  "
+            ".venv\\Scripts\\earthengine set_project YOUR-PROJECT-ID  and check that the project is "
             "registered for Earth Engine (see pipeline/README.md)."
         )
     print(f"Finding {lake['name']} in JRC Global Surface Water ...")
@@ -50,7 +52,8 @@ def fetch(project: str, lake: dict, out: Path) -> pd.DataFrame:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--project", default=os.environ.get("EE_PROJECT"),
-                        help="Google Cloud project registered for Earth Engine (or set EE_PROJECT)")
+                        help="Google Cloud project registered for Earth Engine; defaults to EE_PROJECT, "
+                             "then to the project saved with `earthengine set_project`")
     parser.add_argument("--out", type=Path, default=PIPELINE / "out" / "p0_lake_area")
     parser.add_argument("--from-csv", type=Path, help="rebuild outputs from an earlier scenes_raw.csv")
     args = parser.parse_args()
@@ -59,10 +62,8 @@ def main() -> int:
     args.out.mkdir(parents=True, exist_ok=True)
     if args.from_csv:
         raw = pd.read_csv(args.from_csv)
-    elif args.project:
-        raw = fetch(args.project, lake, args.out)
     else:
-        parser.error("pass --project YOUR-CLOUD-PROJECT (or set EE_PROJECT), or --from-csv FILE")
+        raw = fetch(args.project, lake, args.out)
 
     scenes = summary.tidy(raw)
     scenes.to_csv(args.out / "scenes.csv", index=False)
