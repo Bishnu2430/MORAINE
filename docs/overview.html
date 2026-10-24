@@ -1,0 +1,1218 @@
+<title>MORAINE Project Definition</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap">
+<style>
+:root{
+  /* Layout: survey sheet. Index rail in the left margin like map marginalia, a 68ch reading column, figures and tables run wider. */
+  --paper:#F2F5F6;
+  --panel:#E6ECEE;
+  --ink:#15222C;
+  --ink-2:#4B5B67;
+  --line:#CBD6DB;
+  --contour:#94653E;
+  --melt:#08737A;
+  --melt-wash:#D3EAEB;
+  --ice:#FFFFFF;
+  --hazard:#B9381F;
+  --font-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --font-body:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-label:"Newsreader",Georgia,"Times New Roman",serif;
+  --font-data:"Martian Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --step--2:.6875rem;
+  --step--1:.8125rem;
+  --step-0:1.0625rem;
+  --step-1:1.25rem;
+  --step-2:1.55rem;
+  --step-3:clamp(2rem,4.6vw,3.1rem);
+  --step-4:clamp(4.25rem,15.5vw,10.5rem);
+  --measure:68ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1318;--panel:#121C23;--ink:#E3EBEE;--ink-2:#97A8B2;--line:#25343D;
+    --contour:#B48759;--melt:#4CC3C8;--melt-wash:#11353A;--ice:#DCE8EE;--hazard:#FF6B4E;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1318;--panel:#121C23;--ink:#E3EBEE;--ink-2:#97A8B2;--line:#25343D;
+  --contour:#B48759;--melt:#4CC3C8;--melt-wash:#11353A;--ice:#DCE8EE;--hazard:#FF6B4E;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:var(--step-0);line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--melt);text-underline-offset:.18em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--melt);outline-offset:3px;border-radius:2px}
+code,pre,kbd{font-family:var(--font-data);font-size:.85em}
+
+.page{
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:clamp(24px,4vw,56px) 72px;
+  max-width:1260px;margin:0 auto;
+  display:grid;grid-template-columns:minmax(0,1fr);gap:48px;
+}
+@media (min-width:1100px){.page{grid-template-columns:184px minmax(0,1fr);gap:56px}}
+
+/* Index rail */
+.rail{display:none}
+@media (min-width:1100px){
+  .rail{display:block;position:sticky;top:calc(env(safe-area-inset-top,0px) + 28px);align-self:start;max-height:calc(100vh - 56px);overflow:auto}
+}
+.rail p{font-family:var(--font-data);font-size:var(--step--2);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:0 0 14px}
+.rail ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rail a{display:grid;grid-template-columns:2.2em 1fr;padding:4px 0 4px 10px;border-left:2px solid var(--line);color:var(--ink-2);text-decoration:none;font-size:var(--step--1);line-height:1.35}
+.rail a span{font-family:var(--font-data);font-size:var(--step--2);padding-top:2px}
+.rail a:hover{color:var(--ink);border-left-color:var(--ink-2)}
+.rail a[aria-current="true"]{color:var(--ink);border-left-color:var(--melt)}
+
+.doc{min-width:0;display:flex;flex-direction:column}
+
+/* Hero */
+.eyebrow,.label{font-family:var(--font-data);font-size:var(--step--2);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:0}
+.wordmark{font-family:var(--font-display);font-stretch:66%;font-weight:820;font-size:var(--step-4);line-height:.84;letter-spacing:-.005em;text-transform:uppercase;margin:18px 0 10px}
+.tagline{font-family:var(--font-label);font-style:italic;font-size:clamp(1.35rem,2.6vw,1.9rem);line-height:1.25;margin:0 0 22px;color:var(--ink);text-wrap:balance}
+.lead{font-size:var(--step-1);line-height:1.55;max-width:58ch;margin:0 0 32px;color:var(--ink)}
+.relief{margin:0 0 28px}
+.relief canvas{display:block;width:100%;max-width:100%;aspect-ratio:11/5;background:var(--panel);border:1px solid var(--line)}
+.relief figcaption{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:10px;font-size:var(--step--1);color:var(--ink-2)}
+.ledger{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 28px;margin:0;padding:18px 0 0;border-top:1px solid var(--ink)}
+@media (max-width:820px){.ledger{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fact .num{display:block;font-family:var(--font-data);font-size:clamp(1.15rem,2.2vw,1.45rem);font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.fact .lbl{display:block;font-size:var(--step--1);line-height:1.45;color:var(--ink-2);margin-top:4px}
+.fact a,.ref{font-family:var(--font-data);font-size:.72em;text-decoration:none;vertical-align:.25em}
+
+/* Sections */
+.sec{padding-block:56px 8px;border-top:1px solid var(--line);margin-top:56px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.sec-no{font-family:var(--font-data);font-size:var(--step--1);color:var(--contour);min-width:2.4em}
+h2{font-family:var(--font-display);font-stretch:72%;font-weight:760;font-size:var(--step-3);line-height:1;text-transform:uppercase;letter-spacing:.004em;margin:0;text-wrap:balance}
+h3{font-size:var(--step-1);font-weight:650;line-height:1.3;margin:36px 0 12px;text-wrap:balance}
+.prose{max-width:var(--measure)}
+.prose p{margin:0 0 16px}
+.prose ul,.prose ol{margin:0 0 16px;padding-left:1.2em}
+.prose li{margin-bottom:6px}
+.prose li::marker{color:var(--contour)}
+.intro{font-size:var(--step-1);line-height:1.55;max-width:60ch;margin:0 0 24px}
+.place{font-family:var(--font-label);font-style:italic;font-size:1.06em}
+
+.callout{max-width:var(--measure);border-left:3px solid var(--hazard);padding:4px 0 4px 18px;margin:24px 0 8px}
+.callout .label{color:var(--hazard);margin-bottom:6px}
+.callout p{margin:0}
+
+/* Module trio */
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin:8px 0 8px}
+@media (max-width:900px){.trio{grid-template-columns:minmax(0,1fr)}}
+.module{min-width:0;padding-top:14px;border-top:3px solid var(--melt)}
+.module h3{font-family:var(--font-display);font-stretch:72%;font-weight:760;font-size:var(--step-2);text-transform:uppercase;margin:0 0 6px;letter-spacing:.01em}
+.module .q{font-family:var(--font-label);font-style:italic;font-size:var(--step-1);line-height:1.3;margin:0 0 12px}
+.module p{margin:0 0 12px;font-size:.98rem}
+.module .out{font-family:var(--font-data);font-size:var(--step--2);letter-spacing:.03em;line-height:1.7;color:var(--ink-2);margin:0}
+
+/* Scope */
+.scope{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+@media (max-width:900px){.scope{grid-template-columns:minmax(0,1fr)}}
+.scope > div{min-width:0}
+.scope h3{margin:0 0 10px;font-size:var(--step-0);display:flex;align-items:center;gap:10px}
+.scope ul{margin:0;padding-left:1.1em;font-size:.97rem}
+.scope li{margin-bottom:8px}
+.scope li::marker{color:var(--contour)}
+.pilot{font-family:var(--font-data);font-size:var(--step--1);background:var(--panel);border:1px solid var(--line);padding:12px 14px;margin:0 0 28px;max-width:var(--measure);line-height:1.6}
+
+/* Chips */
+.chip{display:inline-block;font-family:var(--font-data);font-size:var(--step--2);letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--ink);border-radius:2px;color:var(--ink);line-height:1.6;white-space:nowrap}
+.chip.must{background:var(--ink);color:var(--paper)}
+.chip.stretch{border-style:dashed}
+.chip.out{border-color:var(--ink-2);color:var(--ink-2)}
+.chip.obs{border-color:var(--ink)}
+.chip.mod{background:var(--melt);border-color:var(--melt);color:var(--paper)}
+.chip.ill{border-color:var(--contour);background:repeating-linear-gradient(135deg,transparent 0 4px,color-mix(in srgb,var(--contour) 32%,transparent) 4px 5px)}
+
+/* Pipeline */
+.pipe{display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);margin:8px 0 28px}
+.stage{min-width:0;background:var(--panel);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:8px}
+.stage .label{color:var(--contour)}
+.stage h4{margin:0;font-size:var(--step-0);font-weight:650;line-height:1.3}
+.stage .sub{margin:0;font-size:var(--step--1);color:var(--ink-2);font-family:var(--font-label);font-style:italic}
+.stage ul{margin:0;padding-left:1em;font-size:.9rem;line-height:1.45}
+.stage li{margin-bottom:4px}
+.stage .yield{margin-top:auto;padding-top:8px;border-top:1px dashed var(--line);font-family:var(--font-data);font-size:var(--step--2);color:var(--melt)}
+.arrow{display:grid;place-items:center;color:var(--contour);font-family:var(--font-data);font-size:1.1rem}
+@media (max-width:900px){
+  .pipe{grid-template-columns:minmax(0,1fr)}
+  .arrow{height:30px;transform:rotate(90deg)}
+}
+pre.tree{background:var(--panel);border:1px solid var(--line);padding:14px 16px;overflow-x:auto;line-height:1.7;margin:0;max-width:var(--measure);color:var(--ink)}
+
+/* Tables */
+.table-wrap{overflow-x:auto;margin:6px 0 24px}
+.tbl{width:100%;min-width:640px;border-collapse:collapse;font-size:.95rem;line-height:1.45}
+.tbl caption{text-align:left;font-family:var(--font-data);font-size:var(--step--2);letter-spacing:.08em;text-transform:uppercase;color:var(--contour);padding-bottom:10px}
+.tbl th{text-align:left;font-family:var(--font-data);font-size:var(--step--2);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:500;padding:8px 14px 8px 0;border-bottom:1px solid var(--ink);vertical-align:bottom}
+.tbl td{padding:11px 14px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl td:first-child{font-weight:600}
+.tbl .num,.tbl .mono{font-family:var(--font-data);font-size:.8rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl .muted{color:var(--ink-2)}
+.leftout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;max-width:900px;margin:0;padding:0;list-style:none}
+@media (max-width:700px){.leftout{grid-template-columns:minmax(0,1fr)}}
+.leftout li{font-size:.95rem;padding-left:18px;position:relative}
+.leftout li::before{content:"";position:absolute;left:0;top:.72em;width:10px;height:1px;background:var(--contour)}
+.leftout b{font-weight:650}
+
+.settings{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 22px;margin:0;max-width:var(--measure);font-size:.95rem}
+.settings dt{font-family:var(--font-data);font-size:var(--step--1);color:var(--ink-2);padding-top:2px}
+.settings dd{margin:0}
+@media (max-width:560px){.settings{grid-template-columns:minmax(0,1fr)}.settings dd{margin-bottom:8px}}
+
+/* Render budget */
+.answer{max-width:var(--measure);background:var(--melt-wash);border:1px solid color-mix(in srgb,var(--melt) 40%,transparent);padding:18px 20px;margin:0 0 28px}
+.answer .label{color:var(--melt);margin-bottom:8px}
+.answer p{margin:0 0 12px}
+.answer ol{margin:0 0 12px;padding-left:1.2em}
+.answer li{margin-bottom:8px}
+.answer p:last-child{margin-bottom:0}
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;border:1px solid var(--line);padding:20px;margin:0 0 28px;max-width:980px}
+@media (max-width:820px){.calc{grid-template-columns:minmax(0,1fr)}}
+.calc .label{margin-bottom:12px;color:var(--contour)}
+.field{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;margin-bottom:16px}
+.field label{font-size:var(--step--1);font-weight:600}
+.field output{font-family:var(--font-data);font-size:var(--step--1);font-variant-numeric:tabular-nums;color:var(--melt)}
+.field input[type=range],.field select{grid-column:1 / -1;width:100%}
+.field input[type=range]{accent-color:var(--melt)}
+.field select{font:inherit;font-size:var(--step--1);padding:6px 8px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:2px}
+.read{display:grid;gap:16px;align-content:start}
+.read .k{font-family:var(--font-data);font-size:var(--step--2);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.read .v{font-family:var(--font-data);font-size:1.15rem;font-weight:500;font-variant-numeric:tabular-nums}
+.read .s{font-size:var(--step--1);color:var(--ink-2);line-height:1.45}
+.meter{position:relative;height:10px;background:var(--panel);border:1px solid var(--line);margin:8px 0 4px}
+.meter i{position:absolute;inset:0 auto 0 0;background:var(--melt);width:0}
+.meter i.over{background:var(--hazard)}
+.meter b{position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:var(--ink)}
+.meter-scale{display:flex;justify-content:space-between;font-family:var(--font-data);font-size:var(--step--2);color:var(--ink-2)}
+.lod{display:inline-block;font-family:var(--font-data);font-size:var(--step--1);border:1px solid var(--melt);color:var(--melt);padding:1px 8px;margin-right:6px}
+
+/* Validation */
+.ladder{list-style:none;margin:0 0 8px;padding:0;max-width:var(--measure);counter-reset:rung}
+.ladder li{counter-increment:rung;display:grid;grid-template-columns:2.4rem minmax(0,1fr);gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ladder li::before{content:counter(rung);font-family:var(--font-data);font-size:var(--step--1);color:var(--paper);background:var(--ink);width:1.9rem;height:1.9rem;display:grid;place-items:center;border-radius:50%;grid-row:span 2}
+.ladder b{font-weight:650}
+.ladder span{color:var(--ink-2);font-size:.95rem}
+.labels{display:grid;gap:12px;max-width:var(--measure);margin:0}
+.labels div{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:12px;align-items:start;font-size:.95rem}
+@media (max-width:520px){.labels div{grid-template-columns:minmax(0,1fr);gap:6px}}
+
+/* References */
+.refs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin:8px 0 8px}
+@media (max-width:820px){.refs{grid-template-columns:minmax(0,1fr)}}
+.refcard{min-width:0;border-top:1px solid var(--ink);padding-top:12px}
+.refcard h3{margin:0 0 4px;font-size:var(--step-0)}
+.refcard .seen{font-size:var(--step--1);color:var(--ink-2);margin:0 0 10px;font-family:var(--font-label);font-style:italic}
+.refcard dl{display:grid;grid-template-columns:3.6rem minmax(0,1fr);gap:6px 10px;margin:0;font-size:.94rem}
+.refcard dt{font-family:var(--font-data);font-size:var(--step--2);letter-spacing:.06em;text-transform:uppercase;padding-top:3px;color:var(--melt)}
+.refcard dt.leave{color:var(--ink-2)}
+.refcard dd{margin:0}
+.chapters{list-style:none;margin:0;padding:0;max-width:820px}
+.chapters li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);gap:4px 16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.chapters .rn{font-family:var(--font-display);font-stretch:66%;font-weight:800;font-size:2rem;line-height:1;color:var(--contour);grid-row:span 2}
+.chapters b{font-family:var(--font-display);font-stretch:80%;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.chapters span{color:var(--ink-2);font-size:.95rem}
+
+/* Gantt */
+.gantt-wrap{overflow-x:auto;margin:6px 0 24px}
+.gantt{min-width:720px;display:grid;grid-template-columns:9.5rem repeat(26,minmax(0,1fr));row-gap:6px;align-items:center;font-size:var(--step--1)}
+.g-month{font-family:var(--font-data);font-size:var(--step--2);color:var(--ink-2);border-left:1px solid var(--ink-2);padding-left:4px;white-space:nowrap;align-self:end}
+.g-label{font-weight:600;padding-right:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-label small{font-family:var(--font-data);font-weight:400;color:var(--ink-2);font-size:var(--step--2);margin-left:4px}
+.g-bar{height:16px;background:var(--ink);border-radius:1px}
+.g-bar.vis{height:6px;background:var(--melt)}
+.g-gate{justify-self:end;width:11px;height:11px;background:var(--hazard);transform:translateX(5px) rotate(45deg)}
+.g-track{grid-column:2 / -1;height:1px;background:var(--line);align-self:center}
+.legend-line{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:var(--step--1);color:var(--ink-2);margin:0 0 6px}
+.legend-line i{display:inline-block;vertical-align:middle;margin-right:6px}
+
+/* Event locator strip */
+.locator{margin:4px 0 22px}
+.loc-wrap{overflow-x:auto}
+.loc-wrap svg{display:block;width:100%;min-width:640px;height:auto}
+.loc-axis{stroke:var(--ink-2);stroke-width:1}
+.loc-tick line{stroke:var(--ink-2);stroke-width:1}
+.loc-tick text{fill:var(--ink-2);font-family:var(--font-data);font-size:10px}
+.loc-lead{stroke:var(--ink-2);stroke-width:1}
+.loc-must{fill:var(--melt)}
+.loc-ring{fill:none;stroke:var(--melt);stroke-width:1.5}
+.loc-stretch{fill:var(--paper);stroke:var(--contour);stroke-width:1.5;stroke-dasharray:3 2}
+.loc-name{fill:var(--ink);font-family:var(--font-body);font-size:12.5px;font-weight:650}
+.loc-sub{fill:var(--ink-2);font-family:var(--font-data);font-size:9.5px}
+.locator figcaption{font-size:var(--step--1);color:var(--ink-2);margin-top:6px}
+.tbl tr.later td{color:var(--ink-2)}
+.tbl tr.later td:first-child{font-weight:500}
+
+.foot{margin-top:64px;padding-top:18px;border-top:1px solid var(--ink);font-size:var(--step--1);color:var(--ink-2);max-width:var(--measure)}
+.sources{font-size:.92rem;max-width:860px;padding-left:1.6em;margin:0}
+.sources li{margin-bottom:8px}
+.sources li:target{background:var(--melt-wash)}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="page">
+  <nav class="rail" aria-label="Sections">
+    <p>Moraine · v0.2</p>
+    <ol>
+      <li><a href="#problem"><span>1</span>Problem</a></li>
+      <li><a href="#solution"><span>2</span>What it does</a></li>
+      <li><a href="#scope"><span>3</span>Scope and events</a></li>
+      <li><a href="#architecture"><span>4</span>How it works</a></li>
+      <li><a href="#stack"><span>5</span>Tech stack</a></li>
+      <li><a href="#data"><span>6</span>Data package</a></li>
+      <li><a href="#render"><span>7</span>Render budget</a></li>
+      <li><a href="#validation"><span>8</span>Validation</a></li>
+      <li><a href="#visuals"><span>9</span>Visual direction</a></li>
+      <li><a href="#plan"><span>10</span>Delivery plan</a></li>
+      <li><a href="#acceptance"><span>11</span>Acceptance</a></li>
+      <li><a href="#risks"><span>12</span>Risks</a></li>
+      <li><a href="#demo"><span>13</span>Demo script</a></li>
+      <li><a href="#decisions"><span>14</span>Open decisions</a></li>
+      <li><a href="#sources"><span>·</span>Sources</a></li>
+    </ol>
+  </nav>
+
+  <main class="doc">
+    <header class="hero">
+      <p class="eyebrow">Project definition · v0.2 · 24 Oct 2026 · Final-year B.Tech CSE capstone</p>
+      <h1 class="wordmark">Moraine</h1>
+      <p class="tagline">A glacial lake outburst flood twin for the Himalaya</p>
+      <p class="lead">Moraine maps glacial lakes from four decades of satellite records, replays tested flood simulations down real 3D valleys, and shows how many minutes of warning each town would get. It starts with the South Lhonak outburst in Sikkim (2023), then runs the same model, unchanged, on two floods in Nepal: Gongbatongsha (2016) and Thame (2024).</p>
+      <figure class="relief">
+        <canvas id="relief" role="img" aria-label="Illustrative contour map. A glacial lake at upper left drains into a valley. A turquoise flood path runs down to a town at lower right, crossed by arrival-time ticks at plus 15, 45 and 80 minutes, with a sensor and a hydro dam marked along the way."></canvas>
+        <figcaption><span class="chip ill">Illustrative</span> The arrival-time view, sketched on generated terrain. Not survey data.</figcaption>
+      </figure>
+      <div class="ledger">
+        <div class="fact"><span class="num">≈7,500</span><span class="lbl">glacial lakes in the Indian Himalaya <a href="#src-6">[6]</a></span></div>
+        <div class="fact"><span class="num">189–195</span><span class="lbl">lakes on NDMA's high-risk list; the count has been revised <a href="#src-6">[6–8]</a></span></div>
+        <div class="fact"><span class="num">₹150 cr</span><span class="lbl">National GLOF Risk Mitigation Programme, four states <a href="#src-7">[7]</a></span></div>
+        <div class="fact"><span class="num">≈50 M m³</span><span class="lbl">of water released by South Lhonak lake, Oct 2023 <a href="#src-1">[1]</a></span></div>
+      </div>
+    </header>
+
+    <section class="sec" id="problem">
+      <div class="sec-head"><span class="sec-no">§1</span><h2>The problem</h2></div>
+      <div class="prose">
+        <p>Glacial lakes grow as glaciers retreat. Many are held back only by moraine, the loose rock and ice a glacier leaves behind. If the moraine fails, the lake can empty within hours and send a flood down a narrow valley. Towns, bridges and hydropower dams downstream may get very little warning.</p>
+        <p>On 3–4 October 2023 this happened at <span class="place">South Lhonak</span> lake in North Sikkim. Sattar et al. (2025) describe about 14.7 million m³ of frozen moraine sediment collapsing into the lake. It raised a wave of about 20 m that breached the moraine and released roughly 50 million m³ of water. At about 00:30 on 4 October the flood destroyed the 60 m Teesta-III dam at <span class="place">Chungthang</span>. The lake had grown about twelvefold since 1975 <a class="ref" href="#src-1">[1–4]</a>. Another study gives different volumes and a different trigger <a class="ref" href="#src-5">[5]</a>, so Moraine treats these figures as ranges.</p>
+        <p>India now runs a ₹150 crore National GLOF Risk Mitigation Programme in Sikkim, Himachal Pradesh, Uttarakhand and Arunachal Pradesh. It targets 189–195 high-risk lakes. Its goals include a hazard assessment for each lake and automated early-warning stations <a class="ref" href="#src-6">[6–8]</a>.</p>
+      </div>
+      <div class="callout">
+        <p class="label">The gap</p>
+        <p>Hazard assessments are built lake by lake in specialist desktop tools and usually end as reports and static maps. They are hard for planners to explore, and they rarely answer the practical question: where along the valley would one water-level sensor buy the most warning time?</p>
+      </div>
+    </section>
+
+    <section class="sec" id="solution">
+      <div class="sec-head"><span class="sec-no">§2</span><h2>What Moraine does</h2></div>
+      <p class="intro">Three modules share one 3D valley. Each answers one question.</p>
+      <div class="trio">
+        <article class="module">
+          <h3>Watch</h3>
+          <p class="q">Which lakes are growing, and how fast?</p>
+          <p>Every glacial lake in Sikkim and in the two Nepal study catchments above a size cut-off, outlined from satellite imagery each year since the late 1980s. An ML model fixes the cases a simple water index gets wrong: mountain shadow, ice cover, thin cloud and silty water. Each lake gets a growth curve, a volume estimate and a transparent risk score.</p>
+          <p class="out">Lake outlines per year · area curves · volume estimates · risk score</p>
+        </article>
+        <article class="module">
+          <h3>Breach</h3>
+          <p class="q">If this lake fails, where does the water go?</p>
+          <p>Flood runs are computed ahead of time in Colab with a GPU shallow-water solver on 30 m terrain. The site plays them back: hindcasts of three real events and a set of what-if breaches for each priority lake. You scrub through time and switch scenarios. Nothing is simulated in the browser.</p>
+          <p class="out">Depth and velocity over time · flooded extent · scenario set</p>
+        </article>
+        <article class="module">
+          <h3>Warn</h3>
+          <p class="q">Who gets how many minutes?</p>
+          <p>Arrival time, peak depth and peak speed at every town, bridge and dam. An optimizer chooses river sites for water-level sensors that give the most people the most warning, and compares them with simple placements.</p>
+          <p class="out">Arrival isochrones · warning minutes per town · sensor sites</p>
+        </article>
+      </div>
+      <div class="prose">
+        <h3>Two ways in</h3>
+        <ul>
+          <li><b>Story mode.</b> Six scroll chapters that tell the 2023 Sikkim event, then show the same pattern in Nepal. Built for evaluators and the public (§9).</li>
+          <li><b>Explore.</b> The working tool. Pick a valley and a lake, choose a breach scenario, scrub time, click a town for its numbers, and try sensor sites.</li>
+        </ul>
+        <h3>What is new here</h3>
+        <ul>
+          <li>One place to watch lakes, replay floods and plan warnings for real valleys. Existing work usually stops at a report.</li>
+          <li>One solver with settings fixed on the Sikkim flood, then tested unchanged on two Nepal floods.</li>
+          <li>Warning time is the headline result: minutes per town, and the measured gain from each sensor site.</li>
+          <li>Every frame of water comes from a saved, tested simulation run and is labelled that way.</li>
+          <li>It runs on an ordinary laptop with no server.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec" id="scope">
+      <div class="sec-head"><span class="sec-no">§3</span><h2>Scope and events</h2></div>
+      <p class="pilot">Pilot valley: Teesta, North Sikkim, from South Lhonak lake down to Chungthang.<br>Test valleys: Bhote Koshi (Tibet to Nepal) and Thame / Dudh Koshi (Khumbu, Nepal).<br>All three sit in UTM zone 45N (EPSG:32645), so one working projection covers them.</p>
+      <div class="scope">
+        <div>
+          <h3><span class="chip must">Must ship</span></h3>
+          <ul>
+            <li>Watch: yearly lake outlines for Sikkim and the two Nepal study catchments, above a size cut-off set in P0, late 1980s to 2026.</li>
+            <li>Lake ML model and a water-index baseline, tested on a held-out region.</li>
+            <li>Shallow-water solver that passes the verification ladder in §8.</li>
+            <li>Hindcasts of three events: South Lhonak 2023, Gongbatongsha 2016 and Thame 2024.</li>
+            <li>A 9-run scenario set for South Lhonak and a 3-run set for each Nepal lake.</li>
+            <li>Warn: arrival maps, exposure counts for buildings, bridges and dams, and the sensor optimizer, for all three valleys.</li>
+            <li>Story mode (6 chapters), a valley switcher and the Explore workspace.</li>
+            <li>Static site that runs offline, with a provenance manifest.</li>
+          </ul>
+        </div>
+        <div>
+          <h3><span class="chip stretch">Stretch</span></h3>
+          <ul>
+            <li>Kedarnath 2013, India: a compound rain-and-lake flood, run to show where a lake-only model falls short.</li>
+            <li>Rasuwa 2025, Tibet to Nepal: a transboundary warning case, once published studies settle the trigger.</li>
+            <li>Run the Sikkim flood past Chungthang to Singtam and Rangpo.</li>
+            <li>Scenario sets for three more Sikkim lakes.</li>
+            <li>Watchlist across all four Indian programme states.</li>
+            <li>Declassified 1970s spy-satellite film of South Lhonak in Chapter II.</li>
+            <li>A neural surrogate that predicts arrival times without running the solver.</li>
+            <li>Sensitivity test with a second elevation model.</li>
+          </ul>
+        </div>
+        <div>
+          <h3><span class="chip out">Out of scope</span></h3>
+          <ul>
+            <li>Live flood simulation in the browser.</li>
+            <li>Official warnings, alerts or evacuation advice.</li>
+            <li>Debris-flow physics. Moraine models clean water and says so on screen.</li>
+            <li>Building-level damage or water-depth claims.</li>
+            <li>Field visits or local gauge data. Every event uses public satellite data and published studies.</li>
+            <li>Accounts, login, server or database.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Events</h3>
+      <p class="prose">Settings are tuned on the Sikkim pilot only. The two Nepal events are the test set: the same solver runs on them unchanged, like a held-out split for the physics. India's other well-known Himalayan floods, Kedarnath 2013 and Chamoli 2021, were driven largely by extreme rain or began as a rock-and-ice avalanche, so they would test the model on physics it does not include. Kedarnath stays as a stretch case for that reason.</p>
+      <figure class="locator">
+        <div class="loc-wrap">
+          <svg viewBox="0 0 820 152" role="img" aria-label="Events placed west to east by longitude. Kedarnath 2013, stretch, near 79 degrees east. Rasuwa 2025, stretch, near 85.4 east. Gongbatongsha 2016 near 86 east. Thame 2024 near 86.6 east. South Lhonak 2023, the pilot, near 88.2 east.">
+            <line class="loc-axis" x1="40" y1="85" x2="780" y2="85"/>
+            <g class="loc-tick"><line x1="40" y1="81" x2="40" y2="89"/><text x="44" y="77">78°E</text></g>
+            <g class="loc-tick"><line x1="174.5" y1="81" x2="174.5" y2="89"/><text x="178.5" y="77">80°</text></g>
+            <g class="loc-tick"><line x1="309" y1="81" x2="309" y2="89"/><text x="313" y="77">82°</text></g>
+            <g class="loc-tick"><line x1="443.6" y1="81" x2="443.6" y2="89"/><text x="447.6" y="77">84°</text></g>
+            <g class="loc-tick"><line x1="578.2" y1="81" x2="578.2" y2="89"/><text x="582.2" y="77">86°</text></g>
+            <g class="loc-tick"><line x1="712.7" y1="81" x2="712.7" y2="89"/><text x="708.7" y="77" text-anchor="end">88°</text></g>
+
+            <line class="loc-lead" x1="111" y1="78" x2="111" y2="58"/>
+            <circle class="loc-stretch" cx="111" cy="85" r="6"/>
+            <text class="loc-name" x="111" y="40" text-anchor="middle">Kedarnath · 2013</text>
+            <text class="loc-sub" x="111" y="53" text-anchor="middle">Uttarakhand, India · stretch</text>
+
+            <line class="loc-lead" x1="536.5" y1="78" x2="536.5" y2="58"/>
+            <circle class="loc-stretch" cx="536.5" cy="85" r="6"/>
+            <text class="loc-name" x="536.5" y="40" text-anchor="middle">Rasuwa · 2025</text>
+            <text class="loc-sub" x="536.5" y="53" text-anchor="middle">Tibet → Nepal · stretch</text>
+
+            <line class="loc-lead" x1="575.3" y1="92" x2="575.3" y2="112"/>
+            <circle class="loc-must" cx="575.3" cy="85" r="6"/>
+            <text class="loc-name" x="590" y="126" text-anchor="end">Gongbatongsha · 2016</text>
+            <text class="loc-sub" x="590" y="139" text-anchor="end">Tibet → Nepal · test</text>
+
+            <line class="loc-lead" x1="622.1" y1="78" x2="622.1" y2="32"/>
+            <circle class="loc-must" cx="622.1" cy="85" r="6"/>
+            <text class="loc-name" x="612" y="14">Thame · 2024</text>
+            <text class="loc-sub" x="612" y="27">Khumbu, Nepal · test</text>
+
+            <line class="loc-lead" x1="726.4" y1="96" x2="726.4" y2="112"/>
+            <circle class="loc-ring" cx="726.4" cy="85" r="10"/>
+            <circle class="loc-must" cx="726.4" cy="85" r="6"/>
+            <text class="loc-name" x="726.4" y="126" text-anchor="middle">South Lhonak · 2023</text>
+            <text class="loc-sub" x="726.4" y="139" text-anchor="middle">Sikkim, India · pilot</text>
+          </svg>
+        </div>
+        <figcaption>Events from west to east by longitude. Positions are approximate; this is not a map.</figcaption>
+      </figure>
+      <div class="table-wrap">
+        <table class="tbl" style="min-width:860px">
+          <thead><tr><th>Event</th><th>Where</th><th>What happened</th><th>Evidence to test against</th><th>What it adds</th></tr></thead>
+          <tbody>
+            <tr><td>South Lhonak<br><span class="chip must">Pilot · Oct 2023</span></td><td>Teesta valley, North Sikkim, India</td><td>Frozen moraine sediment fell into the lake and about 50 million m³ of water was released. The Teesta-III dam at Chungthang was destroyed around 00:30 on 4 October <a class="ref" href="#src-1">[1]</a>.</td><td>Dam destruction time; flooded extent in post-event imagery; lake area before and after</td><td>The largest volume, and a long run-out to a hydropower dam</td></tr>
+            <tr><td>Gongbatongsha<br><span class="chip">Test · Jul 2016</span></td><td>Lake in Tibet; flood down the Bhote Koshi into Nepal</td><td>A slope failure or ice avalanche into the lake breached its moraine; studies differ on which. The lake lost about 91% of its area, and the flood grew as it travelled, damaging the Upper Bhote Koshi hydropower intake and the Arniko Highway <a class="ref" href="#src-14">[14, 15]</a>.</td><td>Seismometer record of the flood front <a class="ref" href="#src-12">[12, 13]</a>; lake area before and after; published modelled hydrographs</td><td>A rare instrument record of flood timing; a small lake causing large damage across a border</td></tr>
+            <tr><td>Thame<br><span class="chip">Test · Aug 2024</span></td><td>Thame valley, Khumbu (Everest region), Nepal</td><td>A rock avalanche hit a lake at 4,900 m and its outflow breached a second lake, about 459,000 m³ in all. 25 homes were destroyed and 135 people displaced; no deaths were reported <a class="ref" href="#src-16">[16, 17]</a>.</td><td>Breach at about 13:25 local time; lake area of 0.05 km² in imagery that morning; mapped damage in Thame</td><td>Small, steep and fast; a two-lake cascade; tests the solver near the limit of a 30 m grid</td></tr>
+            <tr class="later"><td>Kedarnath<br><span class="chip stretch">Stretch · Jun 2013</span></td><td>Mandakini valley, Uttarakhand, India</td><td>Chorabari lake breached during extreme rain, as part of a much larger rain-driven flood.</td><td>Well documented, but most of the water came from rain</td><td>Shows where a lake-only model falls short</td></tr>
+            <tr class="later"><td>Rasuwa<br><span class="chip stretch">Stretch · Jul 2025</span></td><td>Lende Khola, Tibet to Nepal</td><td>An outburst destroyed the Nepal–China Friendship Bridge at Rasuwagadhi and damaged hydropower plants. The trigger is still debated <a class="ref" href="#src-18">[18, 19]</a>.</td><td>Preliminary reports only so far</td><td>A transboundary warning case, once studies are published</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="architecture">
+      <div class="sec-head"><span class="sec-no">§4</span><h2>How it works</h2></div>
+      <p class="intro">All heavy work runs before anyone opens the site. Earth Engine and Colab produce one data package, and the website only reads it. There is no server, database or job queue, so nothing can go down during the demo.</p>
+      <div class="pipe" role="list" aria-label="Pipeline from satellite archive to website">
+        <div class="stage" role="listitem">
+          <p class="label">Stage 1</p>
+          <h4>Google Earth Engine</h4>
+          <p class="sub">Satellite archive, processed on Google's servers</p>
+          <ul>
+            <li>Landsat 5–9 and Sentinel-2 lake masks</li>
+            <li>Copernicus GLO-30 elevation</li>
+            <li>Cloud-free imagery composites</li>
+            <li>Open Buildings and population grids</li>
+          </ul>
+          <p class="yield">→ GeoTIFF + CSV to Drive</p>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="stage" role="listitem">
+          <p class="label">Stage 2</p>
+          <h4>Colab / Kaggle</h4>
+          <p class="sub">Free GPU notebooks</p>
+          <ul>
+            <li>U-Net training and inference</li>
+            <li>Flood runs: hindcast and scenarios</li>
+            <li>Sensor optimizer</li>
+            <li>Verification tests</li>
+          </ul>
+          <p class="yield">→ run outputs + test reports</p>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="stage" role="listitem">
+          <p class="label">Stage 3</p>
+          <h4>Bake</h4>
+          <p class="sub">One Python script</p>
+          <ul>
+            <li>Crop, quantize and compress</li>
+            <li>Build the level-of-detail pyramid</li>
+            <li>Write the manifest: sources, configs, checksums</li>
+          </ul>
+          <p class="yield">→ data/ package</p>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="stage" role="listitem">
+          <p class="label">Stage 4</p>
+          <h4>Static website</h4>
+          <p class="sub">Opens on any laptop</p>
+          <ul>
+            <li>Three.js valley scene</li>
+            <li>Svelte panels, GSAP story</li>
+            <li>Static host, or offline from a laptop</li>
+          </ul>
+          <p class="yield">→ what people see</p>
+        </div>
+      </div>
+      <h3>Repository layout</h3>
+<pre class="tree">GLOF/
+├─ pipeline/   Colab notebooks + Python package:
+│              gee · lakes · solver · warn · bake · tests
+├─ data/       baked package (kept out of git history:
+│              release download or Git LFS)
+├─ web/        Vite + TypeScript site
+└─ docs/       this overview, validation report, thesis</pre>
+    </section>
+
+    <section class="sec" id="stack">
+      <div class="sec-head"><span class="sec-no">§5</span><h2>Tech stack</h2></div>
+      <p class="intro">Each piece does one job, and nothing runs that the demo doesn't need.</p>
+      <div class="table-wrap">
+        <table class="tbl">
+          <caption>Offline compute</caption>
+          <thead><tr><th>Layer</th><th>Choice</th><th>Job</th><th>Why it stays light</th></tr></thead>
+          <tbody>
+            <tr><td>Satellite archive</td><td>Google Earth Engine, Python API</td><td>Lake masks since the late 1980s, elevation, imagery composites, buildings, population</td><td>Runs on Google's servers; you download only results</td></tr>
+            <tr><td>Notebooks</td><td>Google Colab, with Kaggle as backup</td><td>ML training, flood runs, optimizer, bake</td><td>Free GPU, nothing to install</td></tr>
+            <tr><td>ML and solver</td><td>PyTorch</td><td>U-Net lake segmentation and the shallow-water solver</td><td>One framework for both; also runs on CPU for tests</td></tr>
+            <tr><td>Geodata</td><td>rasterio, GeoPandas, OSMnx</td><td>Reprojection, cropping, roads, bridges, settlements</td><td>Standard, scriptable, no GIS desktop needed</td></tr>
+            <tr><td>Tests</td><td>pytest</td><td>Solver verification ladder and data checks</td><td>Same tests run in Colab and locally</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <caption>Website</caption>
+          <thead><tr><th>Layer</th><th>Choice</th><th>Job</th><th>Why it stays light</th></tr></thead>
+          <tbody>
+            <tr><td>Build</td><td>Vite + TypeScript</td><td>Dev server and bundling</td><td>Fast, near-zero config</td></tr>
+            <tr><td>3D</td><td>Three.js, WebGL2 renderer</td><td>Terrain, ice, water, particles, custom GLSL shaders</td><td>Runs on any laptop or phone; playback needs no WebGPU</td></tr>
+            <tr><td>Post effects</td><td>pmndrs postprocessing</td><td>Bloom, tone mapping, SMAA, grain</td><td>Merges effects into a single pass</td></tr>
+            <tr><td>Motion</td><td>GSAP + ScrollTrigger, Lenis</td><td>Story choreography and smooth scroll</td><td>Free, plugins included</td></tr>
+            <tr><td>Interface</td><td>Svelte 5</td><td>Panels, timeline, inspector, scenario picker</td><td>Compiles away; tiny runtime</td></tr>
+            <tr><td>Charts</td><td>d3-scale + d3-shape, hand-built SVG</td><td>Lake area curves, warning bars</td><td>Two small modules instead of a chart library</td></tr>
+            <tr><td>Hosting</td><td>Static host: Vercel, GitHub Pages or Cloudflare Pages</td><td>Serves the site and data package</td><td>Free; also runs offline with <code>vite preview</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Left out on purpose</h3>
+      <ul class="leftout">
+        <li><b>Backend API and database.</b> Nothing is stored or computed at runtime.</li>
+        <li><b>Job queue and workers.</b> Long jobs run in Colab, once.</li>
+        <li><b>CesiumJS.</b> A globe engine is hard to art-direct, and one valley doesn't need a globe.</li>
+        <li><b>WebGPU requirement.</b> Only live simulation would need it.</li>
+        <li><b>Login and accounts.</b> The site is public and read-only.</li>
+        <li><b>Docker.</b> Deployment is a folder of files.</li>
+      </ul>
+    </section>
+
+    <section class="sec" id="data">
+      <div class="sec-head"><span class="sec-no">§6</span><h2>Data package</h2></div>
+      <p class="intro">The site loads one folder of files. Each file has a size budget so the first screen appears quickly on college Wi-Fi.</p>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>File</th><th>Contents</th><th>Grid</th><th>Format</th><th>Budget</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">terrain/height</td><td>Copernicus GLO-30 elevation, cropped to the corridor</td><td class="num">30 · 60 · 120 m</td><td>Uint16 binary, scale and offset in the manifest</td><td class="num">≈3 MB</td></tr>
+            <tr><td class="mono">terrain/imagery</td><td>Sentinel-2 cloud-free post-monsoon composite</td><td class="num">10 → 20 m</td><td>WebP tiles (KTX2 if GPU memory gets tight)</td><td class="num">≈8 MB</td></tr>
+            <tr><td class="mono">lakes/series</td><td>Area per lake per year, outlines for South Lhonak</td><td class="num">per lake</td><td>JSON + PNG masks</td><td class="num">&lt;1 MB</td></tr>
+            <tr><td class="mono">flood/&lt;run&gt;/summary</td><td>Arrival time, peak depth, peak speed</td><td class="num">30 m</td><td>Uint16 binary</td><td class="num">1–2 MB each</td></tr>
+            <tr><td class="mono">flood/&lt;run&gt;/frames</td><td>Depth and velocity every 60 s of flood time; the shader blends between frames</td><td class="num">60 m, wet cells only</td><td>Packed texture atlas</td><td class="num">≤6 MB each</td></tr>
+            <tr><td class="mono">exposure</td><td>Buildings, bridges, dams, settlements, population</td><td class="num">vector</td><td>Compact JSON</td><td class="num">≈2 MB</td></tr>
+            <tr><td class="mono">manifest.json</td><td>Sources, dates, configs, model versions, checksums</td><td class="num">·</td><td>JSON</td><td class="num">small</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose">Budgets: the first screen loads in 6 MB or less. Each valley gets its own folder with this same set of files, about 20–25 MB, loaded only when someone opens that valley and one scenario at a time. These are targets to confirm in P0.</p>
+      <h3>Simulation settings</h3>
+      <dl class="settings">
+        <dt>Grid</dt><dd>30 m, the native spacing of the elevation data. A finer grid adds no terrain information.</dd>
+        <dt>Time step</dt><dd>About 0.3 s, set by the solver's stability limit.</dd>
+        <dt>Saved frames</dt><dd>Every 60 s of flood time.</dd>
+        <dt>Scenario set</dt><dd>South Lhonak: 3 breach volumes × 3 breach durations = 9 runs. Each Nepal lake: 3 runs around the published volume.</dd>
+        <dt>Run time</dt><dd>Minutes per run on a Colab T4. This is an estimate; P0 measures it.</dd>
+      </dl>
+    </section>
+
+    <section class="sec" id="render">
+      <div class="sec-head"><span class="sec-no">§7</span><h2>Render budget</h2></div>
+      <div class="answer">
+        <p class="label">Your question</p>
+        <p>If the 3D view takes 60% of a 1920×1080 screen, can it render at that smaller size? <b>Yes.</b> There are two separate dials.</p>
+        <ol>
+          <li><b>Screen dial.</b> The canvas is drawn at its own size on screen. 60% of the width at full height is 1152 × 1080, about 1.24 million pixels, 40% fewer than full screen. When the frame rate dips, the scene renders at 60–100% of that and upscales. On a laptop set to 125% Windows scaling, capping the pixel ratio at 1 works out to an 80% render scale.</li>
+          <li><b>Data dial.</b> How much terrain and flood detail to load depends on how much ground each pixel covers. A 40 km wide shot on 1152 pixels is about 35 m per pixel, so 30 m data is just right. Wider shots load a coarser level. Close-ups go finer than the data, so they get procedural detail.</li>
+        </ol>
+        <p>The simulation grid is a third choice, separate from both. It is set in Colab for accuracy and reaches the browser only as file size.</p>
+      </div>
+
+      <form class="calc" id="calc" aria-label="Render budget calculator">
+        <div>
+          <p class="label">Try it</p>
+          <div class="field">
+            <label for="calc-screen">Screen</label><span></span>
+            <select id="calc-screen">
+              <option value="1920x1080" selected>1920 × 1080 (your laptop)</option>
+              <option value="1366x768">1366 × 768</option>
+              <option value="2560x1440">2560 × 1440</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="calc-width">Canvas width</label><output id="calc-width-out" for="calc-width">60%</output>
+            <input type="range" id="calc-width" min="30" max="100" step="5" value="60">
+          </div>
+          <div class="field">
+            <label for="calc-height">Canvas height</label><output id="calc-height-out" for="calc-height">100%</output>
+            <input type="range" id="calc-height" min="40" max="100" step="5" value="100">
+          </div>
+          <div class="field">
+            <label for="calc-scale">Render scale</label><output id="calc-scale-out" for="calc-scale">100%</output>
+            <input type="range" id="calc-scale" min="50" max="100" step="5" value="100">
+          </div>
+          <div class="field">
+            <label for="calc-view">Ground width in view</label><output id="calc-view-out" for="calc-view">40 km</output>
+            <input type="range" id="calc-view" min="1" max="80" step="1" value="40">
+          </div>
+        </div>
+        <div class="read" aria-live="polite">
+          <div>
+            <div class="k">Pixels drawn per frame</div>
+            <div class="v" id="calc-res">1152 × 1080</div>
+            <div class="meter" aria-hidden="true"><i id="calc-meter"></i><b></b></div>
+            <div class="meter-scale" aria-hidden="true"><span>0</span><span>full-screen 1080p</span><span>2×</span></div>
+            <div class="s" id="calc-px">1.24 MP · 60% of a full-screen 1080p frame</div>
+          </div>
+          <div>
+            <div class="k">Ground per pixel</div>
+            <div class="v" id="calc-mpp">35 m</div>
+          </div>
+          <div>
+            <div class="k">Data level to load</div>
+            <div class="s"><span class="lod" id="calc-lod">30 m</span><span id="calc-advice">About one 30 m cell per pixel. Use the full 30 m data.</span></div>
+          </div>
+          <p class="s">Pixel shading cost follows pixels drawn. Triangle cost follows the data level.</p>
+        </div>
+      </form>
+
+      <h3>Targets</h3>
+      <dl class="settings">
+        <dt>Reference</dt><dd>Intel i5-1235U with Iris Xe graphics, 16 GB, Chrome or Edge, 1920×1080, plugged in.</dd>
+        <dt>Frame rate</dt><dd>60 fps target in story mode; never below 30 fps.</dd>
+        <dt>Quality tiers</dt><dd>High, Balanced and Low, picked automatically and switchable.</dd>
+        <dt>Dynamic res</dt><dd>Render scale moves between 60% and 100% to hold the frame rate.</dd>
+        <dt>Idle</dt><dd>Rendering pauses when the tab or the canvas is out of view.</dd>
+        <dt>Motion</dt><dd>Reduced-motion mode swaps camera flights for cuts.</dd>
+      </dl>
+    </section>
+
+    <section class="sec" id="validation">
+      <div class="sec-head"><span class="sec-no">§8</span><h2>Science and validation</h2></div>
+      <p class="intro">The solver is checked from the simplest exact case up to the real event before any of its output reaches the site.</p>
+      <ol class="ladder">
+        <li><b>Ritter dam break (1892)</b><span>Exact solution for a dam failing onto a dry bed. Check the front position and the depth profile.</span></li>
+        <li><b>Malpasset dam failure, France, 1959</b><span>The standard real-terrain benchmark, with field-measured arrival times and peak water levels. Brodtkorb et al. reproduced it with a GPU solver <a class="ref" href="#src-9">[9]</a>.</span></li>
+        <li><b>Event hindcasts: Sikkim 2023, then Nepal 2016 and 2024</b><span>Settings are tuned on South Lhonak only, then frozen; Gongbatongsha and Thame run unchanged. Each is scored against its own record: arrival at Chungthang around 00:30, the seismometer timing of the 2016 flood front <a class="ref" href="#src-12">[12]</a>, and the 2024 breach time and damage in Thame <a class="ref" href="#src-16">[16]</a>. Flooded extent is scored against post-event imagery (IoU).</span></li>
+        <li><b>Scenario set</b><span>Breach volume and duration varied across the published range of estimates.</span></li>
+      </ol>
+      <div class="prose">
+        <p>Solver: the second-order Kurganov–Petrova scheme <a class="ref" href="#src-10">[10]</a>. It keeps water depth from going negative at wet/dry fronts and keeps a lake at rest still, which matters on steep Himalayan slopes.</p>
+        <h3>Lake mapping</h3>
+        <p>Baseline: a water-index threshold (NDWI/MNDWI) with a slope mask. Model: a small U-Net on Sentinel-2 bands plus slope. It trains on other Himalayan regions and is tested on Sikkim, so no test lake leaks into training. Report IoU and area error per lake, plus a hard-case set: mountain shadow, frozen lakes, thin cloud and silty water.</p>
+        <h3>Ranking backtest</h3>
+        <p>Score every lake using only data from before each event (up to 2015, 2022 and 2023), then check where Gongbatongsha, South Lhonak and Thyanbo land. Would Moraine have flagged them? Small lakes under unstable slopes are the likely blind spot, and the backtest shows whether the score misses them.</p>
+        <h3>Warning placement</h3>
+        <p>Compare the optimizer's sensor sites with two simple placements: one sensor at the lake outlet, and sensors spaced evenly along the river. Report warning minutes gained per town, weighted by population.</p>
+        <h3>Labels on every layer</h3>
+      </div>
+      <div class="labels">
+        <div><span><span class="chip obs">Observed</span></span><span>Satellite images and the outlines measured from them.</span></div>
+        <div><span><span class="chip mod">Modelled</span></span><span>Simulation output. It is a clean-water approximation: arrival time and extent are claimed, depth is indicative.</span></div>
+        <div><span><span class="chip ill">Illustrative</span></span><span>Visual effects the model doesn't compute, such as spray and foam density.</span></div>
+      </div>
+    </section>
+
+    <section class="sec" id="visuals">
+      <div class="sec-head"><span class="sec-no">§9</span><h2>Visual direction</h2></div>
+      <p class="intro">The references set the level of craft. The subject sets the look: survey maps, glacial meltwater, night in the high Himalaya.</p>
+      <div class="refs">
+        <article class="refcard">
+          <h3><a href="https://www.shopify.com/editions/winter2026">Shopify Editions, Winter '26</a></h3>
+          <p class="seen">The Renaissance Edition: old paintings collaged with modern products, a chapter index rail, big editorial type.</p>
+          <dl><dt>Take</dt><dd>Story chapters with an index rail. A collage of satellite eras, from 1970s film to Sentinel-2.</dd><dt class="leave">Leave</dt><dd>Long intros before the content.</dd></dl>
+        </article>
+        <article class="refcard">
+          <h3><a href="https://activetheory.net/">Active Theory</a></h3>
+          <p class="seen">Dark, immersive 3D worlds with cinematic camera moves.</p>
+          <dl><dt>Take</dt><dd>Camera flights that follow the flood front. Atmosphere and night lighting.</dd><dt class="leave">Leave</dt><dd>Navigation that hides the controls.</dd></dl>
+        </article>
+        <article class="refcard">
+          <h3><a href="https://lusion.co/">Lusion</a></h3>
+          <p class="seen">Glossy, physics-driven 3D objects that react to the cursor; light, minimal chrome.</p>
+          <dl><dt>Take</dt><dd>Material quality for ice, silty water and foam. Physics-driven particles.</dd><dt class="leave">Leave</dt><dd>Effects that cost frame rate on integrated graphics.</dd></dl>
+        </article>
+        <article class="refcard">
+          <h3><a href="https://noomoagency.com/">Noomo</a></h3>
+          <p class="seen">A 3D jellyfish that guides you through the scroll; bold condensed type.</p>
+          <dl><dt>Take</dt><dd>One guide through the story, here the meltwater itself. Condensed display type.</dd><dt class="leave">Leave</dt><dd>Novelty that hides the data.</dd></dl>
+        </article>
+      </div>
+      <h3>Story chapters</h3>
+      <ol class="chapters">
+        <li><span class="rn">I</span><b>The Ice</b><span>Glaciers above the lake retreat across fifty years of imagery.</span></li>
+        <li><span class="rn">II</span><b>The Lake</b><span>South Lhonak grows about twelvefold; the ML outline tracks it year by year.</span></li>
+        <li><span class="rn">III</span><b>The Breach</b><span>The night of 3–4 October 2023, replayed from the hindcast.</span></li>
+        <li><span class="rn">IV</span><b>The Valley</b><span>The flood front reaches Chungthang. Model against record.</span></li>
+        <li><span class="rn">V</span><b>The Pattern</b><span>Gongbatongsha 2016 and Thame 2024: ice or rock falls into a lake, the moraine breaks, a flood runs down the valley. Same solver, same settings.</span></li>
+        <li><span class="rn">VI</span><b>The Watchlist</b><span>Lakes in Sikkim and the Nepal study areas, ranked. Open any of them in Explore.</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="plan">
+      <div class="sec-head"><span class="sec-no">§10</span><h2>Delivery plan</h2></div>
+      <p class="intro">26 weeks from Monday 26 October 2026 to a final demo in late April 2027. Shift the dates to match your college's review calendar. Every week ends with one thing you can open and look at.</p>
+      <p class="legend-line"><span><i class="g-bar" style="width:22px;height:10px"></i>Phase</span><span><i class="g-bar vis" style="width:22px"></i>Visual track, runs throughout</span><span><i class="g-gate" style="transform:rotate(45deg)"></i>Review gate</span></p>
+      <div class="gantt-wrap">
+        <div class="gantt" role="img" aria-label="Gantt chart. P0 weeks 1 to 3, P1 weeks 4 to 7, P2 weeks 8 to 12, P3 weeks 13 to 14, P4 weeks 15 to 16, P5 weeks 17 to 22, P6 weeks 23 to 24, P7 weeks 25 to 26. Visual track runs all 26 weeks. Gates at the end of weeks 3, 12, 14 and 24.">
+          <div style="grid-row:1;grid-column:1"></div>
+          <div class="g-month" style="grid-row:1;grid-column:2">Oct</div>
+          <div class="g-month" style="grid-row:1;grid-column:3">Nov</div>
+          <div class="g-month" style="grid-row:1;grid-column:8">Dec</div>
+          <div class="g-month" style="grid-row:1;grid-column:12">Jan</div>
+          <div class="g-month" style="grid-row:1;grid-column:16">Feb</div>
+          <div class="g-month" style="grid-row:1;grid-column:20">Mar</div>
+          <div class="g-month" style="grid-row:1;grid-column:25">Apr</div>
+
+          <div class="g-label" style="grid-row:2">P0<small>Feasibility</small></div><div class="g-bar" style="grid-row:2;grid-column:2 / span 3"></div>
+          <div class="g-label" style="grid-row:3">P1<small>Watch</small></div><div class="g-bar" style="grid-row:3;grid-column:5 / span 4"></div>
+          <div class="g-label" style="grid-row:4">P2<small>Breach</small></div><div class="g-bar" style="grid-row:4;grid-column:9 / span 5"></div>
+          <div class="g-label" style="grid-row:5">P3<small>Events</small></div><div class="g-bar" style="grid-row:5;grid-column:14 / span 2"></div>
+          <div class="g-label" style="grid-row:6">P4<small>Warn</small></div><div class="g-bar" style="grid-row:6;grid-column:16 / span 2"></div>
+          <div class="g-label" style="grid-row:7">P5<small>Experience</small></div><div class="g-bar" style="grid-row:7;grid-column:18 / span 6"></div>
+          <div class="g-label" style="grid-row:8">P6<small>Validate</small></div><div class="g-bar" style="grid-row:8;grid-column:24 / span 2"></div>
+          <div class="g-label" style="grid-row:9">P7<small>Freeze</small></div><div class="g-bar" style="grid-row:9;grid-column:26 / span 2"></div>
+          <div class="g-label" style="grid-row:10">Visual track</div><div class="g-bar vis" style="grid-row:10;grid-column:2 / span 26"></div>
+          <div class="g-label" style="grid-row:11">Gates</div>
+          <div class="g-track" style="grid-row:11"></div>
+          <div class="g-gate" style="grid-row:11;grid-column:4" title="End of week 3: go or re-scope"></div>
+          <div class="g-gate" style="grid-row:11;grid-column:13" title="End of week 12: Sikkim hindcast reviewed, settings frozen"></div>
+          <div class="g-gate" style="grid-row:11;grid-column:15" title="End of week 14: keep both Nepal events or drop one"></div>
+          <div class="g-gate" style="grid-row:11;grid-column:25" title="End of week 24: acceptance"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Phase</th><th>Weeks</th><th>What you can look at</th><th>Exit gate</th></tr></thead>
+          <tbody>
+            <tr><td>P0 Feasibility spikes</td><td class="num">W1–3<br><span class="muted">26 Oct–15 Nov</span></td><td>South Lhonak area curve from Earth Engine. Solver plotted against the exact dam-break solution. Real Teesta terrain turning in the browser. A one-page data check for each Nepal event.</td><td>All three spikes work on your laptop and the event list is confirmed. If a spike fails, re-scope before anything else.</td></tr>
+            <tr><td>P1 Watch</td><td class="num">W4–7<br><span class="muted">16 Nov–13 Dec</span></td><td>Lake outlines for Sikkim and both Nepal study areas; baseline and U-Net side by side; growth curves.</td><td>U-Net beats the baseline on held-out hard cases.</td></tr>
+            <tr><td>P2 Breach</td><td class="num">W8–12<br><span class="muted">14 Dec–17 Jan</span></td><td>Malpasset replay. The 2023 Sikkim hindcast playing in the browser.</td><td>Hindcast errors reported, solver settings frozen, scenario set baked.</td></tr>
+            <tr><td>P3 Events</td><td class="num">W13–14<br><span class="muted">18–31 Jan</span></td><td>Gongbatongsha 2016 and Thame 2024 replayed with the frozen settings; one table of errors across all three events.</td><td>Both Nepal hindcasts reported. If behind schedule, keep one and move on.</td></tr>
+            <tr><td>P4 Warn</td><td class="num">W15–16<br><span class="muted">1–14 Feb</span></td><td>Arrival isochrones, town cards and optimizer results for every valley.</td><td>Optimizer beats both simple placements.</td></tr>
+            <tr><td>P5 Experience</td><td class="num">W17–22<br><span class="muted">15 Feb–28 Mar</span></td><td>Six story chapters, the valley switcher and the Explore workspace.</td><td>Frame-rate targets met on the reference laptop.</td></tr>
+            <tr><td>P6 Validate</td><td class="num">W23–24<br><span class="muted">29 Mar–11 Apr</span></td><td>Validation report, user test with 3–5 people, benchmarks.</td><td>Every acceptance criterion has evidence.</td></tr>
+            <tr><td>P7 Freeze</td><td class="num">W25–26<br><span class="muted">12–25 Apr</span></td><td>Recorded demo, final report, frozen data package.</td><td>Demo runs offline on a clean machine.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="acceptance">
+      <div class="sec-head"><span class="sec-no">§11</span><h2>Acceptance criteria</h2></div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>ID</th><th>Criterion</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">AC-01</td><td>The site runs from static files with no network after first load, in current Chrome, Edge and Firefox. The first screen loads in 6 MB or less.</td></tr>
+            <tr><td class="mono">AC-02</td><td>Story mode holds a 60 fps target and never drops below 30 fps on the reference laptop. Low tier and reduced motion work.</td></tr>
+            <tr><td class="mono">AC-03</td><td>Area series for the three event lakes, from the first clear image (late 1980s where available) through each event to 2026, with method and uncertainty, compared with published figures.</td></tr>
+            <tr><td class="mono">AC-04</td><td>The lake model beats the water-index baseline on the held-out hard cases, with IoU reported per case.</td></tr>
+            <tr><td class="mono">AC-05</td><td>The solver passes the Ritter test and the Malpasset benchmark, with errors reported against the field data.</td></tr>
+            <tr><td class="mono">AC-06</td><td>Hindcasts of South Lhonak 2023, Gongbatongsha 2016 and Thame 2024 each report a timing error and flooded-extent IoU against their recorded evidence. Solver settings do not change after the Sikkim hindcast.</td></tr>
+            <tr><td class="mono">AC-07</td><td>At least 9 scenarios are baked for South Lhonak and 3 for each Nepal lake. Switching scenarios or valleys takes under 1 s once loaded.</td></tr>
+            <tr><td class="mono">AC-08</td><td>The sensor optimizer reports warning-minute gains over both simple placements.</td></tr>
+            <tr><td class="mono">AC-09</td><td>Every layer carries an Observed, Modelled or Illustrative label, and the data package includes the provenance manifest.</td></tr>
+            <tr><td class="mono">AC-10</td><td>The ranking backtest for all three event lakes, using only data from before each event, is reported whatever it shows.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="risks">
+      <div class="sec-head"><span class="sec-no">§12</span><h2>Risks</h2></div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Risk</th><th>Likelihood / impact</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>Solver blows up on steep wet/dry fronts</td><td class="num">Medium / High</td><td>Kurganov–Petrova scheme, small time steps, and the full test ladder before real terrain. Fallback: produce the runs with an established open-source model such as LISFLOOD-FP.</td></tr>
+            <tr><td>The real flood was a debris flow; the model is clean water</td><td class="num">Certain / Medium</td><td>Claim arrival time and extent only, and say so on screen.</td></tr>
+            <tr><td>Published event figures disagree</td><td class="num">High / Medium</td><td>Treat them as ranges; the scenario set spans them.</td></tr>
+            <tr><td>Colab GPU unavailable</td><td class="num">Medium / Low</td><td>Kaggle as backup; CPU runs overnight; each run is saved once and reused.</td></tr>
+            <tr><td>Visual ambition outruns Iris Xe</td><td class="num">Medium / High</td><td>Budgets fixed in P0, quality tiers, weekly profiling, recorded video as a fallback.</td></tr>
+            <tr><td>Weak lake labels in shadow or ice</td><td class="num">Medium / Medium</td><td>A hand-checked hard-case test set.</td></tr>
+            <tr><td>30 m elevation too coarse in narrow gorges</td><td class="num">High / Medium</td><td>Claims at valley scale only; a second elevation model as a stretch test.</td></tr>
+            <tr><td>Scope creeps to the whole Himalaya</td><td class="num">High / Medium</td><td>Sikkim plus two Nepal events is the MVP; anything wider is stretch.</td></tr>
+            <tr><td>Three valleys stretch the schedule</td><td class="num">Medium / Medium</td><td>One pipeline and frozen settings for every valley, so each extra event is mostly configuration and checking. The week-14 gate keeps one Nepal event if time runs short.</td></tr>
+            <tr><td>Thame's lakes are small for a 30 m grid (about 55 cells)</td><td class="num">High / Medium</td><td>Report Thame as a resolution test. Try a finer grid on that valley only if a better elevation model is available.</td></tr>
+            <tr><td>Event figures for Nepal are preliminary or disputed</td><td class="num">Medium / Medium</td><td>Score against the most direct records (timing, lake area, mapped damage) and cite every source; Rasuwa 2025 stays stretch until studies settle.</td></tr>
+            <tr><td>Limited weekly hours</td><td class="num">High / High</td><td>Static-first design, one runnable checkpoint a week, and the P0 gate before any polish.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="demo">
+      <div class="sec-head"><span class="sec-no">§13</span><h2>Demo script</h2></div>
+      <p class="intro">About eight minutes for the final evaluation.</p>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Time</th><th>On screen</th><th>What it proves</th></tr></thead>
+          <tbody>
+            <tr><td class="num">0:00–0:40</td><td>Chapter I. Night flight over North Sikkim; glaciers shrink across satellite eras.</td><td>Visual identity built on real data</td></tr>
+            <tr><td class="num">0:40–1:30</td><td>Chapter II. South Lhonak grows; baseline and ML outlines on a shadowed scene.</td><td>ML that fixes real errors</td></tr>
+            <tr><td class="num">1:30–2:50</td><td>Chapter III. The 2023 hindcast runs down the valley; scrub through time.</td><td>Verified physics</td></tr>
+            <tr><td class="num">2:50–3:40</td><td>Chapter IV. Arrival at Chungthang against the ~00:30 record; extent against satellite.</td><td>Validation</td></tr>
+            <tr><td class="num">3:40–4:40</td><td>Chapter V. The same solver, unchanged, on Gongbatongsha 2016 and Thame 2024; one error table for all three.</td><td>The model generalises</td></tr>
+            <tr><td class="num">4:40–5:40</td><td>Explore. Switch valley and lake, change the breach scenario, read town warning times.</td><td>Decision support</td></tr>
+            <tr><td class="num">5:40–6:40</td><td>Sensor placement: optimizer against simple placements, minutes gained.</td><td>The new algorithm</td></tr>
+            <tr><td class="num">6:40–7:40</td><td>Under the hood: data package, manifest, tests, render budget.</td><td>Engineering depth</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="decisions">
+      <div class="sec-head"><span class="sec-no">§14</span><h2>Open decisions</h2></div>
+      <div class="prose">
+        <ul>
+          <li><b>Team.</b> Who owns the pipeline, solver, website and report? This plan assumes a small team using AI-assisted coding with weekly check-ins.</li>
+          <li><b>College calendar.</b> Review dates, so the three gates line up with them.</li>
+          <li><b>Name.</b> Moraine is a working title.</li>
+          <li><b>Event list.</b> Gongbatongsha 2016 and Thame 2024 are proposed. Swap one for Kedarnath 2013 if a second Indian event matters more to your evaluators than clean validation.</li>
+          <li><b>Watchlist reach.</b> Sikkim only (MVP) or all four programme states (stretch).</li>
+          <li><b>Host.</b> Vercel, GitHub Pages or Cloudflare Pages. All are static and free.</li>
+          <li><b>Accounts.</b> A Google Cloud project registered for non-commercial Earth Engine use, plus Colab and Kaggle accounts.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec" id="sources">
+      <div class="sec-head"><span class="sec-no">§·</span><h2>Sources</h2></div>
+      <ol class="sources">
+        <li id="src-1">Sattar, A. et al. (2025). The Sikkim flood of October 2023: drivers, causes and impacts of a multihazard cascade. <i>Science</i>. <a href="https://doi.org/10.1126/science.ads2659">doi:10.1126/science.ads2659</a></li>
+        <li id="src-2">Newcastle University press release on Sattar et al. (Jan 2025). <a href="https://www.ncl.ac.uk/press/articles/archive/2025/01/sikkimglof/">ncl.ac.uk</a></li>
+        <li id="src-3">ICIMOD press release on the 2023 Sikkim outburst. <a href="https://icimod.org/press-release/new-scientific-study-confirms-climate-change-played-key-role-in-deadly-2023-lake-outburst-in-sikkim">icimod.org</a></li>
+        <li id="src-4">Carbon Brief, "Catastrophic 2023 lake outburst in India driven by glacial melt and permafrost thaw". <a href="https://www.carbonbrief.org/catastrophic-2023-lake-outburst-in-india-driven-by-glacial-melt-and-permafrost-thaw">carbonbrief.org</a></li>
+        <li id="src-5">Mohanty et al. (2026), an alternative reconstruction of the event with different volumes and trigger. <a href="https://research-explorer.ista.ac.at/download/21708/21785/2026_ScienceAdv_Mohanty.pdf">PDF</a></li>
+        <li id="src-6">Drishti IAS, National GLOF Risk Mitigation Programme (Aug 2024). <a href="https://www.drishtiias.com/daily-updates/daily-news-analysis/national-glacial-lake-outburst-floods-risk-mitigation-programme/print_manually">drishtiias.com</a></li>
+        <li id="src-7">Drishti IAS, India's preparedness against GLOFs (Jul 2025). <a href="https://www.drishtiias.com/daily-updates/daily-news-analysis/indias-preparedness-against-glofs/print_manually">drishtiias.com</a></li>
+        <li id="src-8">The Wire, "Is India prepared to deal with glacial lake outburst floods?". <a href="https://thewire.in/environment/is-india-prepared-to-deal-with-glacial-lake-outburst-floods">thewire.in</a></li>
+        <li id="src-9">Brodtkorb, A. R., Sætra, M. L. and Altinakar, M. Efficient shallow water simulations on GPUs: implementation, visualization, verification, and validation. <i>Computers &amp; Fluids</i>. <a href="https://hgpu.org/?p=6665">hgpu.org</a></li>
+        <li id="src-10">Kurganov, A. and Petrova, G. (2007). A second-order well-balanced positivity preserving central-upwind scheme for the Saint-Venant system. <i>Communications in Mathematical Sciences</i> 5(1).</li>
+        <li id="src-11">Google Earth Engine Data Catalog (Landsat, Sentinel-2, Copernicus GLO-30, Open Buildings, GHSL). <a href="https://developers.google.com/earth-engine/datasets">developers.google.com</a></li>
+        <li id="src-12">Cook, K. L., Andermann, C., Gimbert, F., Adhikari, B. R. and Hovius, N. (2018). Glacial lake outburst floods as drivers of fluvial erosion in the Himalaya. <i>Science</i>. <a href="https://doi.org/10.1126/science.aat4981">doi:10.1126/science.aat4981</a></li>
+        <li id="src-13">Eos, "Glacial lake outburst flood captured in seismic recordings". <a href="https://eos.org/articles/glacial-lake-outburst-flood-captured-in-seismic-recordings">eos.org</a></li>
+        <li id="src-14">Sattar, A. et al. (2022). Transition of a small Himalayan glacier lake outburst flood to a giant transborder flood and debris flow. <i>Scientific Reports</i>. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9300610/">PMC9300610</a></li>
+        <li id="src-15">Reconstructing glacial lake outburst floods in the Poiqu River basin (TU Graz research record). <a href="https://tugraz.elsevierpure.com/en/publications/reconstructing-glacial-lake-outburst-floods-in-the-poiqu-river-ba/">tugraz.elsevierpure.com</a></li>
+        <li id="src-16">ICIMOD (Aug 2024), GLOF from Thyanbo glacial lake sweeps away Thame village. <a href="https://www.icimod.org/press-release/glof-from-thyanbo-glacial-lake-sweeps-away-thame-village/">icimod.org</a></li>
+        <li id="src-17">ICIMOD (Oct 2025), study of the 2024 Thame flood: causes, impacts and future risks. <a href="https://www.icimod.org/everest-region-a-hotspot-of-cryosphere-linked-hazards-icimods-new-study-on-nepals-2024-thame-flood-confirms">icimod.org</a></li>
+        <li id="src-18">Himal Press, "What caused Rasuwagadhi floods". <a href="https://en.himalpress.com/what-caused-rasuwagadhi-floods/">himalpress.com</a></li>
+        <li id="src-19">SANDRP (Jul 2025), July 2025 GLOF disaster: impact on hydropower projects in Nepal. <a href="https://sandrp.in/2025/07/24/july-2025-glof-disaster-impact-ten-heps-in-nepal/">sandrp.in</a></li>
+      </ol>
+    </section>
+
+    <p class="foot">Moraine is an academic research prototype. It does not issue warnings, and its outputs must not be used for evacuation or other safety decisions.</p>
+  </main>
+</div>
+
+<script>
+/* Index rail: mark the section in view */
+(() => {
+  const links = [...document.querySelectorAll('.rail a')];
+  if (!links.length || !('IntersectionObserver' in window)) return;
+  const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      links.forEach(l => l.removeAttribute('aria-current'));
+      const a = byId.get(e.target.id);
+      if (a) a.setAttribute('aria-current', 'true');
+    }
+  }, { rootMargin: '-25% 0px -65% 0px' });
+  document.querySelectorAll('section[id]').forEach(s => io.observe(s));
+})();
+
+/* Render budget calculator */
+(() => {
+  const $ = id => document.getElementById(id);
+  const screens = { '1920x1080': [1920, 1080], '1366x768': [1366, 768], '2560x1440': [2560, 1440] };
+  const REF = 1920 * 1080;
+  function update() {
+    const [sw, sh] = screens[$('calc-screen').value];
+    const w = +$('calc-width').value, h = +$('calc-height').value;
+    const rs = +$('calc-scale').value, km = +$('calc-view').value;
+    $('calc-width-out').textContent = w + '%';
+    $('calc-height-out').textContent = h + '%';
+    $('calc-scale-out').textContent = rs + '%';
+    $('calc-view-out').textContent = km + ' km';
+    const cw = Math.round(sw * w / 100 * rs / 100), ch = Math.round(sh * h / 100 * rs / 100);
+    const px = cw * ch, pct = px / REF * 100;
+    $('calc-res').textContent = cw + ' × ' + ch;
+    $('calc-px').textContent = (px / 1e6).toFixed(2) + ' MP · ' + Math.round(pct) + '% of a full-screen 1080p frame';
+    const m = $('calc-meter');
+    m.style.width = Math.min(pct / 2, 100) + '%';
+    m.classList.toggle('over', pct > 100);
+    const mpp = km * 1000 / cw;
+    $('calc-mpp').textContent = (mpp < 10 ? mpp.toFixed(1) : Math.round(mpp)) + ' m';
+    let lod, advice;
+    if (mpp >= 100) { lod = '120 m'; advice = 'Each pixel covers about ' + Math.round(mpp / 30) + ' cells of 30 m data. The 120 m level looks the same with 16× fewer cells.'; }
+    else if (mpp >= 50) { lod = '60 m'; advice = 'Each pixel covers about ' + (mpp / 30).toFixed(1) + ' cells of 30 m data. The 60 m level looks the same with 4× fewer cells.'; }
+    else if (mpp >= 15) { lod = '30 m'; advice = 'About one 30 m cell per pixel. Use the full 30 m data.'; }
+    else { lod = '30 m + detail'; advice = 'Each 30 m cell spans ' + (30 / mpp).toFixed(1) + ' pixels. Finer data does not exist, so smooth the 30 m surface and add procedural rock, snow and ripple detail.'; }
+    $('calc-lod').textContent = lod;
+    $('calc-advice').textContent = advice;
+  }
+  const form = $('calc');
+  form.addEventListener('input', update);
+  form.addEventListener('change', update);
+  form.addEventListener('submit', e => e.preventDefault());
+  update();
+})();
+
+/* Hero relief: generated terrain, contours, flood path and arrival ticks */
+(() => {
+  const cv = document.getElementById('relief');
+  if (!cv || !cv.getContext) return;
+  const ctx = cv.getContext('2d');
+  const GW = 220, GH = 100, AR = GW / GH;
+
+  function hash(x, y) {
+    let h = (Math.imul(x | 0, 0x27d4eb2d) + Math.imul(y | 0, 0x165667b1)) | 0;
+    h = Math.imul(h ^ (h >>> 15), 0x85ebca6b);
+    h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
+    h ^= h >>> 16;
+    return (h >>> 0) / 4294967295;
+  }
+  function vnoise(x, y) {
+    const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+  function fbm(x, y) {
+    let s = 0, amp = .5, f = 1;
+    for (let o = 0; o < 5; o++) { s += amp * vnoise(x * f + o * 17.3, y * f - o * 9.1); f *= 2.03; amp *= .5; }
+    return s / .97;
+  }
+
+  // River centreline in unit coordinates, lake at upper left
+  const ctrl = [[.07,.30],[.13,.27],[.20,.33],[.28,.31],[.35,.40],[.43,.45],[.51,.42],[.59,.51],[.66,.60],[.74,.57],[.82,.67],[.96,.73]];
+  function catmull(p, n) {
+    const out = [];
+    for (let i = 0; i < p.length - 1; i++) {
+      const p0 = p[Math.max(i - 1, 0)], p1 = p[i], p2 = p[i + 1], p3 = p[Math.min(i + 2, p.length - 1)];
+      for (let k = 0; k < n; k++) {
+        const t = k / n, t2 = t * t, t3 = t2 * t;
+        out.push([0, 1].map(j => .5 * ((2 * p1[j]) + (-p0[j] + p2[j]) * t + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t2 + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * t3)));
+      }
+    }
+    out.push(p[p.length - 1]);
+    return out;
+  }
+  const path = catmull(ctrl, 14);
+  const cum = [0];
+  for (let i = 1; i < path.length; i++) {
+    const dx = (path[i][0] - path[i - 1][0]) * AR, dy = path[i][1] - path[i - 1][1];
+    cum.push(cum[i - 1] + Math.hypot(dx, dy));
+  }
+  const total = cum[cum.length - 1];
+  function pointAt(s) {
+    const L = Math.max(0, Math.min(1, s)) * total;
+    let i = 1;
+    while (i < cum.length - 1 && cum[i] < L) i++;
+    const f = (L - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1);
+    const a = path[i - 1], b = path[i];
+    return { x: a[0] + (b[0] - a[0]) * f, y: a[1] + (b[1] - a[1]) * f, tx: (b[0] - a[0]) * AR, ty: b[1] - a[1] };
+  }
+
+  // Height field (metres, illustrative)
+  const H = new Float32Array(GW * GH);
+  for (let j = 0; j < GH; j++) for (let i = 0; i < GW; i++) {
+    const x = i / (GW - 1), y = j / (GH - 1), px = x * AR;
+    let best = 1e9;
+    for (let k = 1; k < path.length; k++) {
+      const ax = path[k - 1][0] * AR, ay = path[k - 1][1], bx = path[k][0] * AR, by = path[k][1];
+      const vx = bx - ax, vy = by - ay, wx = px - ax, wy = y - ay;
+      const l2 = vx * vx + vy * vy || 1e-9;
+      const t = Math.max(0, Math.min(1, (wx * vx + wy * vy) / l2));
+      const dx = wx - vx * t, dy = wy - vy * t, d = dx * dx + dy * dy;
+      if (d < best) best = d;
+    }
+    // Floor falls smoothly west to east; taking it from the nearest river point leaves cliffs where that point jumps between bends
+    const along = Math.max(0, Math.min(1, (x - .07) / .89));
+    const d = Math.sqrt(best), n = fbm(x * 7.5, y * 3.4);
+    const floor = 5200 - 3400 * along;
+    const wall = 1900 * (1 - Math.exp(-d * 5.2)) * (.7 + .65 * n);
+    H[j * GW + i] = floor + wall + (n - .5) * 520 * Math.min(1, d * 7);
+  }
+  let hmin = Infinity, hmax = -Infinity;
+  for (let k = 0; k < H.length; k++) { if (H[k] < hmin) hmin = H[k]; if (H[k] > hmax) hmax = H[k]; }
+  // Spot height: highest point away from the edges and the scale bar
+  let smax = -Infinity, si = 0, sj = 0;
+  for (let j = Math.round(GH * .12); j < Math.round(GH * .72); j++) for (let i = Math.round(GW * .2); i < Math.round(GW * .9); i++) {
+    const v = H[j * GW + i];
+    if (v > smax) { smax = v; si = i; sj = j; }
+  }
+
+  // Marching-squares edge pairs; corners TL=8 TR=4 BR=2 BL=1; edges 0 top, 1 right, 2 bottom, 3 left
+  const SEG = [[], [[3,2]], [[2,1]], [[3,1]], [[0,1]], [[3,0],[2,1]], [[0,2]], [[3,0]], [[3,0]], [[0,2]], [[0,1],[3,2]], [[0,1]], [[3,1]], [[2,1]], [[3,2]], []];
+
+  function hex(c) {
+    c = c.trim();
+    if (c[0] === '#' && c.length === 7) return [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)];
+    return [128, 128, 128];
+  }
+  function tokens() {
+    const cs = getComputedStyle(document.documentElement);
+    const t = {};
+    for (const k of ['paper', 'panel', 'ink', 'ink-2', 'contour', 'melt', 'melt-wash', 'ice', 'hazard']) t[k] = cs.getPropertyValue('--' + k).trim();
+    return t;
+  }
+  const rgba = (h, a) => { const [r, g, b] = hex(h); return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'; };
+
+  let base = null, W = 0, Hc = 0, k = 1, T = null;
+
+  function buildBase() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.max(1, Math.round(cv.clientWidth * dpr));
+    Hc = Math.max(1, Math.round(cv.clientHeight * dpr));
+    cv.width = W; cv.height = Hc;
+    k = Math.max(.7, Math.min(2.4, W / 1000));
+    T = tokens();
+    base = document.createElement('canvas');
+    base.width = W; base.height = Hc;
+    const g = base.getContext('2d');
+
+    // Hillshade and ice, drawn at grid resolution then smoothed up
+    const sm = document.createElement('canvas');
+    sm.width = GW; sm.height = GH;
+    const sg = sm.getContext('2d');
+    const img = sg.createImageData(GW, GH);
+    const P = hex(T.paper), I = hex(T.ink), C = hex(T.ice);
+    const lx = -.55, ly = -.62, lz = .56, s = 140;
+    for (let j = 0; j < GH; j++) for (let i = 0; i < GW; i++) {
+      const id = j * GW + i;
+      const hl = H[j * GW + Math.max(i - 1, 0)], hr = H[j * GW + Math.min(i + 1, GW - 1)];
+      const hu = H[Math.max(j - 1, 0) * GW + i], hd = H[Math.min(j + 1, GH - 1) * GW + i];
+      let nx = -(hr - hl) / (2 * s), ny = -(hd - hu) / (2 * s), nz = 1;
+      const nl = Math.hypot(nx, ny, nz); nx /= nl; ny /= nl; nz /= nl;
+      const shade = nx * lx + ny * ly + nz * lz;
+      const dark = Math.max(0, Math.min(.5, (.78 - shade) * .75));
+      const ice = Math.max(0, Math.min(.55, (H[id] - 6100) / 800));
+      let r = P[0] + (I[0] - P[0]) * dark, gg = P[1] + (I[1] - P[1]) * dark, b = P[2] + (I[2] - P[2]) * dark;
+      r += (C[0] - r) * ice; gg += (C[1] - gg) * ice; b += (C[2] - b) * ice;
+      const o = id * 4;
+      img.data[o] = r; img.data[o + 1] = gg; img.data[o + 2] = b; img.data[o + 3] = 255;
+    }
+    sg.putImageData(img, 0, 0);
+    g.imageSmoothingEnabled = true;
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(sm, 0, 0, W, Hc);
+
+    // Contours every 200 m, index contours every 1000 m
+    const sx = W / (GW - 1), sy = Hc / (GH - 1);
+    g.lineJoin = 'round';
+    for (let lv = Math.ceil(hmin / 200) * 200; lv < hmax; lv += 200) {
+      const index = lv % 1000 === 0;
+      g.strokeStyle = rgba(T.contour, index ? .85 : .42);
+      g.lineWidth = (index ? 1.15 : .6) * k;
+      g.beginPath();
+      for (let j = 0; j < GH - 1; j++) for (let i = 0; i < GW - 1; i++) {
+        const a = H[j * GW + i], b = H[j * GW + i + 1], c = H[(j + 1) * GW + i + 1], d = H[(j + 1) * GW + i];
+        const idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c > lv ? 2 : 0) | (d > lv ? 1 : 0);
+        if (idx === 0 || idx === 15) continue;
+        const E = e => e === 0 ? [i + (lv - a) / (b - a), j]
+          : e === 1 ? [i + 1, j + (lv - b) / (c - b)]
+          : e === 2 ? [i + (lv - d) / (c - d), j + 1]
+          : [i, j + (lv - a) / (d - a)];
+        for (const [e1, e2] of SEG[idx]) {
+          const p = E(e1), q = E(e2);
+          g.moveTo(p[0] * sx, p[1] * sy); g.lineTo(q[0] * sx, q[1] * sy);
+        }
+      }
+      g.stroke();
+    }
+
+    const toC = (x, y) => [x * W, y * Hc];
+    const label = (txt, x, y, opts = {}) => {
+      g.font = (opts.font || (opts.size || 10) * k + 'px "Martian Mono", ui-monospace, monospace');
+      g.textAlign = opts.align || 'left';
+      g.textBaseline = 'middle';
+      g.lineWidth = 3.2 * k; g.strokeStyle = T.paper; g.lineJoin = 'round';
+      g.strokeText(txt, x, y);
+      g.fillStyle = opts.color || T.ink;
+      g.fillText(txt, x, y);
+    };
+
+    // Flood path: halo then core
+    g.lineCap = 'round';
+    g.beginPath();
+    path.forEach((p, i) => { const [x, y] = toC(p[0], p[1]); i ? g.lineTo(x, y) : g.moveTo(x, y); });
+    g.strokeStyle = rgba(T.melt, .2); g.lineWidth = 16 * k; g.stroke();
+    g.strokeStyle = rgba(T.melt, .95); g.lineWidth = 2.6 * k; g.stroke();
+
+    // Lake and moraine dam
+    const [lx0, ly0] = toC(.065, .285);
+    g.beginPath();
+    for (let a = 0; a <= 64; a++) {
+      const th = a / 64 * Math.PI * 2;
+      const wob = 1 + .16 * Math.sin(th * 3 + .6) + .08 * Math.sin(th * 5 + 2.1);
+      const x = lx0 + Math.cos(th) * 30 * k * wob, y = ly0 + Math.sin(th) * 15 * k * wob;
+      a ? g.lineTo(x, y) : g.moveTo(x, y);
+    }
+    g.closePath();
+    g.fillStyle = T['melt-wash']; g.fill();
+    g.strokeStyle = T.melt; g.lineWidth = 1.6 * k; g.stroke();
+    const [mx, my] = toC(.105, .28);
+    g.beginPath(); g.setLineDash([3 * k, 3 * k]);
+    g.arc(mx - 6 * k, my, 20 * k, -1.1, 1.1);
+    g.strokeStyle = T.contour; g.lineWidth = 2.2 * k; g.stroke(); g.setLineDash([]);
+    label('glacial lake', lx0 - 2 * k, ly0 - 30 * k, { font: 'italic ' + 15 * k + 'px "Newsreader", Georgia, serif', align: 'center', color: T.melt });
+    label('moraine dam', mx + 8 * k, my + 28 * k, { font: 'italic ' + 13 * k + 'px "Newsreader", Georgia, serif', color: T.contour });
+
+    // Arrival ticks across the valley
+    [[.22, '+15 min'], [.5, '+45 min'], [.8, '+80 min']].forEach(([s, t]) => {
+      const p = pointAt(s), [x, y] = toC(p.x, p.y);
+      const len = Math.hypot(p.tx, p.ty) || 1, nx = -p.ty / len, ny = p.tx / len;
+      const r = 20 * k;
+      g.beginPath(); g.moveTo(x - nx * r, y - ny * r); g.lineTo(x + nx * r, y + ny * r);
+      g.strokeStyle = T.ink; g.lineWidth = 1.4 * k; g.stroke();
+      label(t, x + nx * (r + 6 * k), y + ny * (r + 6 * k) + 2 * k, { size: 10.5, align: nx >= 0 ? 'left' : 'right' });
+    });
+
+    // Markers: sensor, dam, town
+    const mark = (s, kind, txt, side) => {
+      const p = pointAt(s), [x, y] = toC(p.x, p.y), r = 5.5 * k;
+      g.beginPath();
+      if (kind === 'diamond') { g.moveTo(x, y - r * 1.3); g.lineTo(x + r * 1.3, y); g.lineTo(x, y + r * 1.3); g.lineTo(x - r * 1.3, y); g.closePath(); g.fillStyle = T.paper; g.fill(); g.strokeStyle = T.hazard; g.lineWidth = 2 * k; g.stroke(); }
+      else if (kind === 'square') { g.rect(x - r, y - r, r * 2, r * 2); g.fillStyle = T.ink; g.fill(); }
+      else { g.arc(x, y, r * 1.1, 0, Math.PI * 2); g.fillStyle = T.ink; g.fill(); g.beginPath(); g.arc(x, y, r * 2, 0, Math.PI * 2); g.strokeStyle = T.ink; g.lineWidth = 1 * k; g.stroke(); }
+      label(txt, x + side[0] * k, y + side[1] * k, { size: 10, align: side[0] < 0 ? 'right' : 'left', color: kind === 'diamond' ? T.hazard : T.ink });
+    };
+    mark(.35, 'diamond', 'SENSOR', [10, 18]);
+    mark(.63, 'square', 'HYDRO DAM', [12, -14]);
+    mark(.93, 'circle', 'TOWN', [-14, -16]);
+
+    // Spot height at the highest point
+    const sxp = si * sx, syp = sj * sy;
+    g.beginPath(); g.moveTo(sxp, syp - 5 * k); g.lineTo(sxp + 4.5 * k, syp + 3 * k); g.lineTo(sxp - 4.5 * k, syp + 3 * k); g.closePath();
+    g.fillStyle = T.ink; g.fill();
+    label(Math.round(smax / 10) * 10 + '', sxp + 8 * k, syp, { size: 9.5 });
+
+    // Scale bar (illustrative)
+    const bx = 18 * k, by = Hc - 20 * k, seg = 30 * k;
+    for (let q = 0; q < 4; q++) {
+      g.fillStyle = q % 2 ? T.paper : T.ink;
+      g.fillRect(bx + q * seg, by, seg, 5 * k);
+    }
+    g.strokeStyle = T.ink; g.lineWidth = 1 * k; g.strokeRect(bx, by, seg * 4, 5 * k);
+    label('0', bx, by - 9 * k, { size: 9, align: 'center' });
+    label('5', bx + seg * 2, by - 9 * k, { size: 9, align: 'center' });
+    label('10 km', bx + seg * 4, by - 9 * k, { size: 9, align: 'center' });
+  }
+
+  // Travelling flood front
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let raf = 0, visible = true, t0 = performance.now();
+  function frame(now) {
+    if (!base) return;
+    ctx.drawImage(base, 0, 0);
+    if (!reduce.matches) {
+      const cyc = ((now - t0) / 1000) % 8.5, s = Math.min(1, cyc / 6.5);
+      const a = Math.max(0, s - .07);
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      for (let q = 0; q <= 24; q++) {
+        const p = pointAt(a + (s - a) * q / 24);
+        q ? ctx.lineTo(p.x * W, p.y * Hc) : ctx.moveTo(p.x * W, p.y * Hc);
+      }
+      ctx.strokeStyle = T.melt; ctx.lineWidth = 5 * k; ctx.globalAlpha = cyc > 6.5 ? Math.max(0, 1 - (cyc - 6.5) / 1.2) : 1;
+      ctx.stroke();
+      const hp = pointAt(s);
+      ctx.beginPath(); ctx.arc(hp.x * W, hp.y * Hc, 11 * k, 0, Math.PI * 2);
+      ctx.fillStyle = rgba(T.melt, .22); ctx.fill();
+      ctx.beginPath(); ctx.arc(hp.x * W, hp.y * Hc, 4.5 * k, 0, Math.PI * 2);
+      ctx.fillStyle = T.melt; ctx.fill();
+      ctx.restore();
+    }
+    if (visible && !reduce.matches) raf = requestAnimationFrame(frame);
+  }
+  function start() { cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); }
+  function rebuild() { buildBase(); start(); }
+
+  rebuild();
+  if ('ResizeObserver' in window) {
+    let lastW = cv.clientWidth;
+    new ResizeObserver(() => { if (Math.abs(cv.clientWidth - lastW) > 2) { lastW = cv.clientWidth; rebuild(); } }).observe(cv);
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) start(); else cancelAnimationFrame(raf); }).observe(cv);
+  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rebuild);
+  reduce.addEventListener('change', start);
+  new MutationObserver(rebuild).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
+})();
+</script>
