@@ -68,6 +68,27 @@ def test_south_lhonak_checks_pass_on_published_like_values():
     assert results[1].detail.endswith("05 Oct 2023")
 
 
+def test_chorabari_checks_pass_for_a_small_lake_that_drained_in_2013():
+    df = summary.tidy([
+        scene("2008-10-10", 0.06),
+        scene("2010-10-12", 0.07),
+        scene("2012-10-08", 0.065),
+        scene("2013-10-11", 0.0),
+        scene("2015-10-09", 0.004),
+        scene("2016-10-12", 0.0),
+    ])
+    results = summary.run_checks(df, references.CHORABARI["checks"])
+    assert [r.passed for r in results] == [True, True]
+    by_year = summary.yearly(df, references.CHORABARI["event_date"])
+    assert "2013 after" in list(by_year["period"])
+
+
+def test_every_lake_has_what_the_script_and_chart_need():
+    for lake in references.LAKES.values():
+        for key in ("name", "lon", "lat", "margin_m", "event_date", "event_label", "published", "checks"):
+            assert key in lake, f"{lake.get('name')} is missing {key}"
+
+
 def test_checks_fail_when_the_drop_is_missing_or_there_is_no_data():
     df = summary.tidy([scene("2023-09-28", 1.67), scene("2023-10-05", 1.66)])
     results = summary.run_checks(df, references.SOUTH_LHONAK["checks"])

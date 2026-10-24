@@ -36,18 +36,30 @@ What a good run looks like:
 
 - It ends with **3 of 3 checks passed**: about 1.65 km² just before the October 2023 outburst,
   about 0.60 km² just after it, and 1.1 to 1.3 km² for 2014 to 2016.
-- `pipeline/out/p0_lake_area/south_lhonak_area.png` shows the lake growing from the late 1980s,
+- `pipeline/out/p0_lake_area/south-lhonak/area.png` shows the lake growing from the late 1980s,
   then dropping sharply at the outburst.
 
-If a check fails, everything is still written to `pipeline/out/p0_lake_area/`. To redo the tables
-and chart without calling Earth Engine again, pass `--from-csv pipeline\out\p0_lake_area\scenes_raw.csv`.
+If a check fails, everything is still written to `pipeline/out/p0_lake_area/south-lhonak/`. To redo
+the tables and chart without calling Earth Engine again, pass
+`--from-csv pipeline\out\p0_lake_area\south-lhonak\scenes_raw.csv`.
+
+### Kedarnath's lake (optional)
+
+```
+.venv\Scripts\python pipeline\scripts\p0_lake_area.py --lake chorabari
+```
+
+Chorabari lake, about 2 km above Kedarnath, emptied in June 2013 and has not refilled. A good
+run passes 2 of 2 checks: roughly 0.02 to 0.10 km² before 2013, and close to zero after.
+Results go to `pipeline/out/p0_lake_area/chorabari/`.
 
 Offline tests: `.venv\Scripts\python -m pytest pipeline\tests -q`
 
 ## How the measurement works
 
 - **Where to measure:** the lake's largest outline in JRC Global Surface Water (1984 to 2021),
-  widened by 200 m for growth since then.
+  widened by a margin: 200 m for South Lhonak, which kept growing after 2021, and 60 m for
+  Chorabari, which did not.
 - **Each scene:** every autumn (September to November) image from Landsat 5, 7, 8, 9 and
   Sentinel-2. Cloud and cloud-shadow pixels are removed using each product's own quality band.
   A pixel counts as water when NDWI (green against near-infrared) is above 0.25. The 0.15 and
@@ -57,4 +69,5 @@ Offline tests: `.venv\Scripts\python -m pytest pipeline\tests -q`
 
 Known limits: Landsat 7 images after 2003 have striped gaps, so most get dropped; 2012 has no
 good sensor over the lake; a frozen or snow-covered lake reads as dry; mountain shadow inside
-the 200 m margin can read as water.
+the margin can read as water. Chorabari is only about 70 Landsat pixels across its whole area, so
+its numbers are coarse.
