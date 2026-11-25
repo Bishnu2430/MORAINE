@@ -1,4 +1,4 @@
-"""Turn per-scene lake measurements into a yearly series and check it against published figures.
+"""Turn per-period lake measurements into a series and check it against published figures.
 
 Pure pandas, so it runs and tests without Earth Engine.
 """
@@ -9,93 +9,111 @@ from dataclasses import dataclass
 
 import pandas as pd
 
-# A scene counts only if this share of the measuring area is cloud-free and inside the image
-MIN_VALID_FRACTION = 0.95
-# Yearly figures use 1 Sep to 15 Nov: after the monsoon cloud, before the lake freezes
+# A period counts only if at least this share of the measuring area was seen by enough scenes
+MIN_COVERAGE = 0.95
+# Autumn window: after the monsoon cloud, before the lake freezes. The end day is exclusive.
 SEASON_START = (9, 1)
-SEASON_END = (11, 15)
+SEASON_END = (11, 16)
+
+# A lake does not double for one autumn and shrink back: a period that differs from the median of
+# the periods within this many years by more than this share is dropped as an outlier
+NEIGHBOUR_YEARS = 4
+OUTLIER_TOLERANCE = 0.30
 
 MAIN = "water_t25_km2"
 WIDE = "water_t15_km2"  # lower NDWI cut-off, so more pixels count as water
 NARROW = "water_t35_km2"
 
 
+def autumn_periods(event_date: str, first_year: int = 1984, last_year: int = 2026) -> list[dict]:
+    """One autumn window per year; if the event falls inside an autumn, that autumn is split at it."""
+    event = pd.Timestamp(event_date)
+    periods = []
+    for year in range(first_year, last_year + 1):
+        start = pd.Timestamp(year, *SEASON_START)
+        end = pd.Timestamp(year, *SEASON_END)
+        if start < event < end:
+            periods.append({"period": f"{year} before", "start": f"{start:%Y-%m-%d}", "end": f"{event:%Y-%m-%d}"})
+            periods.append({"period": f"{year} after", "start": f"{event:%Y-%m-%d}", "end": f"{end:%Y-%m-%d}"})
+        else:
+            periods.append({"period": str(year), "start": f"{start:%Y-%m-%d}", "end": f"{end:%Y-%m-%d}"})
+    return periods
+
+
 def tidy(rows: list[dict] | pd.DataFrame) -> pd.DataFrame:
-    """Add dates, km² columns and a usable-share column; keep one scene per sensor family per day."""
+    """Add a mid-period date, coverage share and km² columns."""
     df = pd.DataFrame(rows).copy()
-    df["date"] = pd.to_datetime(df["time_ms"], unit="ms").dt.normalize()
-    df["valid_fraction"] = df["valid_m2"] / df["aoi_m2"]
+    start, end = pd.to_datetime(df["start"]), pd.to_datetime(df["end"])
+    df["date"] = start + (end - start) / 2
+    df["coverage"] = (df["covered_m2"] / df["aoi_m2"].where(df["aoi_m2"] > 0)).fillna(0.0)
     for col in [c for c in df.columns if c.startswith("water_t") and c.endswith("_m2")]:
         df[col[: -len("_m2")] + "_km2"] = df[col] / 1e6
-    df["family"] = df["sensor"].map(lambda s: "Sentinel-2" if str(s).startswith("Sentinel") else "Landsat")
-    # Overlapping tiles or paths can give two images of the same day; keep the clearer one
-    df = df.sort_values("valid_fraction", ascending=False).drop_duplicates(["family", "date"])
-    return df.sort_values("date").reset_index(drop=True)
+    return df.sort_values(["date", "family"]).reset_index(drop=True)
 
 
-def clear(df: pd.DataFrame, min_valid: float = MIN_VALID_FRACTION) -> pd.DataFrame:
-    return df[df["valid_fraction"] >= min_valid]
+def usable(df: pd.DataFrame, min_coverage: float = MIN_COVERAGE) -> pd.DataFrame:
+    return df[df["coverage"] >= min_coverage]
 
 
-def in_season(dates: pd.Series) -> pd.Series:
-    month_day = dates.dt.month * 100 + dates.dt.day
-    start = SEASON_START[0] * 100 + SEASON_START[1]
-    end = SEASON_END[0] * 100 + SEASON_END[1]
-    return (month_day >= start) & (month_day <= end)
-
-
-def yearly(df: pd.DataFrame, event_date: str) -> pd.DataFrame:
-    """Median area of the clear autumn scenes in each year. The event year is split at the event date."""
-    good = clear(df)
-    good = good[in_season(good["date"])].copy()
+def flag_outliers(series: pd.DataFrame, event_date: str) -> pd.Series:
+    """True where a period differs too much from its neighbours on the same side of the event."""
     event = pd.Timestamp(event_date)
-    period = good["date"].dt.year.astype(str)
-    event_year = good["date"].dt.year == event.year
-    period[event_year & (good["date"] < event)] = f"{event.year} before"
-    period[event_year & (good["date"] >= event)] = f"{event.year} after"
-    good["period"] = period
-    out = good.groupby("period").agg(
-        date=("date", "median"),
-        scenes=("date", "size"),
-        area_km2=(MAIN, "median"),
-        area_wide_km2=(WIDE, "median"),
-        area_narrow_km2=(NARROW, "median"),
-        sensors=("family", lambda s: " + ".join(sorted(set(s)))),
-    )
-    return out.sort_values("date").reset_index()
+    window = pd.Timedelta(days=365.25 * NEIGHBOUR_YEARS)
+    dates, values = series["date"], series[MAIN]
+    flags = []
+    for i, (when, value) in enumerate(zip(dates, values)):
+        near = ((dates - when).abs() <= window) & ((dates < event) == (when < event))
+        near.iloc[i] = False
+        reference = values[near].median() if near.sum() >= 2 else None
+        flags.append(bool(reference) and abs(value - reference) / reference > OUTLIER_TOLERANCE)
+    return pd.Series(flags, index=series.index)
+
+
+def best(df: pd.DataFrame, event_date: str) -> pd.DataFrame:
+    """One value per period: Sentinel-2 (10 m) where usable, otherwise Landsat (30 m). Adds an outlier column."""
+    good = usable(df).copy()
+    good["rank"] = good["family"].map({"Sentinel-2": 0, "Landsat": 1})
+    picked = good.sort_values(["date", "rank"]).drop_duplicates("period").drop(columns="rank")
+    picked = picked.reset_index(drop=True)
+    picked["outlier"] = flag_outliers(picked, event_date)
+    return picked
+
+
+def series(df: pd.DataFrame, event_date: str) -> pd.DataFrame:
+    """The best value per period, outliers removed."""
+    picked = best(df, event_date)
+    return picked[~picked["outlier"]].reset_index(drop=True)
 
 
 @dataclass
 class Check:
     name: str
-    value_km2: float | None
+    role: str  # "gate" decides pass/fail; "compare" is reported only
+    value: float | None
     low: float
     high: float
     expect: str
     detail: str
 
     @property
-    def passed(self) -> bool:
-        return self.value_km2 is not None and self.low <= self.value_km2 <= self.high
+    def in_range(self) -> bool:
+        return self.value is not None and self.low <= self.value <= self.high
 
 
-def run_checks(df: pd.DataFrame, checks: list[dict]) -> list[Check]:
-    good = clear(df)
+def run_checks(df: pd.DataFrame, checks: list[dict], event_date: str) -> list[Check]:
+    values = series(df, event_date).set_index("period")
     results = []
     for c in checks:
-        start, end = (pd.Timestamp(d) for d in c["window"])
-        window = good[(good["date"] >= start) & (good["date"] <= end)]
-        if c["pick"] == "median":
-            window = window[in_season(window["date"])]
-        value, detail = None, "no clear scene in the window"
-        if len(window):
-            if c["pick"] == "last":
-                row = window.iloc[-1]
-                value, detail = row[MAIN], f"{row['sensor']}, {row['date']:%d %b %Y}"
-            elif c["pick"] == "first":
-                row = window.iloc[0]
-                value, detail = row[MAIN], f"{row['sensor']}, {row['date']:%d %b %Y}"
-            else:
-                value, detail = float(window[MAIN].median()), f"median of {len(window)} scenes"
-        results.append(Check(c["name"], value, c["low"], c["high"], c["expect"], detail))
+        value, detail = None, "no usable period"
+        if "ratio" in c:
+            top, bottom = c["ratio"]
+            if top in values.index and bottom in values.index and values.loc[bottom, MAIN] > 0:
+                value = float(values.loc[top, MAIN] / values.loc[bottom, MAIN])
+                detail = f"{values.loc[top, MAIN]:.3f} / {values.loc[bottom, MAIN]:.3f} km2"
+        else:
+            found = values.loc[[p for p in c["periods"] if p in values.index]]
+            if len(found):
+                value = float(found[MAIN].median())
+                detail = ", ".join(f"{p}: {r[MAIN]:.3f} ({r['family']})" for p, r in found.iterrows())
+        results.append(Check(c["name"], c["role"], value, c["low"], c["high"], c["expect"], detail))
     return results

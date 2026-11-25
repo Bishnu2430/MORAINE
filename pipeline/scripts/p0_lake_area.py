@@ -1,11 +1,12 @@
-"""P0 spike: a study lake's area in every clear autumn since 1984, measured on Google Earth Engine.
+"""P0 spike: a study lake's area each autumn since 1984, measured on Google Earth Engine.
 
-    .venv\\Scripts\\python pipeline\\scripts\\p0_lake_area.py [--lake chorabari] [--project YOUR-CLOUD-PROJECT]
+    .venv\\Scripts\\python pipeline\\scripts\\p0_lake_area.py [--project YOUR-CLOUD-PROJECT]
 
-The default lake is South Lhonak. Writes to pipeline/out/p0_lake_area/<lake>/: scenes_raw.csv (what
-Earth Engine returned), scenes.csv, yearly.csv, aoi.geojson and area.png. Then prints the lake's
-checks against published figures and exits with 0 only if all pass. --from-csv rebuilds
-everything from an earlier scenes_raw.csv without calling Earth Engine.
+The default lake is South Lhonak. Writes to pipeline/out/p0_lake_area/<lake>/: periods_raw.csv
+(what Earth Engine returned), periods.csv, aoi.geojson and area.png. Then prints the lake's checks
+against published figures. "gate" checks decide the exit code (0 only if all pass); "compare"
+checks are printed for comparison. --from-csv rebuilds everything from an earlier periods_raw.csv
+without calling Earth Engine.
 """
 
 from __future__ import annotations
@@ -39,13 +40,13 @@ def fetch(project: str | None, lake: dict, out: Path) -> pd.DataFrame:
             ".venv\\Scripts\\earthengine set_project YOUR-PROJECT-ID  and check that the project is "
             "registered for Earth Engine (see pipeline/README.md)."
         )
-    print(f"Finding {lake['name']} in JRC Global Surface Water ...")
-    aoi = lakes.lake_aoi(lake["lon"], lake["lat"], margin_m=lake["margin_m"])
+    print(f"Outlining {lake['name']} ...")
+    aoi = lakes.lake_aoi(lake["lon"], lake["lat"], margin_m=lake["margin_m"], recent_years=lake.get("recent_years"))
     (out / "aoi.geojson").write_text(json.dumps(aoi.getInfo()))
     print(f"  measuring area: {aoi.area(1).getInfo() / 1e6:.2f} km2")
-    print("Measuring every autumn scene (runs on Earth Engine, a few minutes) ...")
-    raw = pd.DataFrame(lakes.measure_scenes(aoi))
-    raw.to_csv(out / "scenes_raw.csv", index=False)
+    print("Building autumn composites (runs on Earth Engine, a few minutes) ...")
+    raw = pd.DataFrame(lakes.measure_periods(aoi, summary.autumn_periods(lake["event_date"])))
+    raw.to_csv(out / "periods_raw.csv", index=False)
     return raw
 
 
@@ -56,39 +57,50 @@ def main() -> int:
                              "then to the project saved with `earthengine set_project`")
     parser.add_argument("--lake", choices=sorted(references.LAKES), default="south-lhonak")
     parser.add_argument("--out", type=Path, help="output folder (default: pipeline/out/p0_lake_area/<lake>)")
-    parser.add_argument("--from-csv", type=Path, help="rebuild outputs from an earlier scenes_raw.csv")
+    parser.add_argument("--from-csv", type=Path, help="rebuild outputs from an earlier periods_raw.csv")
     args = parser.parse_args()
 
     lake = references.LAKES[args.lake]
     args.out = args.out or PIPELINE / "out" / "p0_lake_area" / args.lake
     args.out.mkdir(parents=True, exist_ok=True)
-    if args.from_csv:
-        raw = pd.read_csv(args.from_csv)
-    else:
-        raw = fetch(args.project, lake, args.out)
+    raw = pd.read_csv(args.from_csv) if args.from_csv else fetch(args.project, lake, args.out)
 
-    scenes = summary.tidy(raw)
-    scenes.to_csv(args.out / "scenes.csv", index=False)
-    by_year = summary.yearly(scenes, lake["event_date"])
-    by_year.to_csv(args.out / "yearly.csv", index=False)
+    periods = summary.tidy(raw)
+    periods.to_csv(args.out / "periods.csv", index=False)
     chart = args.out / "area.png"
-    plot.plot_area(scenes, by_year, lake, chart)
+    plot.plot_area(periods, lake, chart)
 
-    n_clear = len(summary.clear(scenes))
-    print(f"\n{lake['name']}: {len(scenes)} scenes, {n_clear} clear enough to use. Autumn medians (km2):")
-    for _, r in by_year.iterrows():
-        print(f"  {r['period']:<12} {r['area_km2']:6.3f}   ({r['area_narrow_km2']:.3f}-{r['area_wide_km2']:.3f}, "
-              f"{r['scenes']} scenes, {r['sensors']})")
+    table = periods.pivot_table(index="period", columns="family", values=summary.MAIN, sort=False)
+    ok = periods.pivot_table(index="period", columns="family", values="coverage", sort=False) >= summary.MIN_COVERAGE
+    picked = summary.best(periods, lake["event_date"]).set_index("period")
+    print(f"\n{lake['name']}: autumn area in km2 (NDWI > 0.25; '-' = not enough clear coverage)")
+    print(f"  {'period':<12} {'Landsat':>8} {'Sentinel-2':>11} {'best':>7}")
+    for period in picked.index.union(table.index, sort=False):
+        cells = []
+        for family in ("Landsat", "Sentinel-2"):
+            usable = family in table.columns and period in table.index and bool(ok.loc[period, family])
+            cells.append(f"{table.loc[period, family]:.3f}" if usable else "-")
+        chosen = "-"
+        if period in picked.index:
+            chosen = f"{picked.loc[period, summary.MAIN]:.3f}"
+            if picked.loc[period, "outlier"]:
+                chosen += "  dropped: outlier"
+        print(f"  {period:<12} {cells[0]:>8} {cells[1]:>11} {chosen:>7}")
 
-    results = summary.run_checks(scenes, lake["checks"])
-    print("\nChecks against published areas:")
+    results = summary.run_checks(periods, lake["checks"], lake["event_date"])
+    print("\nChecks against published figures:")
     for r in results:
-        value = "none" if r.value_km2 is None else f"{r.value_km2:.3f} km2"
-        print(f"  {'PASS' if r.passed else 'FAIL'}  {r.name}: {value} ({r.detail})")
+        value = "none" if r.value is None else f"{r.value:.3f}"
+        if r.role == "gate":
+            mark = "PASS" if r.in_range else "FAIL"
+        else:
+            mark = "INFO"
+        print(f"  {mark}  {r.name}: {value}  ({r.detail})")
         print(f"        expected {r.low:.2f}-{r.high:.2f}. {r.expect}")
-    passed = sum(r.passed for r in results)
-    print(f"\n{passed} of {len(results)} checks passed. Chart: {chart}")
-    return 0 if passed == len(results) else 1
+    gates = [r for r in results if r.role == "gate"]
+    passed = sum(r.in_range for r in gates)
+    print(f"\n{passed} of {len(gates)} gate checks passed. Chart: {chart}")
+    return 0 if passed == len(gates) else 1
 
 
 if __name__ == "__main__":

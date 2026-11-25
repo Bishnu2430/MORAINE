@@ -27,30 +27,45 @@ COLORS = {
 }
 
 
-def plot_area(df: pd.DataFrame, by_year: pd.DataFrame, lake: dict, path: Path) -> None:
+def plot_area(df: pd.DataFrame, lake: dict, path: Path) -> None:
     c = COLORS
     plt.rcParams["font.family"] = ["Segoe UI", "DejaVu Sans"]
     fig, ax = plt.subplots(figsize=(10, 5.4), dpi=150)
     fig.patch.set_facecolor(c["surface"])
     ax.set_facecolor(c["surface"])
 
-    # Break the yearly line where more than ~18 months are missing, so a gap never reads as a gradual change
-    line = by_year.set_index("date")[["area_km2", "area_wide_km2", "area_narrow_km2"]]
-    gap_ends = line.index[line.index.to_series().diff() > pd.Timedelta(days=548)]
-    breaks = pd.DataFrame(index=gap_ends - pd.Timedelta(days=1), columns=line.columns, dtype=float)
-    line = pd.concat([line, breaks]).sort_index()
-    ax.fill_between(line.index, line["area_narrow_km2"], line["area_wide_km2"],
-                    color=c["band"], linewidth=0, label="NDWI cut-off 0.15 to 0.35", zorder=1)
-    ax.plot(line.index, line["area_km2"], color=c["ink"], linewidth=2,
-            label="Autumn median, NDWI > 0.25", zorder=2)
+    # Break the line where more than ~18 months are missing, so a gap never reads as a gradual change
+    picked = summary.best(df, lake["event_date"])
+    series = picked[~picked["outlier"]].set_index("date")[[summary.MAIN, summary.WIDE, summary.NARROW]]
+    gap_ends = series.index[series.index.to_series().diff() > pd.Timedelta(days=548)]
+    breaks = pd.DataFrame(index=gap_ends - pd.Timedelta(days=1), columns=series.columns, dtype=float)
+    series = pd.concat([series, breaks]).sort_index()
+    ax.fill_between(series.index, series[summary.NARROW], series[summary.WIDE], color=c["band"], linewidth=0,
+                    label="NDWI cut-off 0.15 to 0.35", zorder=1)
+    ax.plot(series.index, series[summary.MAIN], color=c["ink"], linewidth=2,
+            label="Best estimate (Sentinel-2 where available)", zorder=2)
 
-    good = summary.clear(df)
-    good = good[summary.in_season(good["date"])]
+    # A point is drawn as dropped if it is the best value and an outlier, or if it is the unused
+    # sensor's value for a period and differs from the chosen value by more than the outlier tolerance
+    good = summary.usable(df).reset_index(drop=True)
+    chosen = picked.set_index("period")
+    dropped = []
+    for _, row in good.iterrows():
+        pick = chosen.loc[row["period"]]
+        if pick["family"] == row["family"]:
+            dropped.append(bool(pick["outlier"]))
+        else:
+            dropped.append(abs(row[summary.MAIN] - pick[summary.MAIN]) > summary.OUTLIER_TOLERANCE * pick[summary.MAIN])
+    dropped = pd.Series(dropped, index=good.index, dtype=bool)
     for family in ("Landsat", "Sentinel-2"):
-        rows = good[good["family"] == family]
+        rows = good[(good["family"] == family) & ~dropped]
         if len(rows):
-            ax.scatter(rows["date"], rows[summary.MAIN], s=24, color=c[family], edgecolor=c["surface"],
-                       linewidth=0.9, label=f"{family} scene", zorder=3)
+            ax.scatter(rows["date"], rows[summary.MAIN], s=28, color=c[family], edgecolor=c["surface"],
+                       linewidth=0.9, label=f"{family} autumn composite", zorder=3)
+    outliers = good[dropped]
+    if len(outliers):
+        ax.scatter(outliers["date"], outliers[summary.MAIN], s=28, facecolor="none", edgecolor=c["muted"],
+                   linewidth=1.2, label="Dropped as outlier", zorder=3)
 
     published = lake["published"]
     if published:
@@ -88,11 +103,11 @@ def plot_area(df: pd.DataFrame, by_year: pd.DataFrame, lake: dict, path: Path) -
     for text in legend.get_texts():
         text.set_color(c["ink2"])
 
-    note = ("Clear scenes only: at least 95% of the measuring area cloud-free, 1 Sep to 15 Nov. "
-            "Landsat 5-9 and Sentinel-2 via Google Earth Engine.")
+    note = ("Each point: 80th-percentile NDWI composite of 1 Sep-15 Nov scenes, kept where at least 95% of the "
+            "measuring area was seen 3+ times.\nLandsat 5-9 and Sentinel-2 via Google Earth Engine.")
     if published:
         note += " Year-only published values sit in mid-October."
-    fig.text(0.01, 0.012, note, fontsize=7.5, color=c["muted"])
-    fig.tight_layout(rect=(0, 0.035, 1, 1))
+    fig.text(0.01, 0.012, note, fontsize=7.2, color=c["muted"], linespacing=1.4)
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
     fig.savefig(path, facecolor=c["surface"])
     plt.close(fig)
