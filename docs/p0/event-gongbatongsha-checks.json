@@ -1,0 +1,72 @@
+{
+ "event": "Gongbatongsha 2016",
+ "date": "2016-07-05",
+ "published": [
+  "Lake 1.7 x 10^4 m2 before, fully drained; about 1.1-1.2 x 10^5 m3 of water (Cook 2018; Sattar 2022)",
+  "Peak about 620 m3/s at the lake, about 4,100 m3/s at the confluence 6.5 km down after entraining about 8.3 x 10^6 m3 of debris (Sattar 2022)",
+  "Front at 8.7 m/s past four seismometers 21-29 km along the river; 1,500-2,100 m3/s at Chaku (Cook 2018)"
+ ],
+ "lake": {
+  "name": "Gongbatongsha lake",
+  "lon": 86.07,
+  "lat": 28.0781
+ },
+ "water_mask_code": 0,
+ "route": {
+  "length_km": 51.9,
+  "passes": []
+ },
+ "corridor": {
+  "grid": [
+   872,
+   1340
+  ],
+  "cells": 346584,
+  "km2": 311.9,
+  "valid_share": 1.0,
+  "elevation_m": [
+   768.0,
+   6034.0
+  ],
+  "point_elevations_m": [
+   4811.0
+  ]
+ },
+ "clear_scenes": {
+  "Landsat": {
+   "after": [
+    "2016-10-17",
+    "2016-10-18",
+    "2016-10-25",
+    "2016-10-26"
+   ],
+   "before": [
+    "2016-03-07",
+    "2016-03-15",
+    "2016-03-23",
+    "2016-03-24",
+    "2016-04-08",
+    "2016-04-09",
+    "2016-04-24",
+    "2016-04-25",
+    "2016-05-18",
+    "2016-06-03"
+   ]
+  },
+  "Sentinel-2": {
+   "after": [
+    "2016-10-30"
+   ],
+   "before": [
+    "2016-04-13",
+    "2016-05-03"
+   ]
+  }
+ },
+ "rain": {
+  "mean_mm": 93.09867274469056,
+  "max_mm": 136.6949965050444,
+  "half_hours": 336
+ },
+ "lake_note": "Too small to measure: at the lake, Landsat's best autumn water index is 0.17-0.21, under the 0.25 cut-off, and Sentinel-2 Level-1C counts snow as water (about 0.075 km2 both before and after a lake of 0.017 km2 that drained). The published size is used."
+}

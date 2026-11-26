@@ -45,8 +45,9 @@ def merit_directions(west: float, south: float, east: float, north: float):
     return np.asarray(data["dir"]).astype(np.int32), x0, y0
 
 
-def glo30_utm(x0: float, y_top: float, width: int, height: int, cell: float = 30.0) -> np.ndarray:
-    """GLO-30 elevation (m), bilinearly resampled onto a UTM 45N grid whose top-left corner is (x0, y_top)."""
+def glo30_utm(x0: float, y_top: float, width: int, height: int, cell: float = 30.0, crs: str = UTM_45N) -> np.ndarray:
+    """GLO-30 elevation (m), bilinearly resampled onto a UTM grid (zone 45N unless `crs` says otherwise) whose
+    top-left corner is (x0, y_top)."""
     import ee
 
     dem = ee.ImageCollection(GLO30).select("DEM")
@@ -58,17 +59,17 @@ def glo30_utm(x0: float, y_top: float, width: int, height: int, cell: float = 30
             "dimensions": {"width": width, "height": height},
             "affineTransform": {"scaleX": cell, "shearX": 0, "translateX": x0,
                                 "shearY": 0, "scaleY": -cell, "translateY": y_top},
-            "crsCode": UTM_45N,
+            "crsCode": crs,
         },
     })
     return np.asarray(data["DEM"]).astype(np.float64)
 
 
-def to_utm(lonlat: list[tuple[float, float]]) -> np.ndarray:
-    """Longitude/latitude pairs to UTM 45N metres, one Earth Engine call for the lot."""
+def to_utm(lonlat: list[tuple[float, float]], crs: str = UTM_45N) -> np.ndarray:
+    """Longitude/latitude pairs to UTM metres (zone 45N unless `crs` says otherwise), one Earth Engine call."""
     import ee
 
-    points = ee.Geometry.MultiPoint([list(p) for p in lonlat]).transform(UTM_45N, 0.01)
+    points = ee.Geometry.MultiPoint([list(p) for p in lonlat]).transform(crs, 0.01)
     return np.array(points.coordinates().getInfo(), dtype=np.float64)
 
 

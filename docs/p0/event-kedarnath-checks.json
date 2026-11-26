@@ -1,0 +1,73 @@
+{
+ "event": "Kedarnath 2013",
+ "date": "2013-06-17",
+ "published": [
+  "Lake about 400 x 200 m, 15-20 m deep, about 262,000 m3; emptied within minutes (documented)",
+  "About 390 mm of rain over 10-17 June after weeks of fast snowmelt (Allen 2016; Singh 2015)",
+  "Modelled breach peak about 1,700 m3/s (Journal of Mountain Science study)"
+ ],
+ "lake": {
+  "name": "Chorabari lake",
+  "lon": 79.0608,
+  "lat": 30.7475
+ },
+ "water_mask_code": 0,
+ "route": {
+  "length_km": 19.9,
+  "passes": [
+   {
+    "name": "Kedarnath",
+    "miss_m": 144,
+    "along_km": 1.5
+   }
+  ]
+ },
+ "corridor": {
+  "grid": [
+   436,
+   680
+  ],
+  "cells": 149418,
+  "km2": 134.5,
+  "valid_share": 1.0,
+  "elevation_m": [
+   1417.0,
+   5155.0
+  ],
+  "point_elevations_m": [
+   3849.0,
+   3549.0
+  ]
+ },
+ "clear_scenes": {
+  "Landsat": {
+   "after": [
+    "2013-06-22",
+    "2013-06-30",
+    "2013-09-18",
+    "2013-09-19",
+    "2013-10-04"
+   ],
+   "before": [
+    "2013-03-02",
+    "2013-03-18",
+    "2013-04-12",
+    "2013-05-13",
+    "2013-05-14",
+    "2013-05-21",
+    "2013-05-22",
+    "2013-05-29"
+   ]
+  },
+  "Sentinel-2": {
+   "after": [],
+   "before": []
+  }
+ },
+ "rain": {
+  "mean_mm": 344.68922004603905,
+  "max_mm": 631.2949863690883,
+  "half_hours": 384
+ },
+ "lake_note": "Too small, silty and shaded for 30 m Landsat (P0 lake spike); Sentinel-2 did not exist yet. The documented size and volume are used."
+}

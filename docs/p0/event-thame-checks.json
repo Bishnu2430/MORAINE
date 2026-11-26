@@ -1,0 +1,109 @@
+{
+ "event": "Thame 2024",
+ "date": "2024-08-16",
+ "published": [
+  "Thyanbo lake, about 0.05 km2 on the morning of 16 Aug 2024 (ICIMOD 2024)",
+  "156,000 m3 from the first lake and 303,000 m3 from the second, 459,000 m3 in all (ICIMOD 2025)",
+  "25 homes destroyed, 135 people displaced, no deaths; school, health post, bridge and a hydropower plant damaged (ICIMOD 2025)"
+ ],
+ "drained_lake": {
+  "lon": 86.57301739171282,
+  "lat": 27.827802445502396,
+  "before_m2": 43609.64490509033,
+  "after_m2": 15329.466148376465
+ },
+ "lake": {
+  "name": "Drained lake",
+  "lon": 86.57302,
+  "lat": 27.8278
+ },
+ "lake_area": {
+  "2023": {
+   "km2": 0.0439,
+   "family": "Sentinel-2",
+   "band_km2": [
+    0.0418,
+    0.0476
+   ]
+  },
+  "2024": {
+   "km2": 0.0153,
+   "family": "Sentinel-2",
+   "band_km2": [
+    0.0145,
+    0.0165
+   ]
+  }
+ },
+ "water_mask_code": 0,
+ "route": {
+  "length_km": 20.0,
+  "passes": [
+   {
+    "name": "Thame",
+    "miss_m": 49,
+    "along_km": 9.7
+   }
+  ]
+ },
+ "corridor": {
+  "grid": [
+   688,
+   380
+  ],
+  "cells": 147060,
+  "km2": 132.4,
+  "valid_share": 1.0,
+  "elevation_m": [
+   2677.0,
+   6531.0
+  ],
+  "point_elevations_m": [
+   4748.0,
+   3786.0
+  ]
+ },
+ "clear_scenes": {
+  "Landsat": {
+   "after": [
+    "2024-09-30",
+    "2024-10-08",
+    "2024-10-16",
+    "2024-10-24",
+    "2024-11-17",
+    "2024-11-25",
+    "2024-12-03",
+    "2024-12-11"
+   ],
+   "before": [
+    "2024-04-23",
+    "2024-05-01"
+   ]
+  },
+  "Sentinel-2": {
+   "after": [
+    "2024-09-08",
+    "2024-09-18",
+    "2024-09-23",
+    "2024-10-13",
+    "2024-10-28",
+    "2024-11-07",
+    "2024-11-17",
+    "2024-11-27",
+    "2024-12-02",
+    "2024-12-07",
+    "2024-12-12"
+   ],
+   "before": [
+    "2024-04-21",
+    "2024-04-26",
+    "2024-05-01"
+   ]
+  }
+ },
+ "rain": {
+  "mean_mm": 88.14319982495502,
+  "max_mm": 202.36499561276287,
+  "half_hours": 384
+ }
+}

@@ -45,3 +45,21 @@ def test_encode_round_trip_and_nodata():
 def test_encode_refuses_relief_beyond_one_scale():
     with pytest.raises(ValueError):
         terrain.encode(np.array([0.0, 7000.0]), 0.0)
+
+
+def test_every_event_has_what_the_checks_need():
+    from moraine import events
+
+    for key, event in events.EVENTS.items():
+        for field in ("name", "date", "places", "length_km", "half_width_m", "crs", "search", "lake_method", "rain"):
+            assert field in event, f"{key} is missing {field}"
+        assert event["lake_method"] in ("drained", "documented", "jrc")
+        if event["lake_method"] == "drained":
+            assert event["lake"] is None and len(event["lake_search"]) == 4
+        else:
+            assert {"lon", "lat"} <= set(event["lake"])
+        if event["lake_method"] == "documented":
+            assert event["lake_note"]
+        zone = int(event["crs"][-2:])
+        lon = event["lake"]["lon"] if event["lake"] else event["lake_search"][0]
+        assert zone == int((lon + 180) // 6) + 1, f"{key}: {event['crs']} is not the UTM zone at {lon} E"

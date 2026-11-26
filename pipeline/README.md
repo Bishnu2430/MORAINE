@@ -150,6 +150,24 @@ The corridor covers 742 km² and runs from 1,296 to 6,878 m. A shaded map of it 
 frame over 20 ms, for the whole valley turning and for a low flight down the river. It still
 does so with the terrain drawn twice per frame (`docs/p0/terrain-bench.json`).
 
+## P0: one-page data checks for the test events
+
+```
+.venv\Scripts\python pipeline\scripts\p0_events.py --project master-bruin-515809-p2
+```
+
+Checks Gongbatongsha 2016, Thame 2024 and Kedarnath 2013 (add `--event thame` for one). For each,
+it covers:
+
+- **Route:** the flood route on MERIT Hydro, and how close it passes the named town.
+- **Terrain:** the GLO-30 corridor around the route.
+- **Lake:** its area in the autumns before and after, where satellites can see it.
+- **Imagery:** clear Sentinel-2 and Landsat scenes within 120 days either side of the date.
+- **Rain:** GPM IMERG rain over the days before.
+
+Findings and verdicts are written up in `docs/p0/events.md`. The facts behind each event, with
+their sources, are in `moraine/events.py`.
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the
