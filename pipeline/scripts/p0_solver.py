@@ -7,7 +7,7 @@ exactly, on this laptop's CPU, in a few minutes. Writes to pipeline/out/p0_solve
 profile.csv (depth along the channel, solver and exact), refinement.csv and dam-break.png.
 
 "gate" checks decide the exit code (0 only if all pass). "info" lines are measured and reported for
-P1's decisions but do not pass or fail.
+the P2 solver work but do not pass or fail.
 """
 
 from __future__ import annotations
@@ -133,7 +133,7 @@ def main() -> int:
              "at least 0.9", f"wet cells (over 1 cm) shared with the exact lens, as a share of either; the 2007 "
              f"surface gives {bowl07['iou']:.3f}"),
         info("Front measured at 1 cm instead of 10 cm", f"{b.ritter_front(t, 0.01) - head['front_1cm']:.1f} m behind",
-             "the frictionless wave's last 20 m is under 1 cm deep and smears over a few cells; friction in P1 "
+             "the frictionless wave's last 20 m is under 1 cm deep and smears over a few cells; friction in P2 "
              "changes that tip anyway"),
         info("float32 at 5,200 m elevation: depth error at 5 m cells", f"{100 * head32['error']:.2f}%",
              f"float64 gives {100 * head['error']:.2f}%; volume change {head32['volume_change']:.1e}; across the "

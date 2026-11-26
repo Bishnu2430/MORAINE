@@ -96,14 +96,14 @@ No sign-in needed; it runs on the laptop CPU in about 5 minutes. What a good run
   and 0.991, so the shoreline change costs nothing here.
 - `pipeline/out/p0_solver/dam-break.png` shows the depth profile on top of the exact one, and the
   error falling as cells get finer.
-- **INFO lines** feed P1's decisions:
+- **INFO lines** feed the solver work in P2:
   - *float32 at 5,200 m* is as accurate as float64 for the flood itself (0.84% against 0.86%), but
     each depth is then the small difference of two large elevations. Volume drifts by about 5e-5
     in 20 s, and the island lake creeps at 1.7 cm/s (4e-5 m/s for the same lake at sea level). The
     real runs should measure elevations from the lowest point in the valley.
   - *Speed* on this CPU is about 0.5-0.8 million cell-steps per second, far too slow for the
     valley runs, which need millions of cells over tens of thousands of 0.3 s steps. Those go on a
-    Colab GPU; P1 measures how long one takes.
+    Colab GPU; P2 measures how long one takes.
 
 How the solver works (`moraine/swe.py`): the second-order central-upwind scheme of Kurganov and
 Petrova (2007) in PyTorch, with walls on all sides and no friction yet. Two changes from the paper:

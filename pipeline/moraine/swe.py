@@ -29,7 +29,7 @@ Pool faces never hold more water than the cell has, so the 2007 positivity argum
 time-step limit, carry over unchanged.
 
 Written in PyTorch so the same code runs on the laptop CPU in float64 for checks and on a Colab
-GPU for the real runs. Friction, rain and open boundaries come in P1; for now every side is a wall.
+GPU for the real runs. Friction, rain and open boundaries come in P2; for now every side is a wall.
 """
 
 from __future__ import annotations
