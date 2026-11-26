@@ -1,0 +1,6 @@
+earthengine-api==1.7.49
+matplotlib==3.11.2
+numpy==2.5.4
+pandas==3.1.0
+pytest==9.1.1
+torch==2.15.0

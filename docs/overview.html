@@ -262,7 +262,7 @@ html{scroll-behavior:smooth}
 
 <div class="page">
   <nav class="rail" aria-label="Sections">
-    <p>Moraine · v0.2</p>
+    <p>Moraine · v0.3</p>
     <ol>
       <li><a href="#problem"><span>1</span>Problem</a></li>
       <li><a href="#solution"><span>2</span>What it does</a></li>
@@ -284,10 +284,10 @@ html{scroll-behavior:smooth}
 
   <main class="doc">
     <header class="hero">
-      <p class="eyebrow">Project definition · v0.2 · 24 Oct 2026 · Final-year B.Tech CSE capstone</p>
+      <p class="eyebrow">Project definition · v0.3 · 24 Oct 2026 · Final-year B.Tech CSE capstone</p>
       <h1 class="wordmark">Moraine</h1>
       <p class="tagline">A glacial lake outburst flood twin for the Himalaya</p>
-      <p class="lead">Moraine maps glacial lakes from four decades of satellite records, replays tested flood simulations down real 3D valleys, and shows how many minutes of warning each town would get. It starts with the South Lhonak outburst in Sikkim (2023), then runs the same model, unchanged, on two floods in Nepal: Gongbatongsha (2016) and Thame (2024).</p>
+      <p class="lead">Moraine maps glacial lakes from four decades of satellite records, replays tested flood simulations down real 3D valleys, and shows how many minutes of warning each town would get. It starts with the South Lhonak outburst in Sikkim (2023), then runs the same model, unchanged, on two floods in Nepal, Gongbatongsha (2016) and Thame (2024), and on Kedarnath (2013), where days of extreme rain did much of the damage.</p>
       <figure class="relief">
         <canvas id="relief" role="img" aria-label="Illustrative contour map. A glacial lake at upper left drains into a valley. A turquoise flood path runs down to a town at lower right, crossed by arrival-time ticks at plus 15, 45 and 80 minutes, with a sensor and a hydro dam marked along the way."></canvas>
         <figcaption><span class="chip ill">Illustrative</span> The arrival-time view, sketched on generated terrain. Not survey data.</figcaption>
@@ -320,13 +320,13 @@ html{scroll-behavior:smooth}
         <article class="module">
           <h3>Watch</h3>
           <p class="q">Which lakes are growing, and how fast?</p>
-          <p>Every glacial lake in Sikkim and in the two Nepal study catchments above a size cut-off, outlined from satellite imagery each year since the late 1980s. An ML model fixes the cases a simple water index gets wrong: mountain shadow, ice cover, thin cloud and silty water. Each lake gets a growth curve, a volume estimate and a transparent risk score.</p>
+          <p>Every glacial lake in Sikkim and in the three test catchments above a size cut-off, outlined from satellite imagery each year since the late 1980s. An ML model fixes the cases a simple water index gets wrong: mountain shadow, ice cover, thin cloud and silty water. Each lake gets a growth curve, a volume estimate and a transparent risk score.</p>
           <p class="out">Lake outlines per year · area curves · volume estimates · risk score</p>
         </article>
         <article class="module">
           <h3>Breach</h3>
           <p class="q">If this lake fails, where does the water go?</p>
-          <p>Flood runs are computed ahead of time in Colab with a GPU shallow-water solver on 30 m terrain. The site plays them back: hindcasts of three real events and a set of what-if breaches for each priority lake. You scrub through time and switch scenarios. Nothing is simulated in the browser.</p>
+          <p>Flood runs are computed ahead of time in Colab with a GPU shallow-water solver on 30 m terrain. The site plays them back: hindcasts of four real events and a set of what-if breaches for each priority lake. You scrub through time and switch scenarios. Nothing is simulated in the browser.</p>
           <p class="out">Depth and velocity over time · flooded extent · scenario set</p>
         </article>
         <article class="module">
@@ -339,13 +339,13 @@ html{scroll-behavior:smooth}
       <div class="prose">
         <h3>Two ways in</h3>
         <ul>
-          <li><b>Story mode.</b> Six scroll chapters that tell the 2023 Sikkim event, then show the same pattern in Nepal. Built for evaluators and the public (§9).</li>
+          <li><b>Story mode.</b> Seven scroll chapters: the 2023 Sikkim event, the same pattern in Nepal, then Kedarnath 2013, where rain did much of the damage. Built for evaluators and the public (§9).</li>
           <li><b>Explore.</b> The working tool. Pick a valley and a lake, choose a breach scenario, scrub time, click a town for its numbers, and try sensor sites.</li>
         </ul>
         <h3>What is new here</h3>
         <ul>
           <li>One place to watch lakes, replay floods and plan warnings for real valleys. Existing work usually stops at a report.</li>
-          <li>One solver with settings fixed on the Sikkim flood, then tested unchanged on two Nepal floods.</li>
+          <li>One solver with settings fixed on the Sikkim flood, then tested unchanged on two Nepal floods and on Kedarnath, where it also takes in measured rain.</li>
           <li>Warning time is the headline result: minutes per town, and the measured gain from each sensor site.</li>
           <li>Every frame of water comes from a saved, tested simulation run and is labelled that way.</li>
           <li>It runs on an ordinary laptop with no server.</li>
@@ -355,25 +355,24 @@ html{scroll-behavior:smooth}
 
     <section class="sec" id="scope">
       <div class="sec-head"><span class="sec-no">§3</span><h2>Scope and events</h2></div>
-      <p class="pilot">Pilot valley: Teesta, North Sikkim, from South Lhonak lake down to Chungthang.<br>Test valleys: Bhote Koshi (Tibet to Nepal) and Thame / Dudh Koshi (Khumbu, Nepal).<br>All three sit in UTM zone 45N (EPSG:32645), so one working projection covers them.</p>
+      <p class="pilot">Pilot valley: Teesta, North Sikkim, from South Lhonak lake down to Chungthang.<br>Test valleys: Bhote Koshi (Tibet to Nepal), Thame / Dudh Koshi (Khumbu, Nepal) and Mandakini (Kedarnath, Uttarakhand).<br>Working projections: UTM zone 45N (EPSG:32645) for the first three valleys, 44N (EPSG:32644) for Kedarnath.</p>
       <div class="scope">
         <div>
           <h3><span class="chip must">Must ship</span></h3>
           <ul>
-            <li>Watch: yearly lake outlines for Sikkim and the two Nepal study catchments, above a size cut-off set in P0, late 1980s to 2026.</li>
+            <li>Watch: yearly lake outlines for Sikkim and the three test catchments, above a size cut-off set in P0, late 1980s to 2026.</li>
             <li>Lake ML model and a water-index baseline, tested on a held-out region.</li>
-            <li>Shallow-water solver that passes the verification ladder in §8.</li>
-            <li>Hindcasts of three events: South Lhonak 2023, Gongbatongsha 2016 and Thame 2024.</li>
-            <li>A 9-run scenario set for South Lhonak and a 3-run set for each Nepal lake.</li>
-            <li>Warn: arrival maps, exposure counts for buildings, bridges and dams, and the sensor optimizer, for all three valleys.</li>
-            <li>Story mode (6 chapters), a valley switcher and the Explore workspace.</li>
+            <li>Shallow-water solver, able to add rain on the grid, that passes the verification ladder in §8.</li>
+            <li>Hindcasts of four events: South Lhonak 2023, Gongbatongsha 2016, Thame 2024 and Kedarnath 2013. Kedarnath runs twice, with the lake alone and with measured rain added.</li>
+            <li>A 9-run scenario set for South Lhonak and a 3-run set for each Nepal lake. Chorabari lake drained in 2013 and has not refilled, so Kedarnath is hindcast only.</li>
+            <li>Warn: arrival maps, exposure counts for buildings, bridges and dams, and the sensor optimizer, for all four valleys.</li>
+            <li>Story mode (7 chapters), a valley switcher and the Explore workspace.</li>
             <li>Static site that runs offline, with a provenance manifest.</li>
           </ul>
         </div>
         <div>
           <h3><span class="chip stretch">Stretch</span></h3>
           <ul>
-            <li>Kedarnath 2013, India: a compound rain-and-lake flood, run to show where a lake-only model falls short.</li>
             <li>Rasuwa 2025, Tibet to Nepal: a transboundary warning case, once published studies settle the trigger.</li>
             <li>Run the Sikkim flood past Chungthang to Singtam and Rangpo.</li>
             <li>Scenario sets for three more Sikkim lakes.</li>
@@ -389,6 +388,7 @@ html{scroll-behavior:smooth}
             <li>Live flood simulation in the browser.</li>
             <li>Official warnings, alerts or evacuation advice.</li>
             <li>Debris-flow physics. Moraine models clean water and says so on screen.</li>
+            <li>Snowmelt modelling. Kedarnath adds measured rain only.</li>
             <li>Building-level damage or water-depth claims.</li>
             <li>Field visits or local gauge data. Every event uses public satellite data and published studies.</li>
             <li>Accounts, login, server or database.</li>
@@ -397,10 +397,10 @@ html{scroll-behavior:smooth}
       </div>
 
       <h3>Events</h3>
-      <p class="prose">Settings are tuned on the Sikkim pilot only. The two Nepal events are the test set: the same solver runs on them unchanged, like a held-out split for the physics. India's other well-known Himalayan floods, Kedarnath 2013 and Chamoli 2021, were driven largely by extreme rain or began as a rock-and-ice avalanche, so they would test the model on physics it does not include. Kedarnath stays as a stretch case for that reason.</p>
+      <p class="prose">Settings are tuned on the Sikkim pilot only. The other three events are the test set: the same solver runs on them unchanged, like a held-out split for the physics. Kedarnath is the hardest test. Chorabari lake was small, and a week of extreme rain did much of the damage <a class="ref" href="#src-20">[20]</a>, so Kedarnath runs twice: once with the lake alone and once with measured rain added on the grid. The gap between the two runs shows how much a lake-only model would miss. Chamoli 2021 stays out because it began as a rock-and-ice avalanche, not a lake outburst.</p>
       <figure class="locator">
         <div class="loc-wrap">
-          <svg viewBox="0 0 820 152" role="img" aria-label="Events placed west to east by longitude. Kedarnath 2013, stretch, near 79 degrees east. Rasuwa 2025, stretch, near 85.4 east. Gongbatongsha 2016 near 86 east. Thame 2024 near 86.6 east. South Lhonak 2023, the pilot, near 88.2 east.">
+          <svg viewBox="0 0 820 152" role="img" aria-label="Events placed west to east by longitude. Kedarnath 2013, test, near 79 degrees east. Rasuwa 2025, stretch, near 85.4 east. Gongbatongsha 2016 near 86 east. Thame 2024 near 86.6 east. South Lhonak 2023, the pilot, near 88.2 east.">
             <line class="loc-axis" x1="40" y1="85" x2="780" y2="85"/>
             <g class="loc-tick"><line x1="40" y1="81" x2="40" y2="89"/><text x="44" y="77">78°E</text></g>
             <g class="loc-tick"><line x1="174.5" y1="81" x2="174.5" y2="89"/><text x="178.5" y="77">80°</text></g>
@@ -410,9 +410,9 @@ html{scroll-behavior:smooth}
             <g class="loc-tick"><line x1="712.7" y1="81" x2="712.7" y2="89"/><text x="708.7" y="77" text-anchor="end">88°</text></g>
 
             <line class="loc-lead" x1="111" y1="78" x2="111" y2="58"/>
-            <circle class="loc-stretch" cx="111" cy="85" r="6"/>
+            <circle class="loc-must" cx="111" cy="85" r="6"/>
             <text class="loc-name" x="111" y="40" text-anchor="middle">Kedarnath · 2013</text>
-            <text class="loc-sub" x="111" y="53" text-anchor="middle">Uttarakhand, India · stretch</text>
+            <text class="loc-sub" x="111" y="53" text-anchor="middle">Uttarakhand, India · test</text>
 
             <line class="loc-lead" x1="536.5" y1="78" x2="536.5" y2="58"/>
             <circle class="loc-stretch" cx="536.5" cy="85" r="6"/>
@@ -443,13 +443,19 @@ html{scroll-behavior:smooth}
           <thead><tr><th>Event</th><th>Where</th><th>What happened</th><th>Evidence to test against</th><th>What it adds</th></tr></thead>
           <tbody>
             <tr><td>South Lhonak<br><span class="chip must">Pilot · Oct 2023</span></td><td>Teesta valley, North Sikkim, India</td><td>Frozen moraine sediment fell into the lake and about 50 million m³ of water was released. The Teesta-III dam at Chungthang was destroyed around 00:30 on 4 October <a class="ref" href="#src-1">[1]</a>.</td><td>Dam destruction time; flooded extent in post-event imagery; lake area before and after</td><td>The largest volume, and a long run-out to a hydropower dam</td></tr>
-            <tr><td>Gongbatongsha<br><span class="chip">Test · Jul 2016</span></td><td>Lake in Tibet; flood down the Bhote Koshi into Nepal</td><td>A slope failure or ice avalanche into the lake breached its moraine; studies differ on which. The lake lost about 91% of its area, and the flood grew as it travelled, damaging the Upper Bhote Koshi hydropower intake and the Arniko Highway <a class="ref" href="#src-14">[14, 15]</a>.</td><td>Seismometer record of the flood front <a class="ref" href="#src-12">[12, 13]</a>; lake area before and after; published modelled hydrographs</td><td>A rare instrument record of flood timing; a small lake causing large damage across a border</td></tr>
+            <tr><td>Gongbatongsha<br><span class="chip">Test · Jul 2016</span></td><td>Lake in Tibet; flood down the Bhote Koshi into Nepal</td><td>A slope failure or ice avalanche into the lake breached its moraine; studies differ on which. The lake lost about 91% of its area, and the flood grew as it travelled, damaging the Upper Bhote Koshi hydropower intake and the Arniko Highway <a class="ref" href="#src-14">[14, 15]</a>.</td><td>The run starts at the Zhangzangbo–Poiqu confluence, fed with the published modelled flow there <a class="ref" href="#src-14">[14]</a>. It is scored on the seismometer record of the flood front in Nepal and the peak flow at Chaku <a class="ref" href="#src-12">[12, 13]</a>.</td><td>A rare instrument record of flood timing; a small lake causing large damage across a border</td></tr>
             <tr><td>Thame<br><span class="chip">Test · Aug 2024</span></td><td>Thame valley, Khumbu (Everest region), Nepal</td><td>A rock avalanche hit a lake at 4,900 m and its outflow breached a second lake, about 459,000 m³ in all. 25 homes were destroyed and 135 people displaced; no deaths were reported <a class="ref" href="#src-16">[16, 17]</a>.</td><td>Breach at about 13:25 local time; lake area of 0.05 km² in imagery that morning; mapped damage in Thame</td><td>Small, steep and fast; a two-lake cascade; tests the solver near the limit of a 30 m grid</td></tr>
-            <tr class="later"><td>Kedarnath<br><span class="chip stretch">Stretch · Jun 2013</span></td><td>Mandakini valley, Uttarakhand, India</td><td>Chorabari lake breached during extreme rain, as part of a much larger rain-driven flood.</td><td>Well documented, but most of the water came from rain</td><td>Shows where a lake-only model falls short</td></tr>
+            <tr><td>Kedarnath<br><span class="chip">Test · Jun 2013</span></td><td>Mandakini valley, Uttarakhand, India</td><td>About 390 mm of rain fell over 10–17 June, after weeks of fast snowmelt <a class="ref" href="#src-20">[20, 21]</a>. Floods hit Kedarnath on 16 June. On the morning of 17 June, Chorabari lake (about 400 × 200 m, 2 km above the town) breached and emptied within minutes <a class="ref" href="#src-22">[22, 23]</a>.</td><td>Lake drain time; a published modelled peak of about 1,700 m³/s <a class="ref" href="#src-22">[22]</a>; debris footprint in Landsat 8 images before and after; the two-wave timeline <a class="ref" href="#src-24">[24]</a>. The lake itself is too small and silty for Landsat to measure, so its documented size is used.</td><td>A major Indian disaster, and a compound one: comparing the lake-only and lake-plus-rain runs shows what a lake-only model misses</td></tr>
             <tr class="later"><td>Rasuwa<br><span class="chip stretch">Stretch · Jul 2025</span></td><td>Lende Khola, Tibet to Nepal</td><td>An outburst destroyed the Nepal–China Friendship Bridge at Rasuwagadhi and damaged hydropower plants. The trigger is still debated <a class="ref" href="#src-18">[18, 19]</a>.</td><td>Preliminary reports only so far</td><td>A transboundary warning case, once studies are published</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="prose">P0 data checks (one page per event in <span class="mono">docs/p0/events.md</span>):</p>
+      <ul class="prose">
+        <li><b>Gongbatongsha.</b> About 120,000 m³ of water picked up some 8.3 million m³ of sediment within 6.5 km and became a 4,100 m³/s debris flow <a class="ref" href="#src-14">[14]</a>. A water-only solver can't reproduce that. Decided on 26 Nov: its run starts at that confluence (28.080°N 85.998°E, 3,193 m), fed with the published flow there. It is scored where the seismometers recorded the front in Nepal: 8.7 m/s, and 1,500–2,100 m³/s at Chaku <a class="ref" href="#src-12">[12]</a>.</li>
+        <li><b>Thame.</b> Satellites show the breached lake shrinking from 0.044 to 0.015 km², matching ICIMOD's 0.05 km².</li>
+        <li><b>Kedarnath.</b> Satellite rain gives 345 mm for 10–17 June against about 390 mm published, and a clear Landsat 8 image exists five days after the flood.</li>
+      </ul>
     </section>
 
     <section class="sec" id="architecture">
@@ -465,6 +471,7 @@ html{scroll-behavior:smooth}
             <li>Copernicus GLO-30 elevation</li>
             <li>Cloud-free imagery composites</li>
             <li>Open Buildings and population grids</li>
+            <li>GPM IMERG rainfall for Kedarnath</li>
           </ul>
           <p class="yield">→ GeoTIFF + CSV to Drive</p>
         </div>
@@ -524,7 +531,7 @@ html{scroll-behavior:smooth}
           <caption>Offline compute</caption>
           <thead><tr><th>Layer</th><th>Choice</th><th>Job</th><th>Why it stays light</th></tr></thead>
           <tbody>
-            <tr><td>Satellite archive</td><td>Google Earth Engine, Python API</td><td>Lake masks since the late 1980s, elevation, imagery composites, buildings, population</td><td>Runs on Google's servers; you download only results</td></tr>
+            <tr><td>Satellite archive</td><td>Google Earth Engine, Python API</td><td>Lake masks since the late 1980s, elevation, imagery composites, buildings, population, rainfall</td><td>Runs on Google's servers; you download only results</td></tr>
             <tr><td>Notebooks</td><td>Google Colab, with Kaggle as backup</td><td>ML training, flood runs, optimizer, bake</td><td>Free GPU, nothing to install</td></tr>
             <tr><td>ML and solver</td><td>PyTorch</td><td>U-Net lake segmentation and the shallow-water solver</td><td>One framework for both; also runs on CPU for tests</td></tr>
             <tr><td>Geodata</td><td>rasterio, GeoPandas, OSMnx</td><td>Reprojection, cropping, roads, bridges, settlements</td><td>Standard, scriptable, no GIS desktop needed</td></tr>
@@ -576,13 +583,14 @@ html{scroll-behavior:smooth}
         </table>
       </div>
       <p class="prose">Budgets: the first screen loads in 6 MB or less. Each valley gets its own folder with this same set of files, about 20–25 MB, loaded only when someone opens that valley and one scenario at a time. These are targets to confirm in P0.</p>
+      <p class="prose">P0 finding: the Teesta corridor, 5 km either side of the 74 km river from South Lhonak to Chungthang, is 742 km² of 30 m cells. All three height levels come to 2.05 MB as served, under the 3 MB budget. With the site's own code (142 KB compressed), the first screen needs about 1.9 MB.</p>
       <h3>Simulation settings</h3>
       <dl class="settings">
         <dt>Grid</dt><dd>30 m, the native spacing of the elevation data. A finer grid adds no terrain information.</dd>
         <dt>Time step</dt><dd>About 0.3 s, set by the solver's stability limit.</dd>
         <dt>Saved frames</dt><dd>Every 60 s of flood time.</dd>
-        <dt>Scenario set</dt><dd>South Lhonak: 3 breach volumes × 3 breach durations = 9 runs. Each Nepal lake: 3 runs around the published volume.</dd>
-        <dt>Run time</dt><dd>Minutes per run on a Colab T4. This is an estimate; P0 measures it.</dd>
+        <dt>Scenario set</dt><dd>South Lhonak: 3 breach volumes × 3 breach durations = 9 runs. Each Nepal lake: 3 runs around the published volume. Kedarnath: 2 hindcast runs, lake only and lake plus GPM IMERG rain.</dd>
+        <dt>Run time</dt><dd>Minutes per run on a Colab T4, still an estimate. P0 found the laptop CPU too slow at about 0.5 million cell-steps per second, so P2 times a real run on Colab.</dd>
       </dl>
     </section>
 
@@ -653,25 +661,30 @@ html{scroll-behavior:smooth}
         <dt>Quality tiers</dt><dd>High, Balanced and Low, picked automatically and switchable.</dd>
         <dt>Dynamic res</dt><dd>Render scale moves between 60% and 100% to hold the frame rate.</dd>
         <dt>Idle</dt><dd>Rendering pauses when the tab or the canvas is out of view.</dd>
+        <dt>P0 measured</dt><dd>60 fps on the reference laptop at 1152 × 1080, no frame over 20 ms, for the whole valley turning and a low flight down the river, even with the terrain drawn twice per frame. Distant patches use 60 or 120 m geometry. The lighting keeps 30 m detail because it comes from a normal map.</dd>
         <dt>Motion</dt><dd>Reduced-motion mode swaps camera flights for cuts.</dd>
       </dl>
     </section>
 
     <section class="sec" id="validation">
       <div class="sec-head"><span class="sec-no">§8</span><h2>Science and validation</h2></div>
-      <p class="intro">The solver is checked from the simplest exact case up to the real event before any of its output reaches the site.</p>
+      <p class="intro">The solver is checked from the simplest exact case up to the real events before any of its output reaches the site.</p>
       <ol class="ladder">
-        <li><b>Ritter dam break (1892)</b><span>Exact solution for a dam failing onto a dry bed. Check the front position and the depth profile.</span></li>
+        <li><b>Ritter dam break (1892)</b><span>Exact solution for a dam failing onto a dry bed. Check the front position and the depth profile. Passed in P0: within 0.86% at 5 m cells, the error halving as the cells halve, and also across the grid at 45° and down a 30% slope.</span></li>
+        <li><b>Thacker's sloshing bowl (1981)</b><span>Exact solution for water sloshing round a bowl, its shoreline climbing and falling the sides <a class="ref" href="#src-26">[26]</a>. Checks moving wet/dry edges. Passed in P0: 0.19% depth error after one full orbit, wet area overlapping the exact one by 0.991.</span></li>
+        <li><b>Rain on a closed basin</b><span>Rain falling on a flat, sealed basin must raise the water by exactly the rain total. Checks that rain added on the grid neither creates nor loses water.</span></li>
         <li><b>Malpasset dam failure, France, 1959</b><span>The standard real-terrain benchmark, with field-measured arrival times and peak water levels. Brodtkorb et al. reproduced it with a GPU solver <a class="ref" href="#src-9">[9]</a>.</span></li>
-        <li><b>Event hindcasts: Sikkim 2023, then Nepal 2016 and 2024</b><span>Settings are tuned on South Lhonak only, then frozen; Gongbatongsha and Thame run unchanged. Each is scored against its own record: arrival at Chungthang around 00:30, the seismometer timing of the 2016 flood front <a class="ref" href="#src-12">[12]</a>, and the 2024 breach time and damage in Thame <a class="ref" href="#src-16">[16]</a>. Flooded extent is scored against post-event imagery (IoU).</span></li>
+        <li><b>Event hindcasts: Sikkim 2023, then Nepal 2016 and 2024, and Kedarnath 2013</b><span>Settings are tuned on South Lhonak only, then frozen; the other three run unchanged. Each is scored against its own record: arrival at Chungthang around 00:30, the seismometer timing of the 2016 flood front <a class="ref" href="#src-12">[12]</a>, the 2024 breach time and damage in Thame <a class="ref" href="#src-16">[16]</a>, and the lake drain time and debris footprint at Kedarnath, with and without rain. Flooded extent is scored against post-event imagery (IoU).</span></li>
         <li><b>Scenario set</b><span>Breach volume and duration varied across the published range of estimates.</span></li>
       </ol>
       <div class="prose">
-        <p>Solver: the second-order Kurganov–Petrova scheme <a class="ref" href="#src-10">[10]</a>. It keeps water depth from going negative at wet/dry fronts and keeps a lake at rest still, which matters on steep Himalayan slopes.</p>
+        <p>Solver: the second-order Kurganov–Petrova scheme <a class="ref" href="#src-10">[10]</a>, written in PyTorch. It keeps water depth from going negative at wet/dry fronts and keeps a lake at rest still, islands and shorelines included, which matters on steep Himalayan slopes.</p>
+        <p>P0 findings, both fixed: where a shoreline crosses a cell, the 2007 scheme tilts that cell's water surface, and a still lake with islands started moving at about 2 m/s. Such cells now get a flat surface at the level that holds their water, after Bollermann et al. <a class="ref" href="#src-25">[25]</a>, and the lake stays still to 5×10⁻¹⁴ m/s. Moving water keeps the original surface, so the sloshing-bowl test scores the same as before. Separately, face velocities are now built from cell velocities, which stopped a 1 mm film running ahead of the flood front faster than physics allows.</p>
         <h3>Lake mapping</h3>
+        <p>P0 finding: Landsat's own cloud mask labels dark lake water as cloud shadow, so the pipeline uses per-pixel percentile composites of each autumn instead of cloud masks. On South Lhonak this matches ISRO's pre-outburst area within 1% (1.668 against 1.674 km²).</p>
         <p>Baseline: a water-index threshold (NDWI/MNDWI) with a slope mask. Model: a small U-Net on Sentinel-2 bands plus slope. It trains on other Himalayan regions and is tested on Sikkim, so no test lake leaks into training. Report IoU and area error per lake, plus a hard-case set: mountain shadow, frozen lakes, thin cloud and silty water.</p>
         <h3>Ranking backtest</h3>
-        <p>Score every lake using only data from before each event (up to 2015, 2022 and 2023), then check where Gongbatongsha, South Lhonak and Thyanbo land. Would Moraine have flagged them? Small lakes under unstable slopes are the likely blind spot, and the backtest shows whether the score misses them.</p>
+        <p>Score every lake using only data from before each event (up to 2015, 2022 and 2023), then check where Gongbatongsha, South Lhonak and Thyanbo land. Chorabari is too small for satellites to measure, so it is left out. Gongbatongsha (0.017 km²) is also below what our satellite mapping can see. The backtest expects to miss it, which is exactly the blind spot it is meant to expose. Would Moraine have flagged them? Small lakes under unstable slopes are the likely blind spot, and the backtest shows whether the score misses them.</p>
         <h3>Warning placement</h3>
         <p>Compare the optimizer's sensor sites with two simple placements: one sensor at the lake outlet, and sensors spaced evenly along the river. Report warning minutes gained per town, weighted by population.</p>
         <h3>Labels on every layer</h3>
@@ -715,7 +728,8 @@ html{scroll-behavior:smooth}
         <li><span class="rn">III</span><b>The Breach</b><span>The night of 3–4 October 2023, replayed from the hindcast.</span></li>
         <li><span class="rn">IV</span><b>The Valley</b><span>The flood front reaches Chungthang. Model against record.</span></li>
         <li><span class="rn">V</span><b>The Pattern</b><span>Gongbatongsha 2016 and Thame 2024: ice or rock falls into a lake, the moraine breaks, a flood runs down the valley. Same solver, same settings.</span></li>
-        <li><span class="rn">VI</span><b>The Watchlist</b><span>Lakes in Sikkim and the Nepal study areas, ranked. Open any of them in Explore.</span></li>
+        <li><span class="rn">VI</span><b>The Storm</b><span>Kedarnath, June 2013. The lake breach alone, then the same run with a week of measured rain added. The difference is what the rain did.</span></li>
+        <li><span class="rn">VII</span><b>The Watchlist</b><span>Lakes in Sikkim and the study areas, ranked. Open any of them in Explore.</span></li>
       </ol>
     </section>
 
@@ -724,7 +738,7 @@ html{scroll-behavior:smooth}
       <p class="intro">26 weeks from Monday 26 October 2026 to a final demo in late April 2027. Shift the dates to match your college's review calendar. Every week ends with one thing you can open and look at.</p>
       <p class="legend-line"><span><i class="g-bar" style="width:22px;height:10px"></i>Phase</span><span><i class="g-bar vis" style="width:22px"></i>Visual track, runs throughout</span><span><i class="g-gate" style="transform:rotate(45deg)"></i>Review gate</span></p>
       <div class="gantt-wrap">
-        <div class="gantt" role="img" aria-label="Gantt chart. P0 weeks 1 to 3, P1 weeks 4 to 7, P2 weeks 8 to 12, P3 weeks 13 to 14, P4 weeks 15 to 16, P5 weeks 17 to 22, P6 weeks 23 to 24, P7 weeks 25 to 26. Visual track runs all 26 weeks. Gates at the end of weeks 3, 12, 14 and 24.">
+        <div class="gantt" role="img" aria-label="Gantt chart. P0 weeks 1 to 3, P1 weeks 4 to 7, P2 weeks 8 to 12, P3 weeks 13 to 15, P4 weeks 16 to 17, P5 weeks 18 to 22, P6 weeks 23 to 24, P7 weeks 25 to 26. Visual track runs all 26 weeks. Gates at the end of weeks 3, 12, 15 and 24.">
           <div style="grid-row:1;grid-column:1"></div>
           <div class="g-month" style="grid-row:1;grid-column:2">Oct</div>
           <div class="g-month" style="grid-row:1;grid-column:3">Nov</div>
@@ -737,9 +751,9 @@ html{scroll-behavior:smooth}
           <div class="g-label" style="grid-row:2">P0<small>Feasibility</small></div><div class="g-bar" style="grid-row:2;grid-column:2 / span 3"></div>
           <div class="g-label" style="grid-row:3">P1<small>Watch</small></div><div class="g-bar" style="grid-row:3;grid-column:5 / span 4"></div>
           <div class="g-label" style="grid-row:4">P2<small>Breach</small></div><div class="g-bar" style="grid-row:4;grid-column:9 / span 5"></div>
-          <div class="g-label" style="grid-row:5">P3<small>Events</small></div><div class="g-bar" style="grid-row:5;grid-column:14 / span 2"></div>
-          <div class="g-label" style="grid-row:6">P4<small>Warn</small></div><div class="g-bar" style="grid-row:6;grid-column:16 / span 2"></div>
-          <div class="g-label" style="grid-row:7">P5<small>Experience</small></div><div class="g-bar" style="grid-row:7;grid-column:18 / span 6"></div>
+          <div class="g-label" style="grid-row:5">P3<small>Events</small></div><div class="g-bar" style="grid-row:5;grid-column:14 / span 3"></div>
+          <div class="g-label" style="grid-row:6">P4<small>Warn</small></div><div class="g-bar" style="grid-row:6;grid-column:17 / span 2"></div>
+          <div class="g-label" style="grid-row:7">P5<small>Experience</small></div><div class="g-bar" style="grid-row:7;grid-column:19 / span 5"></div>
           <div class="g-label" style="grid-row:8">P6<small>Validate</small></div><div class="g-bar" style="grid-row:8;grid-column:24 / span 2"></div>
           <div class="g-label" style="grid-row:9">P7<small>Freeze</small></div><div class="g-bar" style="grid-row:9;grid-column:26 / span 2"></div>
           <div class="g-label" style="grid-row:10">Visual track</div><div class="g-bar vis" style="grid-row:10;grid-column:2 / span 26"></div>
@@ -747,7 +761,7 @@ html{scroll-behavior:smooth}
           <div class="g-track" style="grid-row:11"></div>
           <div class="g-gate" style="grid-row:11;grid-column:4" title="End of week 3: go or re-scope"></div>
           <div class="g-gate" style="grid-row:11;grid-column:13" title="End of week 12: Sikkim hindcast reviewed, settings frozen"></div>
-          <div class="g-gate" style="grid-row:11;grid-column:15" title="End of week 14: keep both Nepal events or drop one"></div>
+          <div class="g-gate" style="grid-row:11;grid-column:16" title="End of week 15: keep Kedarnath and at least one Nepal event"></div>
           <div class="g-gate" style="grid-row:11;grid-column:25" title="End of week 24: acceptance"></div>
         </div>
       </div>
@@ -757,10 +771,10 @@ html{scroll-behavior:smooth}
           <tbody>
             <tr><td>P0 Feasibility spikes</td><td class="num">W1–3<br><span class="muted">26 Oct–15 Nov</span></td><td>South Lhonak area curve from Earth Engine. Solver plotted against the exact dam-break solution. Real Teesta terrain turning in the browser. A one-page data check for each Nepal event.</td><td>All three spikes work on your laptop and the event list is confirmed. If a spike fails, re-scope before anything else.</td></tr>
             <tr><td>P1 Watch</td><td class="num">W4–7<br><span class="muted">16 Nov–13 Dec</span></td><td>Lake outlines for Sikkim and both Nepal study areas; baseline and U-Net side by side; growth curves.</td><td>U-Net beats the baseline on held-out hard cases.</td></tr>
-            <tr><td>P2 Breach</td><td class="num">W8–12<br><span class="muted">14 Dec–17 Jan</span></td><td>Malpasset replay. The 2023 Sikkim hindcast playing in the browser.</td><td>Hindcast errors reported, solver settings frozen, scenario set baked.</td></tr>
-            <tr><td>P3 Events</td><td class="num">W13–14<br><span class="muted">18–31 Jan</span></td><td>Gongbatongsha 2016 and Thame 2024 replayed with the frozen settings; one table of errors across all three events.</td><td>Both Nepal hindcasts reported. If behind schedule, keep one and move on.</td></tr>
-            <tr><td>P4 Warn</td><td class="num">W15–16<br><span class="muted">1–14 Feb</span></td><td>Arrival isochrones, town cards and optimizer results for every valley.</td><td>Optimizer beats both simple placements.</td></tr>
-            <tr><td>P5 Experience</td><td class="num">W17–22<br><span class="muted">15 Feb–28 Mar</span></td><td>Six story chapters, the valley switcher and the Explore workspace.</td><td>Frame-rate targets met on the reference laptop.</td></tr>
+            <tr><td>P2 Breach</td><td class="num">W8–12<br><span class="muted">14 Dec–17 Jan</span></td><td>Malpasset replay, the closed-basin rain test, and the 2023 Sikkim hindcast playing in the browser.</td><td>Hindcast errors reported, solver settings frozen, scenario set baked.</td></tr>
+            <tr><td>P3 Events</td><td class="num">W13–15<br><span class="muted">18 Jan–7 Feb</span></td><td>Gongbatongsha 2016, Thame 2024 and Kedarnath 2013 (with and without rain) replayed with the frozen settings; one table of errors across all four events.</td><td>All three test hindcasts reported. If behind schedule, keep Kedarnath and one Nepal event.</td></tr>
+            <tr><td>P4 Warn</td><td class="num">W16–17<br><span class="muted">8–21 Feb</span></td><td>Arrival isochrones, town cards and optimizer results for every valley.</td><td>Optimizer beats both simple placements.</td></tr>
+            <tr><td>P5 Experience</td><td class="num">W18–22<br><span class="muted">22 Feb–28 Mar</span></td><td>Seven story chapters, the valley switcher and the Explore workspace.</td><td>Frame-rate targets met on the reference laptop.</td></tr>
             <tr><td>P6 Validate</td><td class="num">W23–24<br><span class="muted">29 Mar–11 Apr</span></td><td>Validation report, user test with 3–5 people, benchmarks.</td><td>Every acceptance criterion has evidence.</td></tr>
             <tr><td>P7 Freeze</td><td class="num">W25–26<br><span class="muted">12–25 Apr</span></td><td>Recorded demo, final report, frozen data package.</td><td>Demo runs offline on a clean machine.</td></tr>
           </tbody>
@@ -776,14 +790,14 @@ html{scroll-behavior:smooth}
           <tbody>
             <tr><td class="mono">AC-01</td><td>The site runs from static files with no network after first load, in current Chrome, Edge and Firefox. The first screen loads in 6 MB or less.</td></tr>
             <tr><td class="mono">AC-02</td><td>Story mode holds a 60 fps target and never drops below 30 fps on the reference laptop. Low tier and reduced motion work.</td></tr>
-            <tr><td class="mono">AC-03</td><td>Area series for the three event lakes, from the first clear image (late 1980s where available) through each event to 2026, with method and uncertainty, compared with published figures.</td></tr>
+            <tr><td class="mono">AC-03</td><td>Area series for the three event lakes that satellites can resolve (Chorabari is too small; its documented size is used), from the first clear image (late 1980s where available) through each event to 2026, with method and uncertainty, compared with published figures.</td></tr>
             <tr><td class="mono">AC-04</td><td>The lake model beats the water-index baseline on the held-out hard cases, with IoU reported per case.</td></tr>
             <tr><td class="mono">AC-05</td><td>The solver passes the Ritter test and the Malpasset benchmark, with errors reported against the field data.</td></tr>
-            <tr><td class="mono">AC-06</td><td>Hindcasts of South Lhonak 2023, Gongbatongsha 2016 and Thame 2024 each report a timing error and flooded-extent IoU against their recorded evidence. Solver settings do not change after the Sikkim hindcast.</td></tr>
+            <tr><td class="mono">AC-06</td><td>Hindcasts of South Lhonak 2023, Gongbatongsha 2016, Thame 2024 and Kedarnath 2013 each report a timing error and flooded-extent IoU against their recorded evidence; Kedarnath reports both the lake-only and the lake-plus-rain run. Solver settings do not change after the Sikkim hindcast.</td></tr>
             <tr><td class="mono">AC-07</td><td>At least 9 scenarios are baked for South Lhonak and 3 for each Nepal lake. Switching scenarios or valleys takes under 1 s once loaded.</td></tr>
             <tr><td class="mono">AC-08</td><td>The sensor optimizer reports warning-minute gains over both simple placements.</td></tr>
             <tr><td class="mono">AC-09</td><td>Every layer carries an Observed, Modelled or Illustrative label, and the data package includes the provenance manifest.</td></tr>
-            <tr><td class="mono">AC-10</td><td>The ranking backtest for all three event lakes, using only data from before each event, is reported whatever it shows.</td></tr>
+            <tr><td class="mono">AC-10</td><td>The ranking backtest for the three satellite-measured event lakes, using only data from before each event, is reported whatever it shows.</td></tr>
           </tbody>
         </table>
       </div>
@@ -795,15 +809,17 @@ html{scroll-behavior:smooth}
         <table class="tbl">
           <thead><tr><th>Risk</th><th>Likelihood / impact</th><th>Mitigation</th></tr></thead>
           <tbody>
-            <tr><td>Solver blows up on steep wet/dry fronts</td><td class="num">Medium / High</td><td>Kurganov–Petrova scheme, small time steps, and the full test ladder before real terrain. Fallback: produce the runs with an established open-source model such as LISFLOOD-FP.</td></tr>
+            <tr><td>Solver blows up on steep wet/dry fronts</td><td class="num">Medium / High</td><td>Kurganov–Petrova scheme, small time steps, and the full test ladder before real terrain. P0: 12 exact tests pass, including a dam break down a 30% slope, a still lake with islands and a moving shoreline. Fallback: produce the runs with an established open-source model such as LISFLOOD-FP.</td></tr>
             <tr><td>The real flood was a debris flow; the model is clean water</td><td class="num">Certain / Medium</td><td>Claim arrival time and extent only, and say so on screen.</td></tr>
             <tr><td>Published event figures disagree</td><td class="num">High / Medium</td><td>Treat them as ranges; the scenario set spans them.</td></tr>
             <tr><td>Colab GPU unavailable</td><td class="num">Medium / Low</td><td>Kaggle as backup; CPU runs overnight; each run is saved once and reused.</td></tr>
-            <tr><td>Visual ambition outruns Iris Xe</td><td class="num">Medium / High</td><td>Budgets fixed in P0, quality tiers, weekly profiling, recorded video as a fallback.</td></tr>
+            <tr><td>Visual ambition outruns Iris Xe</td><td class="num">Medium / High</td><td>Budgets fixed in P0, quality tiers, weekly profiling, recorded video as a fallback. P0: terrain alone holds 60 fps with room to draw it twice.</td></tr>
             <tr><td>Weak lake labels in shadow or ice</td><td class="num">Medium / Medium</td><td>A hand-checked hard-case test set.</td></tr>
             <tr><td>30 m elevation too coarse in narrow gorges</td><td class="num">High / Medium</td><td>Claims at valley scale only; a second elevation model as a stretch test.</td></tr>
-            <tr><td>Scope creeps to the whole Himalaya</td><td class="num">High / Medium</td><td>Sikkim plus two Nepal events is the MVP; anything wider is stretch.</td></tr>
-            <tr><td>Three valleys stretch the schedule</td><td class="num">Medium / Medium</td><td>One pipeline and frozen settings for every valley, so each extra event is mostly configuration and checking. The week-14 gate keeps one Nepal event if time runs short.</td></tr>
+            <tr><td>Scope creeps to the whole Himalaya</td><td class="num">High / Medium</td><td>Sikkim plus three test events is the MVP; anything wider is stretch.</td></tr>
+            <tr><td>Four valleys stretch the schedule</td><td class="num">Medium / Medium</td><td>One pipeline and frozen settings for every valley, so each extra event is mostly configuration and checking. The week-15 gate keeps Kedarnath and one Nepal event if time runs short.</td></tr>
+            <tr><td>Kedarnath rain data is coarse: satellite rain cells are about 10 km across and local gauges are sparse</td><td class="num">High / Medium</td><td>Use rain as one input over the whole catchment, and report the gap between the lake-only and lake-plus-rain runs, not street-level flooding.</td></tr>
+            <tr><td>Kedarnath predates Sentinel-2, and Landsat 8 had only just started</td><td class="num">Medium / Medium</td><td>Map the debris footprint from Landsat 8 and Landsat 7 before and after; monsoon cloud may push the after image to the autumn.</td></tr>
             <tr><td>Thame's lakes are small for a 30 m grid (about 55 cells)</td><td class="num">High / Medium</td><td>Report Thame as a resolution test. Try a finer grid on that valley only if a better elevation model is available.</td></tr>
             <tr><td>Event figures for Nepal are preliminary or disputed</td><td class="num">Medium / Medium</td><td>Score against the most direct records (timing, lake area, mapped damage) and cite every source; Rasuwa 2025 stays stretch until studies settle.</td></tr>
             <tr><td>Limited weekly hours</td><td class="num">High / High</td><td>Static-first design, one runnable checkpoint a week, and the P0 gate before any polish.</td></tr>
@@ -823,10 +839,11 @@ html{scroll-behavior:smooth}
             <tr><td class="num">0:40–1:30</td><td>Chapter II. South Lhonak grows; baseline and ML outlines on a shadowed scene.</td><td>ML that fixes real errors</td></tr>
             <tr><td class="num">1:30–2:50</td><td>Chapter III. The 2023 hindcast runs down the valley; scrub through time.</td><td>Verified physics</td></tr>
             <tr><td class="num">2:50–3:40</td><td>Chapter IV. Arrival at Chungthang against the ~00:30 record; extent against satellite.</td><td>Validation</td></tr>
-            <tr><td class="num">3:40–4:40</td><td>Chapter V. The same solver, unchanged, on Gongbatongsha 2016 and Thame 2024; one error table for all three.</td><td>The model generalises</td></tr>
-            <tr><td class="num">4:40–5:40</td><td>Explore. Switch valley and lake, change the breach scenario, read town warning times.</td><td>Decision support</td></tr>
-            <tr><td class="num">5:40–6:40</td><td>Sensor placement: optimizer against simple placements, minutes gained.</td><td>The new algorithm</td></tr>
-            <tr><td class="num">6:40–7:40</td><td>Under the hood: data package, manifest, tests, render budget.</td><td>Engineering depth</td></tr>
+            <tr><td class="num">3:40–4:30</td><td>Chapter V. The same solver, unchanged, on Gongbatongsha 2016 and Thame 2024.</td><td>The model generalises</td></tr>
+            <tr><td class="num">4:30–5:20</td><td>Chapter VI. Kedarnath 2013: the lake alone, then lake plus measured rain; one error table for all four events.</td><td>The model's limits, measured</td></tr>
+            <tr><td class="num">5:20–6:10</td><td>Explore. Switch valley and lake, change the breach scenario, read town warning times.</td><td>Decision support</td></tr>
+            <tr><td class="num">6:10–7:00</td><td>Sensor placement: optimizer against simple placements, minutes gained.</td><td>The new algorithm</td></tr>
+            <tr><td class="num">7:00–7:50</td><td>Under the hood: data package, manifest, tests, render budget.</td><td>Engineering depth</td></tr>
           </tbody>
         </table>
       </div>
@@ -838,9 +855,7 @@ html{scroll-behavior:smooth}
         <ul>
           <li><b>Team.</b> Who owns the pipeline, solver, website and report? This plan assumes a small team using AI-assisted coding with weekly check-ins.</li>
           <li><b>College calendar.</b> Review dates, so the three gates line up with them.</li>
-          <li><b>Name.</b> Moraine is a working title.</li>
-          <li><b>Event list.</b> Gongbatongsha 2016 and Thame 2024 are proposed. Swap one for Kedarnath 2013 if a second Indian event matters more to your evaluators than clean validation.</li>
-          <li><b>Watchlist reach.</b> Sikkim only (MVP) or all four programme states (stretch).</li>
+          <li><b>Name.</b> Moraine is a working title.</li>          <li><b>Watchlist reach.</b> Sikkim only (MVP) or all four programme states (stretch).</li>
           <li><b>Host.</b> Vercel, GitHub Pages or Cloudflare Pages. All are static and free.</li>
           <li><b>Accounts.</b> A Google Cloud project registered for non-commercial Earth Engine use, plus Colab and Kaggle accounts.</li>
         </ul>
@@ -869,6 +884,13 @@ html{scroll-behavior:smooth}
         <li id="src-17">ICIMOD (Oct 2025), study of the 2024 Thame flood: causes, impacts and future risks. <a href="https://www.icimod.org/everest-region-a-hotspot-of-cryosphere-linked-hazards-icimods-new-study-on-nepals-2024-thame-flood-confirms">icimod.org</a></li>
         <li id="src-18">Himal Press, "What caused Rasuwagadhi floods". <a href="https://en.himalpress.com/what-caused-rasuwagadhi-floods/">himalpress.com</a></li>
         <li id="src-19">SANDRP (Jul 2025), July 2025 GLOF disaster: impact on hydropower projects in Nepal. <a href="https://sandrp.in/2025/07/24/july-2025-glof-disaster-impact-ten-heps-in-nepal/">sandrp.in</a></li>
+        <li id="src-20">Allen, S. K., Rastner, P., Arora, M., Huggel, C. and Stoffel, M. (2016). Lake outburst and debris flow disaster at Kedarnath, June 2013: hydrometeorological triggering and topographic predisposition. <i>Landslides</i> 13(6). <a href="https://doi.org/10.1007/s10346-015-0584-3">doi:10.1007/s10346-015-0584-3</a></li>
+        <li id="src-21">Singh et al. (2015), study of the June 2013 Kedarnath flood. <i>Natural Hazards and Earth System Sciences</i> 15, 1597. <a href="https://nhess.copernicus.org/articles/15/1597/2015/nhess-15-1597-2015.pdf">nhess.copernicus.org</a></li>
+        <li id="src-22">Modelling of the 2013 Chorabari lake breach (peak discharge about 1,699 m³/s). <i>Journal of Mountain Science</i>. <a href="https://jms.imde.ac.cn/article/doi/10.1007/s11629-018-4972-8">doi:10.1007/s11629-018-4972-8</a></li>
+        <li id="src-23">Dialogue Earth, "Death of Chorabari lake" (Wadia Institute account of the breach). <a href="https://dialogue.earth/en/climate/death-of-chorabari-lake/">dialogue.earth</a></li>
+        <li id="src-24">Petley, D., AGU Landslide Blog (4 Jul 2013), reconstructing the events at Kedarnath from data, images and eyewitness reports. <a href="https://blogs.agu.org/landslideblog/2013/07/04/reconstructing-the-events-at-kedarnath-using-data-images-and-eye-witness-reports">blogs.agu.org</a></li>
+        <li id="src-25">Bollermann, A., Chen, G., Kurganov, A. and Noelle, S. (2013). A well-balanced reconstruction of wet/dry fronts for the shallow water equations. <i>Journal of Scientific Computing</i> 56(2).</li>
+        <li id="src-26">Thacker, W. C. (1981). Some exact solutions to the nonlinear shallow-water wave equations. <i>Journal of Fluid Mechanics</i> 107.</li>
       </ol>
     </section>
 
