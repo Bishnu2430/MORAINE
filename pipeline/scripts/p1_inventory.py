@@ -92,6 +92,21 @@ def main() -> int:
         checks.append((f"{name} absent", not hits, "absent in all years" if not hits else f"listed in {hits}"))
         results[name] = hits
 
+    # The year files list the same lakes in different orders (only about a third share a position), so
+    # growth curves and scoring must pair lakes by match(), never by position in the file.
+    pairing = {}
+    for year in inventory.YEARS[:-1]:
+        pairs = inventory.match(years[year], years[2022], year)
+        same_position = sum(a == b for a, b in pairs.items())
+        pairing[year] = {"paired": len(pairs), "same_position": same_position,
+                         "distinct": len(set(pairs.values()))}
+    results["pairing_with_2022"] = pairing
+    total = len(years[2022])
+    checks.append(("Every year's file pairs with 2022 on the listed areas (99.5% of lakes or more)",
+                   all(p["paired"] >= 0.995 * total and p["distinct"] >= 0.995 * total for p in pairing.values()),
+                   ", ".join(f"{y}: {p['paired']:,} of {total:,} paired, {p['same_position']:,} at the same position"
+                             for y, p in pairing.items())))
+
     import shapefile  # pyshp; the hazard layer adds the paper's own assessment of South Lhonak
 
     hazard = shapefile.Reader(str(DATA / "extracted" / "Third Pole" / "Third_Pole_Glacial Lake_Hazard.shp"),

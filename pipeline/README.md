@@ -180,8 +180,12 @@ This fetches the Zhang et al. (2023) Third Pole inventory (Zenodo 10.5281/zenodo
 
 The script saves the zip to `pipeline/data/zhang2023/`, which stays out of git, and checks it
 against the published MD5. It then tests the outlines against what P0 measured. A good run ends
-with **6 of 6 checks passed**: South Lhonak within 2.2% of P0 in every year, Thame's breached lake
-present, and the two drained lakes absent. The P1 plan is in `docs/p1/plan.md`.
+with **7 of 7 checks passed**: South Lhonak within 2.2% of P0 in every year, Thame's breached lake
+present, the two drained lakes absent, and every 2018 and 2020 outline paired with its 2022 lake.
+
+The three year files list the same lakes in **different orders**, so never pair lakes across years
+by their position in the file. Use `inventory.match()`, which pairs them on the listed areas (the
+2022 file repeats each lake's 2018 and 2020 area). The P1 plan is in `docs/p1/plan.md`.
 
 ```
 .venv\Scripts\python pipeline\scripts\p1_study_areas.py --project master-bruin-515809-p2
@@ -191,7 +195,28 @@ Builds the study areas: the whole catchment draining to the end of each P0 flood
 HydroSHEDS level-12 basins. It writes them to `pipeline/moraine/study_areas.geojson` and counts the
 inventory lakes in each. A good run ends with **12 of 12 checks passed**: each catchment closes
 inside its search box, holds its key lake, and holds exactly the lakes MERIT Hydro's own catchment
-holds. North Sikkim has 101 lakes, Bhote Koshi/Poiqu 36 and Khumbu 54.
+holds. North Sikkim has 101 inventory lakes, Bhote Koshi/Poiqu 36 and Khumbu 54 (89, 32 and 45 of
+them at least 0.02 km² in 2022; the inventory keeps a lake that reached that size in any year).
+
+```
+.venv\Scripts\python pipeline\scripts\p1_baseline.py --project master-bruin-515809-p2
+```
+
+P1 step 3, the simple lake mapper (`moraine/watch.py`): Sentinel-2 autumn composites, water where
+NDWI > 0.25 on slopes under 12°, patches of at least 0.02 km². It scores both rule variants against
+the inventory for 2018, 2020 and 2022 in the three study areas. A good run ends with the NDWI rule
+finding **449 of 505** inventory lakes (overlap at least 0.5), lake area 9.1% low. It also reports
+the water it maps away from inventory lakes, which is partly error and partly lakes the inventory
+does not list.
+
+- **Time:** about 1–2 hours on Earth Engine.
+- **Cache:** each area-year is saved in `pipeline/out/p1_baseline/cache/`, stamped with a
+  fingerprint of `watch.py` and the lake list, so a rerun skips finished work and recomputes anything
+  made by older code.
+- **Run one copy at a time.** Check that no earlier run is still going before starting another.
+- **Sum at 10 m.** Over a whole study area, Earth Engine requests at 30 m lose mapped water.
+- **Quota:** the Community tier allows 150 EECU-hours a month. Past that, the project runs in
+  restricted mode until the 1st of the next month.
 
 ## Chorabari (Kedarnath) is not measured from satellites
 

@@ -183,3 +183,43 @@ def plot_dam_break(run: dict, refinement: list[tuple[float, float]], t_end: floa
     fig.tight_layout(rect=(0, 0.07, 1, 1))
     fig.savefig(path, facecolor=c["surface"])
     plt.close(fig)
+
+
+def plot_baseline(summary: dict, variant: str, label: str, names: dict, path: Path) -> None:
+    """One panel per study area: mapped lake area every autumn against the inventory's totals."""
+    c = COLORS
+    plt.rcParams["font.family"] = ["Segoe UI", "DejaVu Sans"]
+    keys = list(summary)
+    fig, axes = plt.subplots(1, len(keys), figsize=(4.2 * len(keys), 4.2), dpi=150, sharey=False)
+    fig.patch.set_facecolor(c["surface"])
+    for ax, key in zip(axes, keys):
+        _style(ax, c)
+        rows = [r for r in summary[key] if variant in r["variants"]]
+        years = [r["year"] for r in rows]
+        total = [r["variants"][variant]["total"]["km2"] for r in rows]
+        ax.plot(years, total, color=c["Landsat"], linewidth=2, marker="o", markersize=5,
+                markeredgecolor=c["surface"], label="Mapped, all water patches ≥ 0.02 km²", zorder=2)
+        scored = [r for r in rows if "found" in r["variants"][variant]]
+        ax.scatter([r["year"] for r in scored], [r["variants"][variant]["truth_km2"] for r in scored], marker="D",
+                   s=40, facecolor=c["surface"], edgecolor=c["ink"], linewidth=1.3, label="Inventory lakes", zorder=3)
+        ax.scatter([r["year"] for r in scored], [r["variants"][variant]["mapped_km2"] for r in scored], marker="o",
+                   s=30, facecolor="none", edgecolor=c["Sentinel-2"], linewidth=1.4,
+                   label="Mapped, at inventory lakes", zorder=3)
+        for r in scored:
+            e = r["variants"][variant]
+            ax.annotate(f"{e['found']}/{e['seen']} found", (r["year"], e["mapped_km2"]), xytext=(0, -9),
+                        textcoords="offset points", ha="center", va="top", fontsize=7.5, color=c["ink2"])
+        ax.set_ylim(0, max(total + [r["variants"][variant]["truth_km2"] for r in scored]) * 1.25)
+        ax.set_xticks(years if len(years) <= 5 else list(range(min(years), max(years) + 1, 2)))
+        ax.set_xlim(min(years) - 0.7, max(years) + 0.7)  # room for the labels at either end
+        ax.set_title(names[key], loc="left", fontsize=10.5, fontweight="bold", color=c["ink"])
+        ax.set_ylabel("Lake area (km²)", color=c["ink2"])
+    legend = axes[0].legend(loc="lower left", frameon=False, fontsize=7.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+    fig.text(0.01, 0.015, f"Sentinel-2 autumn composites (1 Sep-15 Nov), rule: {label}. Labels show inventory "
+             "lakes found (overlap at least 0.5) out of those seen by 3+ scenes. Inventory: Zhang et al. (2023).",
+             fontsize=7.2, color=c["muted"])
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.savefig(path, facecolor=c["surface"])
+    plt.close(fig)

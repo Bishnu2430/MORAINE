@@ -30,3 +30,13 @@ def test_nearest_finds_a_lake_only_within_reach():
     assert inventory.nearest(lakes, 88.005, 28.005, 50) is lakes[0]
     assert inventory.nearest(lakes, 88.02, 28.005, 50) is None  # about 980 m from both
     assert inventory.nearest(lakes, 88.02, 28.005, 1500) is not None
+
+
+def test_match_pairs_lakes_by_listed_area_not_by_position():
+    def lake(year, index, lon, area, **extra):
+        return inventory.Lake(year, {"Area": area, "index": index, **extra}, [], (lon, 28.0, lon + 0.001, 28.001))
+
+    # 2022 lists A then B; 2018 lists them the other way round, plus a lake of A's area 30 km away
+    reference = [lake(2022, 0, 88.00, 0.05, Area_2018=0.041), lake(2022, 1, 88.02, 0.09, Area_2018=0.072)]
+    earlier = [lake(2018, 0, 88.02, 0.072), lake(2018, 1, 88.00, 0.041), lake(2018, 2, 88.30, 0.041)]
+    assert inventory.match(earlier, reference, 2018) == {0: 1, 1: 0}

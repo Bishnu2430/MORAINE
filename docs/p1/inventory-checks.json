@@ -46,6 +46,18 @@
  ],
  "Gongbatongsha (drained 2016, 0.017 km2)": [],
  "Chorabari (drained 2013)": [],
+ "pairing_with_2022": {
+  "2018": {
+   "paired": 5888,
+   "same_position": 2120,
+   "distinct": 5887
+  },
+  "2020": {
+   "paired": 5884,
+   "same_position": 2177,
+   "distinct": 5883
+  }
+ },
  "south_lhonak_hazard": {
   "H_Level": "Very high"
  }

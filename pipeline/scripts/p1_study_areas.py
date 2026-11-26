@@ -96,8 +96,9 @@ def draw(key, area, polygons, route, lakes, hazards, path):
     ax.set_ylim(extent[2], extent[3])
     ax.set_xlabel("Longitude (°E)")
     ax.set_ylabel("Latitude (°N)")
-    ax.set_title(f"{area['name']}\n{len(lakes)} glacial lakes of at least 0.02 km² in 2022 (Zhang et al. 2023); "
-                 "dot size shows lake area", loc="left", fontsize=10)
+    big = sum(float(lk.attrs["Area_2022"]) >= 0.02 for lk in lakes)
+    ax.set_title(f"{area['name']}\n{len(lakes)} inventory glacial lakes, {big} of them at least 0.02 km² in 2022 "
+                 "(Zhang et al. 2023); dot size shows lake area", loc="left", fontsize=10)
     legend = ax.legend(loc="lower left", fontsize=7.5, framealpha=0.85)
     for handle in legend.legend_handles:  # colour is the hazard level; keep the legend dots one size
         if hasattr(handle, "set_sizes") and not isinstance(handle, matplotlib.lines.Line2D):
@@ -152,7 +153,10 @@ def main() -> int:
         info = {
             "name": area["name"], "role": area["role"], "outlet": [round(outlet[0], 5), round(outlet[1], 5)],
             "route_km": round(route_km, 1), "catchment_km2": round(area_km2, 1), "merit_upstream_km2": round(merit_km2, 1),
-            "basins": len(ids), "lakes_2022": len(inside), "lake_area_2022_km2": round(sum(areas_2022), 3),
+            # The inventory keeps a lake that reached 0.02 km2 in any of its years, so some are smaller in 2022
+            "basins": len(ids), "lakes_2022": len(inside),
+            "lakes_2022_at_least_0.02_km2": sum(a >= 0.02 for a in areas_2022),
+            "lake_area_2022_km2": round(sum(areas_2022), 3),
             "lake_area_1990_km2": round(sum(areas_1990), 3), "lakes_by_size_km2": classes, "lakes_by_hazard": levels,
             "largest": sorted(((round(a, 3), round(lk.lat, 4), round(lk.lon, 4)) for a, lk in zip(areas_2022, inside)),
                               reverse=True)[:5],

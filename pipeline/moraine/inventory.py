@@ -79,11 +79,36 @@ def load(root: Path, year: int) -> list[Lake]:
         points, parts = record.shape.points, list(record.shape.parts) + [len(record.shape.points)]
         rings = [[tuple(p) for p in points[a:b]] for a, b in zip(parts[:-1], parts[1:])]
         attrs = dict(zip(fields, record.record))
-        # The three files list the same lakes in the same order; each names its area column differently
+        # Each file names its area column differently. The files hold the same 5,894 lakes but NOT in the same
+        # order, so a position ("index") only means something within one year's file; use match() across years.
         attrs["Area"] = attrs.get("Area", attrs.get(f"Area_{year}"))
         attrs["index"] = index
         lakes.append(Lake(year, attrs, rings, tuple(record.shape.bbox)))
     return lakes
+
+
+def match(lakes: list[Lake], reference: list[Lake], year: int) -> dict[int, int]:
+    """Pair each lake of the 2022 file (`reference`) with the same lake in `year`'s file.
+
+    The 2022 file repeats every lake's earlier areas (Area_2018, Area_2020), and each earlier file carries
+    its own area column, so a lake is the nearby outline (same 0.1-degree cell or a neighbour) listing the
+    same area to the published six decimals. Returns {2022 index: index in that year's file}; the few lakes
+    with no such partner are left out."""
+    cells: dict[tuple[int, int], list[Lake]] = {}
+    for lake in lakes:
+        cells.setdefault((math.floor(lake.lon * 10), math.floor(lake.lat * 10)), []).append(lake)
+    pairs = {}
+    for ref in reference:
+        want = ref.attrs.get(f"Area_{year}")
+        if want is None:
+            continue
+        x, y = math.floor(ref.lon * 10), math.floor(ref.lat * 10)
+        same = [lake for dx in (-1, 0, 1) for dy in (-1, 0, 1) for lake in cells.get((x + dx, y + dy), [])
+                if abs(float(lake.attrs["Area"]) - float(want)) < 5e-7]
+        if same:
+            best = min(same, key=lambda lake: (lake.lon - ref.lon) ** 2 + (lake.lat - ref.lat) ** 2)
+            pairs[ref.attrs["index"]] = best.attrs["index"]
+    return pairs
 
 
 def nearest(lakes: list[Lake], lon: float, lat: float, within_m: float) -> Lake | None:

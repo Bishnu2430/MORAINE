@@ -11,6 +11,7 @@
   "merit_upstream_km2": 2767.0,
   "basins": 21,
   "lakes_2022": 101,
+  "lakes_2022_at_least_0.02_km2": 89,
   "lake_area_2022_km2": 20.646,
   "lake_area_1990_km2": 15.446,
   "lakes_by_size_km2": {
@@ -69,6 +70,7 @@
   "merit_upstream_km2": 2454.0,
   "basins": 18,
   "lakes_2022": 36,
+  "lakes_2022_at_least_0.02_km2": 32,
   "lake_area_2022_km2": 18.235,
   "lake_area_1990_km2": 11.613,
   "lakes_by_size_km2": {
@@ -127,6 +129,7 @@
   "merit_upstream_km2": 1131.2,
   "basins": 10,
   "lakes_2022": 54,
+  "lakes_2022_at_least_0.02_km2": 45,
   "lake_area_2022_km2": 6.656,
   "lake_area_1990_km2": 4.32,
   "lakes_by_size_km2": {
@@ -185,6 +188,7 @@
   "merit_upstream_km2": 256.6,
   "basins": 2,
   "lakes_2022": 2,
+  "lakes_2022_at_least_0.02_km2": 2,
   "lake_area_2022_km2": 0.07,
   "lake_area_1990_km2": 0.036,
   "lakes_by_size_km2": {
