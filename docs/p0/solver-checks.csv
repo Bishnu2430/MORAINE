@@ -5,11 +5,13 @@ Flood front (10 cm deep) converges,gate,True,order 1.25,at least 0.6,"behind the
 Dam break along y gives the same answer as along x,gate,True,0.0e+00 m,at most 1e-12 m,largest depth difference anywhere; catches mixed-up x and y code
 Dam break across the grid at 45 degrees: depth error,gate,True,0.75%,at most 3%,both directions and their cross terms carry flow; front 10.9 m behind
 Dam break down a 30% slope: depth error,gate,True,1.93%,at most 3%,10 s after release; exact by moving with the water; front 18.6 m behind
-Water volume is conserved,gate,True,2.4e-16,at most 1e-10,largest relative change over all float64 runs
+Water volume is conserved,gate,True,1.2e-15,at most 1e-10,largest relative change over all float64 runs
 Depths never went negative,gate,True,0.0e+00,at most 1e-10,"water the safety clamp had to add, as a share of the volume"
-A lake at rest over a fully covered bed stays still,gate,True,6.4e-15 m/s,at most 1e-10 m/s,fastest water after 120 s over hills and a 13-degree cone; surface moved 0.0e+00 m
-A lake at rest with islands and shorelines,info,,2.11 m/s,,fastest water deeper than 10 cm after 120 s (2.99 m/s in any water); surface moved up to 0.06 m where it started deeper. Known limit of the 2007 scheme where a shoreline crosses a cell; P1 adds the Bollermann et al. (2013) wet/dry reconstruction and must bring this near zero
+A lake at rest over a fully covered bed stays still,gate,True,6.9e-15 m/s,at most 1e-10 m/s,fastest water after 120 s over hills and a 13-degree cone; surface moved 0.0e+00 m
+A lake at rest with islands and shorelines stays still,gate,True,4.8e-14 m/s,at most 1e-8 m/s,"fastest water after 120 s, 5.4% of the basin dry; the 2007 tilted surface gives 2.11 m/s in water deeper than 10 cm, its surface moving up to 0.25 m"
+"Water sloshing round a bowl, one orbit: depth error",gate,True,0.19%,at most 10%,Thacker (1981): the shoreline climbs and falls the bowl's sides; the 2007 surface gives 0.17%
+"Water sloshing round a bowl, one orbit: wet area",gate,True,overlap 0.991,at least 0.9,"wet cells (over 1 cm) shared with the exact lens, as a share of either; the 2007 surface gives 0.991"
 Front measured at 1 cm instead of 10 cm,info,,45.2 m behind,,the frictionless wave's last 20 m is under 1 cm deep and smears over a few cells; friction in P1 changes that tip anyway
-"float32 at 5,200 m elevation: depth error at 5 m cells",info,,0.83%,,float64 gives 0.86%; volume change 9.2e-05; across the grid at 45 degrees 0.87% (float64 0.75%)
-"float32 at 5,200 m elevation: lake at rest",info,,3.0e-06 m/s,,"fastest water after 120 s, against 6.4e-15 m/s in float64"
-Speed on this laptop's CPU,info,,"0.54 M cell-steps/s float64, 0.79 M float32",,"102,400 cells, 316 steps; the real runs go on a Colab GPU"
+"float32 at 5,200 m elevation: depth error at 5 m cells",info,,0.84%,,float64 gives 0.86%; volume change 4.9e-05; across the grid at 45 degrees 0.89% (float64 0.75%)
+"float32 at 5,200 m elevation: lakes at rest",info,,"3.8e-06 m/s covered, 1.7e-02 m/s with islands",,"fastest water after 120 s, against 6.9e-15 and 4.8e-14 m/s in float64"
+Speed on this laptop's CPU,info,,"0.54 M cell-steps/s float64, 0.83 M float32",,"102,400 cells, 316 steps; the real runs go on a Colab GPU"

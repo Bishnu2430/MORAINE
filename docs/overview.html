@@ -663,14 +663,15 @@ html{scroll-behavior:smooth}
       <p class="intro">The solver is checked from the simplest exact case up to the real events before any of its output reaches the site.</p>
       <ol class="ladder">
         <li><b>Ritter dam break (1892)</b><span>Exact solution for a dam failing onto a dry bed. Check the front position and the depth profile. Passed in P0: within 0.86% at 5 m cells, the error halving as the cells halve, and also across the grid at 45° and down a 30% slope.</span></li>
+        <li><b>Thacker's sloshing bowl (1981)</b><span>Exact solution for water sloshing round a bowl, its shoreline climbing and falling the sides <a class="ref" href="#src-26">[26]</a>. Checks moving wet/dry edges. Passed in P0: 0.19% depth error after one full orbit, wet area overlapping the exact one by 0.991.</span></li>
         <li><b>Rain on a closed basin</b><span>Rain falling on a flat, sealed basin must raise the water by exactly the rain total. Checks that rain added on the grid neither creates nor loses water.</span></li>
         <li><b>Malpasset dam failure, France, 1959</b><span>The standard real-terrain benchmark, with field-measured arrival times and peak water levels. Brodtkorb et al. reproduced it with a GPU solver <a class="ref" href="#src-9">[9]</a>.</span></li>
         <li><b>Event hindcasts: Sikkim 2023, then Nepal 2016 and 2024, and Kedarnath 2013</b><span>Settings are tuned on South Lhonak only, then frozen; the other three run unchanged. Each is scored against its own record: arrival at Chungthang around 00:30, the seismometer timing of the 2016 flood front <a class="ref" href="#src-12">[12]</a>, the 2024 breach time and damage in Thame <a class="ref" href="#src-16">[16]</a>, and the lake drain time and debris footprint at Kedarnath, with and without rain. Flooded extent is scored against post-event imagery (IoU).</span></li>
         <li><b>Scenario set</b><span>Breach volume and duration varied across the published range of estimates.</span></li>
       </ol>
       <div class="prose">
-        <p>Solver: the second-order Kurganov–Petrova scheme <a class="ref" href="#src-10">[10]</a>, written in PyTorch. It keeps water depth from going negative at wet/dry fronts and keeps a lake at rest still over a bed it fully covers, which matters on steep Himalayan slopes.</p>
-        <p>P0 finding: where a shoreline crosses a cell, the 2007 scheme tilts that cell's water surface, and a still lake with islands starts moving at about 2 m/s. P1 adds the wet/dry reconstruction of Bollermann et al. <a class="ref" href="#src-25">[25]</a> and must pass that test before real terrain. A second change is already in: face velocities are built from cell velocities, which stopped a 1 mm film running ahead of the flood front faster than physics allows.</p>
+        <p>Solver: the second-order Kurganov–Petrova scheme <a class="ref" href="#src-10">[10]</a>, written in PyTorch. It keeps water depth from going negative at wet/dry fronts and keeps a lake at rest still, islands and shorelines included, which matters on steep Himalayan slopes.</p>
+        <p>P0 findings, both fixed: where a shoreline crosses a cell, the 2007 scheme tilts that cell's water surface, and a still lake with islands started moving at about 2 m/s. Such cells now get a flat surface at the level that holds their water, after Bollermann et al. <a class="ref" href="#src-25">[25]</a>, and the lake stays still to 5×10⁻¹⁴ m/s. Moving water keeps the original surface, so the sloshing-bowl test scores the same as before. Separately, face velocities are now built from cell velocities, which stopped a 1 mm film running ahead of the flood front faster than physics allows.</p>
         <h3>Lake mapping</h3>
         <p>P0 finding: Landsat's own cloud mask labels dark lake water as cloud shadow, so the pipeline uses per-pixel percentile composites of each autumn instead of cloud masks. On South Lhonak this matches ISRO's pre-outburst area within 1% (1.668 against 1.674 km²).</p>
         <p>Baseline: a water-index threshold (NDWI/MNDWI) with a slope mask. Model: a small U-Net on Sentinel-2 bands plus slope. It trains on other Himalayan regions and is tested on Sikkim, so no test lake leaks into training. Report IoU and area error per lake, plus a hard-case set: mountain shadow, frozen lakes, thin cloud and silty water.</p>
@@ -800,7 +801,7 @@ html{scroll-behavior:smooth}
         <table class="tbl">
           <thead><tr><th>Risk</th><th>Likelihood / impact</th><th>Mitigation</th></tr></thead>
           <tbody>
-            <tr><td>Solver blows up on steep wet/dry fronts</td><td class="num">Medium / High</td><td>Kurganov–Petrova scheme, small time steps, and the full test ladder before real terrain. P0: exact dam-break tests pass, including down a 30% slope; still water at shorelines fails and is P1's first fix. Fallback: produce the runs with an established open-source model such as LISFLOOD-FP.</td></tr>
+            <tr><td>Solver blows up on steep wet/dry fronts</td><td class="num">Medium / High</td><td>Kurganov–Petrova scheme, small time steps, and the full test ladder before real terrain. P0: 12 exact tests pass, including a dam break down a 30% slope, a still lake with islands and a moving shoreline. Fallback: produce the runs with an established open-source model such as LISFLOOD-FP.</td></tr>
             <tr><td>The real flood was a debris flow; the model is clean water</td><td class="num">Certain / Medium</td><td>Claim arrival time and extent only, and say so on screen.</td></tr>
             <tr><td>Published event figures disagree</td><td class="num">High / Medium</td><td>Treat them as ranges; the scenario set spans them.</td></tr>
             <tr><td>Colab GPU unavailable</td><td class="num">Medium / Low</td><td>Kaggle as backup; CPU runs overnight; each run is saved once and reused.</td></tr>
@@ -881,6 +882,7 @@ html{scroll-behavior:smooth}
         <li id="src-23">Dialogue Earth, "Death of Chorabari lake" (Wadia Institute account of the breach). <a href="https://dialogue.earth/en/climate/death-of-chorabari-lake/">dialogue.earth</a></li>
         <li id="src-24">Petley, D., AGU Landslide Blog (4 Jul 2013), reconstructing the events at Kedarnath from data, images and eyewitness reports. <a href="https://blogs.agu.org/landslideblog/2013/07/04/reconstructing-the-events-at-kedarnath-using-data-images-and-eye-witness-reports">blogs.agu.org</a></li>
         <li id="src-25">Bollermann, A., Chen, G., Kurganov, A. and Noelle, S. (2013). A well-balanced reconstruction of wet/dry fronts for the shallow water equations. <i>Journal of Scientific Computing</i> 56(2).</li>
+        <li id="src-26">Thacker, W. C. (1981). Some exact solutions to the nonlinear shallow-water wave equations. <i>Journal of Fluid Mechanics</i> 107.</li>
       </ol>
     </section>
 

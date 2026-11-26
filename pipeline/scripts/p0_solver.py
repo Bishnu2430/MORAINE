@@ -29,6 +29,7 @@ from moraine import plot  # noqa: E402
 
 SIZES = (10.0, 5.0, 2.5, 1.25)  # cell sizes (m) for the refinement study; 5 m is the headline run
 SLOPE = 0.3  # 30% grade, about 17 degrees
+COVERED, ISLANDS = 12.0, 4.0  # still-lake surface levels (m) in the test basin, whose ground runs 0.5-11 m
 VALLEY_CELL = 30.0  # m, the real runs' grid
 VALLEY_LENGTH = 60_000.0  # m, South Lhonak to Chungthang along the valley, roughly
 
@@ -70,15 +71,21 @@ def main() -> int:
     along_y = b.ritter_1d(5.0, axis="y", device=dev)
     diagonal = b.ritter_diagonal(5.0, device=dev)
     slope = b.ritter_1d(5.0, slope=SLOPE, upstream=300.0, downstream=450.0, t_end=10.0, device=dev)
-    print("Still lakes, fully covering the bed and with islands ...", flush=True)
-    lake = b.lake_at_rest(10.0, device=dev)
-    islands = b.lake_at_rest(4.0, device=dev)
+    print("Still lakes, fully covering the bed and with islands, with and without the shoreline change ...",
+          flush=True)
+    lake = b.lake_at_rest(COVERED, device=dev)
+    islands = b.lake_at_rest(ISLANDS, device=dev)
+    islands07 = b.lake_at_rest(ISLANDS, shoreline="kp07", device=dev)
+    print("Water sloshing round a bowl for one full orbit, with and without the shoreline change ...", flush=True)
+    bowl = b.thacker_bowl(device=dev)
+    bowl07 = b.thacker_bowl(shoreline="kp07", device=dev)
     print("float32 at South Lhonak's elevation ...", flush=True)
     head32 = b.ritter_1d(5.0, dtype=torch.float32, offset=b.LAKE_ELEVATION, device=dev)
-    lake32 = b.lake_at_rest(10.0, dtype=torch.float32, offset=b.LAKE_ELEVATION, device=dev)
+    lake32 = b.lake_at_rest(COVERED, dtype=torch.float32, offset=b.LAKE_ELEVATION, device=dev)
+    islands32 = b.lake_at_rest(ISLANDS, dtype=torch.float32, offset=b.LAKE_ELEVATION, device=dev)
     diagonal32 = b.ritter_diagonal(5.0, dtype=torch.float32, offset=b.LAKE_ELEVATION, device=dev)
 
-    float64_runs = [*runs.values(), along_y, diagonal, slope, lake, islands]
+    float64_runs = [*runs.values(), along_y, diagonal, slope, lake, islands, bowl]
     worst_volume = max(r["volume_change"] for r in float64_runs)
     worst_clamp = max(r["clamped_share"] for r in float64_runs)
     xy_gap = float(np.abs(head["full"] - along_y["full"].T).max())
@@ -113,19 +120,27 @@ def main() -> int:
         gate("A lake at rest over a fully covered bed stays still", lake["max_speed"] <= 1e-10,
              f"{lake['max_speed']:.1e} m/s", "at most 1e-10 m/s",
              f"fastest water after 120 s over hills and a 13-degree cone; surface moved {lake['max_surface_change']:.1e} m"),
-        info("A lake at rest with islands and shorelines", f"{islands['max_speed_deep']:.2f} m/s",
-             f"fastest water deeper than 10 cm after 120 s ({islands['max_speed']:.2f} m/s in any water); surface "
-             f"moved up to {islands['max_surface_change_deep']:.2f} m where it started deeper. Known limit of "
-             "the 2007 scheme where a shoreline crosses a cell; P1 adds the Bollermann et al. (2013) wet/dry "
-             "reconstruction and must bring this near zero"),
+        gate("A lake at rest with islands and shorelines stays still", islands["max_speed"] <= 1e-8,
+             f"{islands['max_speed']:.1e} m/s", "at most 1e-8 m/s",
+             f"fastest water after 120 s, {100 * islands['dry_share']:.1f}% of the basin dry; the 2007 tilted surface "
+             f"gives {islands07['max_speed_deep']:.2f} m/s in water deeper than 10 cm, its surface moving up to "
+             f"{islands07['max_surface_change_deep']:.2f} m"),
+        gate("Water sloshing round a bowl, one orbit: depth error", bowl["error"] <= 0.10,
+             f"{100 * bowl['error']:.2f}%", "at most 10%",
+             f"Thacker (1981): the shoreline climbs and falls the bowl's sides; the 2007 surface gives "
+             f"{100 * bowl07['error']:.2f}%"),
+        gate("Water sloshing round a bowl, one orbit: wet area", bowl["iou"] >= 0.9, f"overlap {bowl['iou']:.3f}",
+             "at least 0.9", f"wet cells (over 1 cm) shared with the exact lens, as a share of either; the 2007 "
+             f"surface gives {bowl07['iou']:.3f}"),
         info("Front measured at 1 cm instead of 10 cm", f"{b.ritter_front(t, 0.01) - head['front_1cm']:.1f} m behind",
              "the frictionless wave's last 20 m is under 1 cm deep and smears over a few cells; friction in P1 "
              "changes that tip anyway"),
         info("float32 at 5,200 m elevation: depth error at 5 m cells", f"{100 * head32['error']:.2f}%",
              f"float64 gives {100 * head['error']:.2f}%; volume change {head32['volume_change']:.1e}; across the "
              f"grid at 45 degrees {100 * diagonal32['error']:.2f}% (float64 {100 * diagonal['error']:.2f}%)"),
-        info("float32 at 5,200 m elevation: lake at rest", f"{lake32['max_speed']:.1e} m/s",
-             f"fastest water after 120 s, against {lake['max_speed']:.1e} m/s in float64"),
+        info("float32 at 5,200 m elevation: lakes at rest", f"{lake32['max_speed']:.1e} m/s covered, "
+             f"{islands32['max_speed']:.1e} m/s with islands",
+             f"fastest water after 120 s, against {lake['max_speed']:.1e} and {islands['max_speed']:.1e} m/s in float64"),
         info("Speed on this laptop's CPU", f"{rate(diagonal) / 1e6:.2f} M cell-steps/s float64, "
              f"{rate(diagonal32) / 1e6:.2f} M float32",
              f"{diagonal['cells']:,} cells, {diagonal['steps']} steps; the real runs go on a Colab GPU"),

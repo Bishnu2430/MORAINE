@@ -40,10 +40,34 @@ def test_dam_break_down_a_slope_follows_the_moving_frame_solution():
 
 
 def test_lake_at_rest_over_a_covered_bed_stays_still():
-    r = b.lake_at_rest(10.0, n=20, dx=50.0, t_end=30.0)
+    r = b.lake_at_rest(12.0, n=20, dx=50.0, t_end=30.0)
     assert r["dry_share"] == 0.0
     assert r["max_speed"] < 1e-10
     assert r["max_surface_change"] < 1e-10
+
+
+def test_lake_at_rest_with_islands_stays_still_only_with_pools():
+    pools = b.lake_at_rest(4.0, n=40, dx=25.0, t_end=30.0)
+    tilted = b.lake_at_rest(4.0, n=40, dx=25.0, t_end=30.0, shoreline="kp07")
+    assert pools["dry_share"] > 0.01
+    assert pools["max_speed"] < 1e-10
+    assert tilted["max_speed_deep"] > 0.01  # the 2007 surface sets shoreline water moving
+
+
+def test_still_water_depths_give_back_their_level():
+    solver = Solver(b.lake_bed(20, 50.0), 50.0)
+    depth = solver.still_water(4.0)
+    padded = torch.nn.functional.pad(depth, (2, 2, 2, 2))  # interior of a padded grid; ghosts unused here
+    level = solver._pool_level(padded)[2:-2, 2:-2]
+    wet = depth > 0
+    assert torch.allclose(level[wet], torch.full_like(level[wet], 4.0), atol=1e-12)
+
+
+def test_sloshing_bowl_keeps_its_shoreline():
+    r = b.thacker_bowl(dx=100.0, orbits=0.5)
+    assert r["error"] < 0.05
+    assert r["iou"] > 0.9
+    assert r["volume_change"] < 1e-12
 
 
 def test_dry_bed_stays_dry_and_time_steps_stop_on_time():

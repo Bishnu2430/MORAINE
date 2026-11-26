@@ -135,7 +135,7 @@ def ritter_diagonal(dx: float = 5.0, half: float = 800.0, t_end: float = T_END, 
 
 
 def lake_bed(n: int = 100, dx: float = 10.0, offset: float = 0.0) -> np.ndarray:
-    """A 1 km basin floor at the cell corners: rolling ground, two hills and a steep cone, 0-9 m high."""
+    """A 1 km basin floor at the cell corners: rolling ground, two hills and a steep cone, 0.5-11 m high."""
     c = np.arange(n + 1) * dx
     X, Y = np.meshgrid(c, c)
     bed = 2 + 1.5 * np.sin(2 * np.pi * X / 400) * np.cos(2 * np.pi * Y / 300)
@@ -146,10 +146,10 @@ def lake_bed(n: int = 100, dx: float = 10.0, offset: float = 0.0) -> np.ndarray:
 
 
 def lake_at_rest(level: float, n: int = 100, dx: float = 10.0, t_end: float = 120.0, offset: float = 0.0,
-                 dtype=torch.float64, device: str = "cpu") -> dict:
+                 shoreline: str = "pool", dtype=torch.float64, device: str = "cpu") -> dict:
     """Still water with its surface at `level` m above the basin floor. It must stay still."""
-    solver = Solver(lake_bed(n, dx, offset), dx, dx, dtype=dtype, device=device)
-    depth = torch.clamp(offset + level - solver.bc, min=0)
+    solver = Solver(lake_bed(n, dx, offset), dx, dx, shoreline=shoreline, dtype=dtype, device=device)
+    depth = solver.still_water(offset + level)
     state = solver.state(depth)
     wet, deep = depth > 0, depth > 0.1
     w0 = state.w.clone()
@@ -161,4 +161,41 @@ def lake_at_rest(level: float, n: int = 100, dx: float = 10.0, t_end: float = 12
     out["max_surface_change"] = float((state.w - w0)[wet].abs().max())
     out["max_surface_change_deep"] = float((state.w - w0)[deep].abs().max())  # where it started deeper than 10 cm
     out["dry_share"] = float((~wet).double().mean())
+    return out
+
+
+def thacker_bowl(dx: float = 25.0, a: float = 1000.0, h0: float = 10.0, offset: float = 500.0, orbits: float = 1.0,
+                 shoreline: str = "pool", dtype=torch.float64, device: str = "cpu") -> dict:
+    """Thacker (1981): a lens of water sloshing round a frictionless bowl shaped like a paraboloid.
+
+    The bed is h0 (r^2 / a^2 - 1) at distance r from the bowl's centre (a = 1 km, h0 = 10 m: about
+    1 degree at the rim). The water's flat surface tilts and turns, so its shoreline climbs and falls
+    the bowl's sides all the way round. The exact answer at any time is the same lens, h0 deep and a
+    wide, its centre circling `offset` m from the bowl's centre with period 2 pi a / sqrt(2 g h0).
+    After whole orbits the water is back where it started.
+    """
+    half = 2 * a
+    n = int(round(2 * half / dx))
+    c = np.arange(n + 1) * dx - half
+    X, Y = np.meshgrid(c, c)
+    omega = np.sqrt(2 * G * h0) / a
+
+    def exact(t: float, k: int = 8) -> np.ndarray:
+        p = (c[:-1, None] + (np.arange(k) + 0.5) / k * dx).ravel()
+        PX, PY = np.meshgrid(p, p)
+        cx, cy = offset * np.cos(omega * t), offset * np.sin(omega * t)
+        h = np.clip(h0 / a ** 2 * (a ** 2 - (PX - cx) ** 2 - (PY - cy) ** 2), 0, None)
+        return h.reshape(n, k, n, k).mean(axis=(1, 3))
+
+    start = exact(0.0)
+    solver = Solver(h0 * ((X ** 2 + Y ** 2) / a ** 2 - 1), dx, dx, shoreline=shoreline, dtype=dtype, device=device)
+    state = solver.state(start, hv=start * offset * omega)  # at t = 0 the whole lens moves along +y
+    t_end = orbits * 2 * np.pi / omega
+    out = _timed_run(solver, state, t_end)
+    h = solver.depth(state).double().cpu().numpy()
+    end = exact(t_end)
+    wet, wet_exact = h > 0.01, end > 0.01
+    out.update(h=h, exact=end, t_end=t_end)
+    out["error"] = float(np.abs(h - end).sum() / end.sum())
+    out["iou"] = float((wet & wet_exact).sum() / (wet | wet_exact).sum())
     return out

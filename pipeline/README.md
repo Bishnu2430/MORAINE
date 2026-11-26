@@ -79,35 +79,48 @@ and 1984-1990 (except 1988) have too few scenes to use.
 .venv\Scripts\python pipeline\scripts\p0_solver.py
 ```
 
-No sign-in needed; it runs on the laptop CPU in about 3 minutes. What a good run looks like
-(first run, 26 Nov 2026):
+No sign-in needed; it runs on the laptop CPU in about 5 minutes. What a good run looks like
+(26 Nov 2026, with the shoreline change):
 
-- It ends with **9 of 9 gate checks passed**. A dam holding 10 m of water fails onto a dry, flat,
+- It ends with **12 of 12 gate checks passed**. A dam holding 10 m of water fails onto a dry, flat,
   frictionless bed, and the solver matches Ritter's 1892 exact solution within 0.86% at 5 m cells.
   Halving the cells halves the error (order 1.03). The same dam break run along y gives an
   identical answer, run at 45° across the grid is within 0.75%, and run down a 30% slope is
-  within 1.93%. Water volume is conserved to 2e-16, no depth ever went negative, and a lake at
-  rest over a fully covered bed stays still to 6e-15 m/s.
+  within 1.93%. Water volume is conserved to about 1e-15 and no depth ever went negative.
+- **Still water stays still**, over a fully covered bed (7e-15 m/s) and with islands and
+  shorelines (5e-14 m/s). With the 2007 paper's own shoreline step, the island lake reaches
+  2.1 m/s in water deeper than 10 cm; that comparison is printed on the same line.
+- **Moving shorelines stay right.** Water sloshing round a bowl (Thacker 1981), its shoreline
+  climbing and falling the bowl's sides, is back where the exact solution puts it after one full
+  orbit: 0.19% depth error, wet area overlapping the exact one by 0.991. The 2007 step gives 0.17%
+  and 0.991, so the shoreline change costs nothing here.
 - `pipeline/out/p0_solver/dam-break.png` shows the depth profile on top of the exact one, and the
   error falling as cells get finer.
 - **INFO lines** feed P1's decisions:
-  - *Shorelines.* A still lake with islands does not stay still: water deeper than 10 cm reaches
-    about 2 m/s at the shores. Where a shoreline crosses a cell, the 2007 scheme tilts that cell's
-    water surface. P1 replaces that step with the wet/dry reconstruction of Bollermann, Chen,
-    Kurganov and Noelle (2013), and this line must drop to near zero.
-  - *float32 at 5,200 m* is as accurate as float64 for the flood itself (0.83% against 0.86%), but
-    volume drifts by about 1e-4 in 20 s, because each depth is the small difference of two large
-    elevations. The real runs should store elevations relative to the lowest point in the valley.
+  - *float32 at 5,200 m* is as accurate as float64 for the flood itself (0.84% against 0.86%), but
+    each depth is then the small difference of two large elevations. Volume drifts by about 5e-5
+    in 20 s, and the island lake creeps at 1.7 cm/s (4e-5 m/s for the same lake at sea level). The
+    real runs should measure elevations from the lowest point in the valley.
   - *Speed* on this CPU is about 0.5-0.8 million cell-steps per second, far too slow for the
     valley runs, which need millions of cells over tens of thousands of 0.3 s steps. Those go on a
     Colab GPU; P1 measures how long one takes.
 
 How the solver works (`moraine/swe.py`): the second-order central-upwind scheme of Kurganov and
-Petrova (2007) in PyTorch, with walls on all sides and no friction yet. One change from the paper:
-face velocities are built from cell velocities instead of face discharges from cell discharges.
-With discharges, a film of water 1 mm thick ran ahead of the flood front at 24 m/s, faster than
-the 19.8 m/s the physics allows, and near shorelines the solver needed five times as many time
-steps.
+Petrova (2007) in PyTorch, with walls on all sides and no friction yet. Two changes from the paper:
+
+- Face velocities are built from cell velocities instead of face discharges from cell discharges.
+  With discharges, a film of water 1 mm thick ran ahead of the flood front at 24 m/s, faster than
+  the 19.8 m/s the physics allows, and near shorelines the solver needed five times as many time
+  steps.
+- Shorelines. Where a lake's edge crosses a cell, the paper tilts the cell's water surface down to
+  the bed, and still water starts moving. Following Bollermann, Chen, Kurganov and Noelle (2013),
+  such a cell gets a flat surface at its "pool level", the level that holds its water. The cell's
+  ground is treated as four quarters at its corner heights, and one level serves both directions,
+  so still water stays exactly still in 2D. A cell is pooled only when its wet neighbours' surfaces
+  are level with it to within a tenth of the cell's own relief. Pooling every partly dry cell made
+  moving water creep across dry ground (twice the true wet area in the bowl test), and a gradual
+  blend instead of a switch let rounding noise in a still lake grow. The bed-slope term is
+  rewritten so a flat surface feels no net force; where water covers a cell it equals the paper's.
 
 Changed after the first run: the front check was set up as "the 1 cm contour within 3% of the
 distance travelled". It failed with every setting tried (13-45 m behind at 5 m cells) and did not
