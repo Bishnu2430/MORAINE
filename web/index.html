@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Moraine terrain spike</title>
+  </head>
+  <body>
+    <main class="layout">
+      <section class="view" id="view">
+        <canvas id="scene"></canvas>
+        <div id="labels"></div>
+        <p class="status" id="status">Loading terrain ...</p>
+      </section>
+      <aside class="panel">
+        <p class="eyebrow">Moraine · P0 terrain spike</p>
+        <h1>Teesta valley</h1>
+        <p class="lede">South Lhonak lake to Chungthang: <span id="river-km">74</span> km of river, and the ground within 5 km of it.</p>
+        <p><span class="chip">Observed</span> Copernicus GLO-30 elevation, 30 m cells, true vertical scale. The ground colour is a placeholder worked out from height and slope.</p>
+        <dl class="stats" id="stats"></dl>
+        <section id="bench"></section>
+        <p class="hint">Drag to orbit, right-drag to pan, scroll to zoom. Add <code>?bench</code> to the address to run the frame-rate test.</p>
+      </aside>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

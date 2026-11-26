@@ -577,6 +577,7 @@ html{scroll-behavior:smooth}
         </table>
       </div>
       <p class="prose">Budgets: the first screen loads in 6 MB or less. Each valley gets its own folder with this same set of files, about 20–25 MB, loaded only when someone opens that valley and one scenario at a time. These are targets to confirm in P0.</p>
+      <p class="prose">P0 finding: the Teesta corridor, 5 km either side of the 74 km river from South Lhonak to Chungthang, is 742 km² of 30 m cells. All three height levels come to 2.05 MB as served, under the 3 MB budget. With the site's own code (142 KB compressed), the first screen needs about 1.9 MB.</p>
       <h3>Simulation settings</h3>
       <dl class="settings">
         <dt>Grid</dt><dd>30 m, the native spacing of the elevation data. A finer grid adds no terrain information.</dd>
@@ -654,6 +655,7 @@ html{scroll-behavior:smooth}
         <dt>Quality tiers</dt><dd>High, Balanced and Low, picked automatically and switchable.</dd>
         <dt>Dynamic res</dt><dd>Render scale moves between 60% and 100% to hold the frame rate.</dd>
         <dt>Idle</dt><dd>Rendering pauses when the tab or the canvas is out of view.</dd>
+        <dt>P0 measured</dt><dd>60 fps on the reference laptop at 1152 × 1080, no frame over 20 ms, for the whole valley turning and a low flight down the river, even with the terrain drawn twice per frame. Distant patches use 60 or 120 m geometry. The lighting keeps 30 m detail because it comes from a normal map.</dd>
         <dt>Motion</dt><dd>Reduced-motion mode swaps camera flights for cuts.</dd>
       </dl>
     </section>
@@ -805,7 +807,7 @@ html{scroll-behavior:smooth}
             <tr><td>The real flood was a debris flow; the model is clean water</td><td class="num">Certain / Medium</td><td>Claim arrival time and extent only, and say so on screen.</td></tr>
             <tr><td>Published event figures disagree</td><td class="num">High / Medium</td><td>Treat them as ranges; the scenario set spans them.</td></tr>
             <tr><td>Colab GPU unavailable</td><td class="num">Medium / Low</td><td>Kaggle as backup; CPU runs overnight; each run is saved once and reused.</td></tr>
-            <tr><td>Visual ambition outruns Iris Xe</td><td class="num">Medium / High</td><td>Budgets fixed in P0, quality tiers, weekly profiling, recorded video as a fallback.</td></tr>
+            <tr><td>Visual ambition outruns Iris Xe</td><td class="num">Medium / High</td><td>Budgets fixed in P0, quality tiers, weekly profiling, recorded video as a fallback. P0: terrain alone holds 60 fps with room to draw it twice.</td></tr>
             <tr><td>Weak lake labels in shadow or ice</td><td class="num">Medium / Medium</td><td>A hand-checked hard-case test set.</td></tr>
             <tr><td>30 m elevation too coarse in narrow gorges</td><td class="num">High / Medium</td><td>Claims at valley scale only; a second elevation model as a stretch test.</td></tr>
             <tr><td>Scope creeps to the whole Himalaya</td><td class="num">High / Medium</td><td>Sikkim plus three test events is the MVP; anything wider is stretch.</td></tr>

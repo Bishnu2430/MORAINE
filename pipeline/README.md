@@ -129,6 +129,27 @@ The gate now measures the front where water is 10 cm deep, 1% of the dam's depth
 the gap to shrink as cells get finer. It is 2-4 cells behind at every cell size, which at 30 m
 cells is about 0.2% of the 60 km valley. The 1 cm figure is still printed as an INFO line.
 
+## P0 spike: Teesta terrain for the browser
+
+```
+.venv\Scripts\python pipeline\scripts\p0_terrain.py --project master-bruin-515809-p2
+```
+
+About a minute on Earth Engine. It traces the river from South Lhonak lake to Chungthang on MERIT
+Hydro's flow directions (74 km). It keeps the Copernicus GLO-30 elevation (2024 edition) within
+5 km of the river, on a 30 m UTM 45N grid, and writes the web package to
+`web/public/data/teesta/terrain/`. A good run (26 Nov 2026) ends with **3 of 3 checks passed**:
+
+- the lake surface reads 5,194 m (expected 5,100-5,300 m)
+- the Teesta at Chungthang reads 1,531 m (expected 1,400-1,900 m)
+- all three height levels come to 2.05 MB as a web server sends them, gzip-compressed (budget 3 MB)
+
+The corridor covers 742 km² and runs from 1,296 to 6,878 m. A shaded map of it is in
+`docs/p0/terrain-corridor.png`. The browser side, and its frame-rate test, is described in
+`web/README.md`. Measured on this laptop's Iris Xe at 1152 × 1080, it holds 60 fps with no
+frame over 20 ms, for the whole valley turning and for a low flight down the river. It still
+does so with the terrain drawn twice per frame (`docs/p0/terrain-bench.json`).
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the
