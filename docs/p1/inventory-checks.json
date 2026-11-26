@@ -1,0 +1,52 @@
+{
+ "lakes_per_year": {
+  "2018": 5894,
+  "2020": 5894,
+  "2022": 5894
+ },
+ "south_lhonak": [
+  {
+   "year": 2018,
+   "found": true,
+   "listed_km2": 1.456564005,
+   "outline_km2": 1.4519,
+   "p0_km2": 1.485,
+   "gap": -0.0223
+  },
+  {
+   "year": 2020,
+   "found": true,
+   "listed_km2": 1.538764642,
+   "outline_km2": 1.5339,
+   "p0_km2": 1.551,
+   "gap": -0.011
+  },
+  {
+   "year": 2022,
+   "found": true,
+   "listed_km2": 1.675933918,
+   "outline_km2": 1.6706,
+   "p0_km2": 1.644,
+   "gap": 0.0162
+  }
+ ],
+ "thame_lower": [
+  {
+   "year": 2018,
+   "km2": 0.044
+  },
+  {
+   "year": 2020,
+   "km2": 0.0472
+  },
+  {
+   "year": 2022,
+   "km2": 0.0449
+  }
+ ],
+ "Gongbatongsha (drained 2016, 0.017 km2)": [],
+ "Chorabari (drained 2013)": [],
+ "south_lhonak_hazard": {
+  "H_Level": "Very high"
+ }
+}

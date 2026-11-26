@@ -168,6 +168,21 @@ it covers:
 Findings and verdicts are written up in `docs/p0/events.md`. The facts behind each event, with
 their sources, are in `moraine/events.py`.
 
+## P1: the glacial lake inventory used as labels
+
+```
+.venv\Scripts\python pipeline\scripts\p1_inventory.py
+```
+
+This fetches the Zhang et al. (2023) Third Pole inventory (Zenodo 10.5281/zenodo.8369314, CC BY
+4.0, 17.3 MB). It holds hand-drawn Sentinel-2 outlines of the 5,894 glacial lakes of at least
+0.02 km² within 10 km of a glacier, for 2018, 2020 and 2022.
+
+The script saves the zip to `pipeline/data/zhang2023/`, which stays out of git, and checks it
+against the published MD5. It then tests the outlines against what P0 measured. A good run ends
+with **6 of 6 checks passed**: South Lhonak within 2.2% of P0 in every year, Thame's breached lake
+present, and the two drained lakes absent. The P1 plan is in `docs/p1/plan.md`.
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the

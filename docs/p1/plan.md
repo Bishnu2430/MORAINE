@@ -21,10 +21,17 @@ in Sikkim.
 
 ## Steps, each with its own check
 
-1. **Fetch the inventory and test it against what P0 measured.**
-   - South Lhonak's 2022 outline should match the P0 area curve within about 5%.
-   - Thame's breached lake should appear in 2018–2022 at about 0.04 km².
-   - Gongbatongsha's lake should be absent, being under 0.02 km².
+1. **Fetch the inventory and test it against what P0 measured.** Done 26 Nov 2026
+   (`pipeline/scripts/p1_inventory.py`), 6 of 6 checks passed (`inventory-checks.json`).
+   - **South Lhonak:** 1.452, 1.534 and 1.671 km² in 2018, 2020 and 2022, against P0's
+     Sentinel-2 composites of 1.485, 1.551 and 1.644 km² (within 2.2% every year).
+   - **Thame's breached lake:** listed every year at 0.044–0.047 km².
+   - **Gongbatongsha and Chorabari:** both absent, as they had drained.
+   - **Contents:** 5,894 lakes, the same lakes in the same order in every year's file. Only the
+     2022 file carries attributes, including each lake's area in 1990, which is useful for growth
+     curves.
+   - **Bonus:** the paper rates South Lhonak's hazard "Very high". Its dataset went online on 22 Sep
+     2023, twelve days before the lake burst.
 2. **Study areas.** Fix the three boxes (North Sikkim headwaters, Bhote Koshi/Poiqu, Khumbu/Thame)
    and count the inventory lakes in each.
 3. **Simple method at scale.** For every autumn from 2017 to 2025:
