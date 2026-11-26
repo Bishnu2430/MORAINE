@@ -99,6 +99,22 @@ def trace_downhill(directions: np.ndarray, start: tuple[int, int], stop=None, ma
     return path
 
 
+def upstream_mask(directions: np.ndarray, outlet: tuple[int, int]) -> np.ndarray:
+    """Every cell whose D8 flow path reaches `outlet` (row, col), the outlet included."""
+    rows, cols = directions.shape
+    mask = np.zeros(directions.shape, dtype=bool)
+    mask[outlet] = True
+    stack = [outlet]
+    while stack:
+        r, c = stack.pop()
+        for dr, dc in D8.values():
+            nr, nc = r - dr, c - dc  # the neighbour that would flow into (r, c) by stepping (dr, dc)
+            if 0 <= nr < rows and 0 <= nc < cols and not mask[nr, nc] and D8.get(int(directions[nr, nc])) == (dr, dc):
+                mask[nr, nc] = True
+                stack.append((nr, nc))
+    return mask
+
+
 def distance_to_polyline(xs: np.ndarray, ys: np.ndarray, line: np.ndarray) -> np.ndarray:
     """Distance from every point (xs, ys broadcast together) to the polyline `line` (n x 2), same units."""
     best = np.full(np.broadcast(xs, ys).shape, np.inf)

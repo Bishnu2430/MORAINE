@@ -183,6 +183,16 @@ against the published MD5. It then tests the outlines against what P0 measured. 
 with **6 of 6 checks passed**: South Lhonak within 2.2% of P0 in every year, Thame's breached lake
 present, and the two drained lakes absent. The P1 plan is in `docs/p1/plan.md`.
 
+```
+.venv\Scripts\python pipeline\scripts\p1_study_areas.py --project master-bruin-515809-p2
+```
+
+Builds the study areas: the whole catchment draining to the end of each P0 flood route, from
+HydroSHEDS level-12 basins. It writes them to `pipeline/moraine/study_areas.geojson` and counts the
+inventory lakes in each. A good run ends with **12 of 12 checks passed**: each catchment closes
+inside its search box, holds its key lake, and holds exactly the lakes MERIT Hydro's own catchment
+holds. North Sikkim has 101 lakes, Bhote Koshi/Poiqu 36 and Khumbu 54.
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the

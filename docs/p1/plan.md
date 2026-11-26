@@ -32,8 +32,25 @@ in Sikkim.
      curves.
    - **Bonus:** the paper rates South Lhonak's hazard "Very high". Its dataset went online on 22 Sep
      2023, twelve days before the lake burst.
-2. **Study areas.** Fix the three boxes (North Sikkim headwaters, Bhote Koshi/Poiqu, Khumbu/Thame)
-   and count the inventory lakes in each.
+2. **Study areas.** Done 26 Nov 2026 (`pipeline/scripts/p1_study_areas.py`), 12 of 12 checks
+   passed. Each area is the whole catchment draining to the end of its P0 flood route, built from
+   HydroSHEDS level-12 basins. The outlines are in `pipeline/moraine/study_areas.geojson`, with
+   maps in `study-area-*.png`.
+
+   | Area | Catchment | Lakes ≥ 0.02 km² (2022) | Lake area 1990 → 2022 | Hazard very high / high |
+   |---|---|---|---|---|
+   | North Sikkim (Teesta above Chungthang) | 2,848 km² | 101 | 15.5 → 20.7 km² | 17 / 24 |
+   | Bhote Koshi / Poiqu above Barabise | 2,516 km² | 36 | 11.6 → 18.2 km² | 9 / 7 |
+   | Khumbu (Bhote and Dudh Koshi below Thame) | 1,315 km² | 54 | 4.3 → 6.7 km² | 4 / 10 |
+   | Mandakini (Kedarnath; count only) | 334 km² | 2 | 0.04 → 0.07 km² | 0 / 0 |
+
+   - **Area check:** Sikkim and Bhote Koshi agree with MERIT Hydro's drainage area within 3%.
+     Khumbu runs 16% larger and Mandakini 30%, because the HydroSHEDS block holding each outlet
+     reaches downstream of it.
+   - **Why that's fine:** an area-match gate first failed for those two. The gate is now that each
+     outline holds exactly the lakes MERIT's exact catchment holds, which it does in all four. The
+     extra strip has no lakes.
+   - **Scale:** 191 lakes across the three study areas.
 3. **Simple method at scale.** For every autumn from 2017 to 2025:
    - Build a Sentinel-2 composite.
    - Apply the water index plus an infrared water index, a slope mask and a shadow mask.

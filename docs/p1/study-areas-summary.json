@@ -1,0 +1,219 @@
+{
+ "sikkim": {
+  "name": "North Sikkim: Teesta above Chungthang",
+  "role": "study",
+  "outlet": [
+   88.65625,
+   27.59125
+  ],
+  "route_km": 76.2,
+  "catchment_km2": 2848.2,
+  "merit_upstream_km2": 2767.0,
+  "basins": 21,
+  "lakes_2022": 101,
+  "lake_area_2022_km2": 20.646,
+  "lake_area_1990_km2": 15.446,
+  "lakes_by_size_km2": {
+   "0.02-0.05": 34,
+   "0.05-0.1": 13,
+   "0.1-0.5": 31,
+   "0.5-100": 11
+  },
+  "lakes_by_hazard": {
+   "Very high": 17,
+   "High": 24,
+   "Medium": 30,
+   "Low": 11,
+   "Very low": 18
+  },
+  "largest": [
+   [
+    1.878,
+    27.9878,
+    88.8152
+   ],
+   [
+    1.676,
+    27.9119,
+    88.1952
+   ],
+   [
+    1.264,
+    28.0038,
+    88.7134
+   ],
+   [
+    1.129,
+    28.027,
+    88.7102
+   ],
+   [
+    1.081,
+    28.005,
+    88.6973
+   ]
+  ],
+  "outline_vs_merit": 0.029,
+  "lakes_outline_only": [],
+  "lakes_merit_only": []
+ },
+ "bhote_koshi": {
+  "name": "Bhote Koshi / Poiqu above Barabise",
+  "role": "study",
+  "outlet": [
+   85.88958,
+   27.77625
+  ],
+  "route_km": 52.0,
+  "catchment_km2": 2516.2,
+  "merit_upstream_km2": 2454.0,
+  "basins": 18,
+  "lakes_2022": 36,
+  "lake_area_2022_km2": 18.235,
+  "lake_area_1990_km2": 11.613,
+  "lakes_by_size_km2": {
+   "0.02-0.05": 6,
+   "0.05-0.1": 6,
+   "0.1-0.5": 14,
+   "0.5-100": 6
+  },
+  "lakes_by_hazard": {
+   "Very high": 9,
+   "High": 7,
+   "Medium": 8,
+   "Low": 6,
+   "Very low": 5
+  },
+  "largest": [
+   [
+    5.508,
+    28.3207,
+    85.8356
+   ],
+   [
+    4.678,
+    28.3594,
+    85.8707
+   ],
+   [
+    2.084,
+    28.3281,
+    85.8709
+   ],
+   [
+    0.64,
+    28.3466,
+    86.2267
+   ],
+   [
+    0.591,
+    28.303,
+    86.1574
+   ]
+  ],
+  "outline_vs_merit": 0.025,
+  "lakes_outline_only": [],
+  "lakes_merit_only": []
+ },
+ "khumbu": {
+  "name": "Khumbu: Bhote Koshi below Thame",
+  "role": "study",
+  "outlet": [
+   86.72125,
+   27.78542
+  ],
+  "route_km": 20.1,
+  "catchment_km2": 1314.9,
+  "merit_upstream_km2": 1131.2,
+  "basins": 10,
+  "lakes_2022": 54,
+  "lake_area_2022_km2": 6.656,
+  "lake_area_1990_km2": 4.32,
+  "lakes_by_size_km2": {
+   "0.02-0.05": 22,
+   "0.05-0.1": 9,
+   "0.1-0.5": 11,
+   "0.5-100": 3
+  },
+  "lakes_by_hazard": {
+   "Very high": 4,
+   "High": 10,
+   "Medium": 12,
+   "Low": 10,
+   "Very low": 10
+  },
+  "largest": [
+   [
+    1.734,
+    27.8984,
+    86.9271
+   ],
+   [
+    0.561,
+    27.975,
+    86.6805
+   ],
+   [
+    0.527,
+    27.9235,
+    86.7878
+   ],
+   [
+    0.432,
+    27.9514,
+    86.6903
+   ],
+   [
+    0.414,
+    27.8743,
+    86.5865
+   ]
+  ],
+  "outline_vs_merit": 0.162,
+  "lakes_outline_only": [],
+  "lakes_merit_only": []
+ },
+ "mandakini": {
+  "name": "Mandakini above Kedarnath's flood route end",
+  "role": "count only",
+  "outlet": [
+   79.01792,
+   30.61542
+  ],
+  "route_km": 20.1,
+  "catchment_km2": 334.4,
+  "merit_upstream_km2": 256.6,
+  "basins": 2,
+  "lakes_2022": 2,
+  "lake_area_2022_km2": 0.07,
+  "lake_area_1990_km2": 0.036,
+  "lakes_by_size_km2": {
+   "0.02-0.05": 2,
+   "0.05-0.1": 0,
+   "0.1-0.5": 0,
+   "0.5-100": 0
+  },
+  "lakes_by_hazard": {
+   "Very high": 0,
+   "High": 0,
+   "Medium": 1,
+   "Low": 1,
+   "Very low": 0
+  },
+  "largest": [
+   [
+    0.043,
+    30.7348,
+    78.9862
+   ],
+   [
+    0.027,
+    30.7418,
+    79.0096
+   ]
+  ],
+  "outline_vs_merit": 0.303,
+  "lakes_outline_only": [],
+  "lakes_merit_only": []
+ }
+}
