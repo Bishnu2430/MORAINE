@@ -111,3 +111,75 @@ def plot_area(df: pd.DataFrame, lake: dict, path: Path) -> None:
     fig.tight_layout(rect=(0, 0.06, 1, 1))
     fig.savefig(path, facecolor=c["surface"])
     plt.close(fig)
+
+
+def _style(ax, c):
+    ax.set_facecolor(c["surface"])
+    ax.grid(axis="y", color=c["grid"], linewidth=0.8)
+    ax.set_axisbelow(True)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color(c["axis"])
+    ax.tick_params(colors=c["muted"], labelcolor=c["ink2"])
+
+
+def plot_dam_break(run: dict, refinement: list[tuple[float, float]], t_end: float, h0: float, path: Path) -> None:
+    """Left: depth along the channel against Ritter's exact solution. Right: error against cell size."""
+    c = COLORS
+    plt.rcParams["font.family"] = ["Segoe UI", "DejaVu Sans"]
+    fig, (left, right) = plt.subplots(1, 2, figsize=(11, 4.8), dpi=150, gridspec_kw={"width_ratios": [1.7, 1]})
+    fig.patch.set_facecolor(c["surface"])
+    for ax in (left, right):
+        _style(ax, c)
+
+    x, h, exact = run["x"], run["h"], run["exact"]
+    shown = (x > -350) & (x < 520)
+    left.plot([-350, 0, 0, 520], [h0, h0, 0, 0], color=c["muted"], linewidth=1, linestyle=(0, (4, 3)),
+              label="Before the dam fails", zorder=1)
+    left.plot(x[shown], exact[shown], color=c["ink"], linewidth=2, label="Exact solution (Ritter 1892)", zorder=2)
+    left.scatter(x[shown], h[shown], s=14, color=c["Landsat"], edgecolor=c["surface"], linewidth=0.6,
+                 label=f"Solver, {x[1] - x[0]:g} m cells", zorder=3)
+    left.set_xlim(-350, 520)
+    left.set_ylim(0, h0 * 1.08)
+    left.set_xlabel("Distance from the dam (m)", color=c["ink2"])
+    left.set_ylabel("Water depth (m)", color=c["ink2"])
+    left.set_title(f"Depth {t_end:g} s after the dam fails", loc="left", fontsize=12, fontweight="bold",
+                   color=c["ink"], pad=12)
+    legend = left.legend(loc="upper right", frameon=False, fontsize=8.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+
+    sizes = [r[0] for r in refinement]
+    errors = [100 * r[1] for r in refinement]
+    right.plot(sizes, [errors[0] * s / sizes[0] for s in sizes], color=c["muted"], linewidth=1,
+               linestyle=(0, (4, 3)), label="Halving with the cell size", zorder=1)
+    right.plot(sizes, errors, color=c["Landsat"], linewidth=2, marker="o", markersize=6,
+               markeredgecolor=c["surface"], markeredgewidth=1.2, label="Solver", zorder=2)
+    for i, (s, e) in enumerate(zip(sizes, errors)):
+        first = i == 0  # the first point sits on the axis, so its label goes to the right
+        right.annotate(f"{e:.2f}%", (s, e), xytext=(8, 4) if first else (-8, -4), textcoords="offset points",
+                       ha="left" if first else "right", va="bottom" if first else "top", fontsize=8,
+                       color=c["ink2"])
+    right.set_xscale("log")
+    right.set_yscale("log")
+    right.invert_xaxis()
+    right.set_xticks(sizes, [f"{s:g}" for s in sizes])
+    right.minorticks_off()
+    right.set_ylim(min(errors) * 0.6, max(errors) * 1.5)
+    right.set_yticks([0.25, 0.5, 1, 2], ["0.25%", "0.5%", "1%", "2%"])
+    legend = right.legend(loc="upper right", frameon=False, fontsize=8.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+    right.set_xlabel("Cell size (m), finer to the right", color=c["ink2"])
+    right.set_ylabel("Depth error", color=c["ink2"])
+    right.set_title("Error shrinks with finer cells", loc="left", fontsize=12, fontweight="bold", color=c["ink"],
+                    pad=12)
+
+    note = (f"Kurganov-Petrova scheme in PyTorch, float64. A dam holding {h0:g} m of water fails instantly onto a dry, "
+            "flat, frictionless bed. Depth error: total difference from the exact\nsolution as a share of the water "
+            "in the moving wave.")
+    fig.text(0.01, 0.015, note, fontsize=7.2, color=c["muted"], linespacing=1.4)
+    fig.tight_layout(rect=(0, 0.07, 1, 1))
+    fig.savefig(path, facecolor=c["surface"])
+    plt.close(fig)
