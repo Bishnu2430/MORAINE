@@ -1,0 +1,3530 @@
+[
+ {
+  "case": "sikkim-ice-01",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4674,
+  "lake_2022": 4264,
+  "lon": 88.34872,
+  "lat": 27.96489,
+  "lake_km2": 0.0522,
+  "date": "2020-12-18",
+  "scene": "20201218T045211_20201218T045213_T45RXL",
+  "cloud": 0.227,
+  "shadow": 0.002,
+  "ice": 0.65,
+  "red": 0.289,
+  "nir": 0.26,
+  "cloud_near": 0.065,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 521,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 521,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-02",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2018,
+  "lake_index": 4184,
+  "lake_2022": 4216,
+  "lon": 88.74104,
+  "lat": 27.87874,
+  "lake_km2": 0.0476,
+  "date": "2018-11-16",
+  "scene": "20181116T044041_20181116T044038_T45RXL",
+  "cloud": 0.112,
+  "shadow": 0.403,
+  "ice": 0.649,
+  "red": 0.499,
+  "nir": 0.5,
+  "cloud_near": 0.216,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 470,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 470,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-03",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2022,
+  "lake_index": 4250,
+  "lake_2022": 4250,
+  "lon": 88.54624,
+  "lat": 27.99254,
+  "lake_km2": 0.6617,
+  "date": "2022-12-25",
+  "scene": "20221225T044211_20221225T044211_T45RXL",
+  "cloud": 0.235,
+  "shadow": 0.261,
+  "ice": 0.651,
+  "red": 0.521,
+  "nir": 0.524,
+  "cloud_near": 0.339,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 6611,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 6611,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-04",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2018,
+  "lake_index": 4187,
+  "lake_2022": 4219,
+  "lon": 88.78953,
+  "lat": 27.90509,
+  "lake_km2": 0.0231,
+  "date": "2018-12-01",
+  "scene": "20181201T044139_20181201T044801_T45RXL",
+  "cloud": 0.294,
+  "shadow": 0,
+  "ice": 0.651,
+  "red": 0.321,
+  "nir": 0.245,
+  "cloud_near": 0.253,
+  "covered_near": 1,
+  "red_rise": 0.136,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-05",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2022,
+  "lake_index": 4213,
+  "lake_2022": 4213,
+  "lon": 88.75391,
+  "lat": 27.86409,
+  "lake_km2": 0.0271,
+  "date": "2022-12-20",
+  "scene": "20221220T044209_20221220T044737_T45RXL",
+  "cloud": 0.179,
+  "shadow": 0.007,
+  "ice": 0.652,
+  "red": 0.404,
+  "nir": 0.328,
+  "cloud_near": 0.271,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 273,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 273,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-06",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4791,
+  "lake_2022": 4789,
+  "lon": 88.80093,
+  "lat": 27.99313,
+  "lake_km2": 0.0845,
+  "date": "2020-12-05",
+  "scene": "20201205T044141_20201205T044144_T45RXM",
+  "cloud": 0.103,
+  "shadow": 0.26,
+  "ice": 0.652,
+  "red": 0.308,
+  "nir": 0.243,
+  "cloud_near": 0.329,
+  "covered_near": 1,
+  "red_rise": 0.135,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 835,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 835,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-08",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4671,
+  "lake_2022": 4257,
+  "lon": 88.42984,
+  "lat": 27.96905,
+  "lake_km2": 0.1343,
+  "date": "2020-12-10",
+  "scene": "20201210T044159_20201210T044200_T45RXL",
+  "cloud": 0.181,
+  "shadow": 0,
+  "ice": 0.653,
+  "red": 0.258,
+  "nir": 0.225,
+  "cloud_near": 0.136,
+  "covered_near": 1,
+  "red_rise": 0.161,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 1338,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 1338,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-09",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4830,
+  "lake_2022": null,
+  "lon": 88.74362,
+  "lat": 27.99726,
+  "lake_km2": 0.0284,
+  "date": "2020-11-15",
+  "scene": "20201115T044051_20201115T044045_T45RXL",
+  "cloud": 0.085,
+  "shadow": 0,
+  "ice": 0.646,
+  "red": 0.346,
+  "nir": 0.292,
+  "cloud_near": 0.105,
+  "covered_near": 1,
+  "red_rise": 0.311,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 285,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 285,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-10",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2018,
+  "lake_index": 4212,
+  "lake_2022": 4244,
+  "lon": 88.71389,
+  "lat": 27.95667,
+  "lake_km2": 0.2903,
+  "date": "2018-12-01",
+  "scene": "20181201T044139_20181201T044801_T45RXL",
+  "cloud": 0.152,
+  "shadow": 0.001,
+  "ice": 0.646,
+  "red": 0.334,
+  "nir": 0.236,
+  "cloud_near": 0.164,
+  "covered_near": 1,
+  "red_rise": 0.118,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.18860103626943006,
+    "lake_cells": 2895,
+    "mapped_cells": 546,
+    "area_error": -0.81139896373057
+   },
+   "ndwi_mndwi": {
+    "iou": 0.18860103626943006,
+    "lake_cells": 2895,
+    "mapped_cells": 546,
+    "area_error": -0.81139896373057
+   }
+  }
+ },
+ {
+  "case": "sikkim-ice-11",
+  "area": "sikkim",
+  "split": "test",
+  "category": "ice",
+  "year": 2018,
+  "lake_index": 4229,
+  "lake_2022": 4263,
+  "lon": 88.34443,
+  "lat": 27.96965,
+  "lake_km2": 0.039,
+  "date": "2018-12-09",
+  "scene": "20181209T045201_20181209T045738_T45RXL",
+  "cloud": 0.141,
+  "shadow": 0,
+  "ice": 0.646,
+  "red": 0.392,
+  "nir": 0.345,
+  "cloud_near": 0.224,
+  "covered_near": 1,
+  "red_rise": 0.231,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 390,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 390,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-01",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2018,
+  "lake_index": 4195,
+  "lake_2022": 4227,
+  "lon": 88.78628,
+  "lat": 27.9914,
+  "lake_km2": 0.0217,
+  "date": "2018-11-26",
+  "scene": "20181126T044121_20181126T044116_T45RXL",
+  "cloud": 0.142,
+  "shadow": 1,
+  "ice": 0,
+  "red": 0.023,
+  "nir": 0.015,
+  "cloud_near": 0.131,
+  "covered_near": 1,
+  "red_rise": -0.021,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 222,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 222,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-02",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2022,
+  "lake_index": 4234,
+  "lake_2022": 4234,
+  "lon": 88.63933,
+  "lat": 28.00154,
+  "lake_km2": 0.3024,
+  "date": "2022-12-20",
+  "scene": "20221220T044209_20221220T044737_T45RXL",
+  "cloud": 0.06,
+  "shadow": 0.572,
+  "ice": 0.059,
+  "red": 0.106,
+  "nir": 0.07,
+  "cloud_near": 0.044,
+  "covered_near": 1,
+  "red_rise": 0.077,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8410509031198686,
+    "lake_cells": 3017,
+    "mapped_cells": 2589,
+    "area_error": -0.14186277759363608
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8410509031198686,
+    "lake_cells": 3017,
+    "mapped_cells": 2589,
+    "area_error": -0.14186277759363608
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-03",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2022,
+  "lake_index": 4216,
+  "lake_2022": 4216,
+  "lon": 88.74117,
+  "lat": 27.87892,
+  "lake_km2": 0.0463,
+  "date": "2022-12-05",
+  "scene": "20221205T044151_20221205T045021_T45RXL",
+  "cloud": 0.096,
+  "shadow": 0.544,
+  "ice": 0.284,
+  "red": 0.176,
+  "nir": 0.161,
+  "cloud_near": 0.093,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 458,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 458,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-04",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2018,
+  "lake_index": 4789,
+  "lake_2022": 4789,
+  "lon": 88.80111,
+  "lat": 27.99312,
+  "lake_km2": 0.0981,
+  "date": "2018-12-16",
+  "scene": "20181216T044201_20181216T044230_T45RXL",
+  "cloud": 0.25,
+  "shadow": 0.38,
+  "ice": 0.104,
+  "red": 0.157,
+  "nir": 0.095,
+  "cloud_near": 0.156,
+  "covered_near": 1,
+  "red_rise": -0.025,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.559322033898305,
+    "lake_cells": 978,
+    "mapped_cells": 586,
+    "area_error": -0.40081799591002043
+   },
+   "ndwi_mndwi": {
+    "iou": 0.559322033898305,
+    "lake_cells": 978,
+    "mapped_cells": 586,
+    "area_error": -0.40081799591002043
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-06",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2018,
+  "lake_index": 4215,
+  "lake_2022": 4250,
+  "lon": 88.54582,
+  "lat": 27.99227,
+  "lake_km2": 0.6792,
+  "date": "2018-12-06",
+  "scene": "20181206T044141_20181206T044630_T45RXL",
+  "cloud": 0.103,
+  "shadow": 0.272,
+  "ice": 0.0,
+  "red": 0.061,
+  "nir": 0.037,
+  "cloud_near": 0.047,
+  "covered_near": 1,
+  "red_rise": 0.027,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8580130529369108,
+    "lake_cells": 6779,
+    "mapped_cells": 6032,
+    "area_error": -0.11019324384127449
+   },
+   "ndwi_mndwi": {
+    "iou": 0.854178757980267,
+    "lake_cells": 6779,
+    "mapped_cells": 6000,
+    "area_error": -0.11491370408614843
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-07",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2020,
+  "lake_index": 4689,
+  "lake_2022": 4227,
+  "lon": 88.78628,
+  "lat": 27.9914,
+  "lake_km2": 0.0218,
+  "date": "2020-11-30",
+  "scene": "20201130T044139_20201130T044138_T45RXL",
+  "cloud": 0.02,
+  "shadow": 1,
+  "ice": 0,
+  "red": 0.052,
+  "nir": 0.035,
+  "cloud_near": 0.139,
+  "covered_near": 1,
+  "red_rise": 0.003,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 221,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 221,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-08",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2022,
+  "lake_index": 4227,
+  "lake_2022": 4227,
+  "lon": 88.78629,
+  "lat": 27.99157,
+  "lake_km2": 0.0228,
+  "date": "2022-12-10",
+  "scene": "20221210T044159_20221210T044701_T45RXL",
+  "cloud": 0.032,
+  "shadow": 1,
+  "ice": 0,
+  "red": 0.024,
+  "nir": 0.015,
+  "cloud_near": 0.15,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 230,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 230,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-09",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2020,
+  "lake_index": 4195,
+  "lake_2022": 4234,
+  "lon": 88.63929,
+  "lat": 28.00196,
+  "lake_km2": 0.3158,
+  "date": "2020-12-20",
+  "scene": "20201220T044209_20201220T044209_T45RXL",
+  "cloud": 0.102,
+  "shadow": 0.569,
+  "ice": 0.024,
+  "red": 0.075,
+  "nir": 0.043,
+  "cloud_near": 0.077,
+  "covered_near": 1,
+  "red_rise": 0.042,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8263867126292698,
+    "lake_cells": 3144,
+    "mapped_cells": 2684,
+    "area_error": -0.14631043256997456
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8263867126292698,
+    "lake_cells": 3144,
+    "mapped_cells": 2684,
+    "area_error": -0.14631043256997456
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-10",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2018,
+  "lake_index": 4202,
+  "lake_2022": 4234,
+  "lon": 88.63931,
+  "lat": 28.00196,
+  "lake_km2": 0.3152,
+  "date": "2018-12-11",
+  "scene": "20181211T044159_20181211T044627_T45RXL",
+  "cloud": 0.046,
+  "shadow": 0.53,
+  "ice": 0.0,
+  "red": 0.058,
+  "nir": 0.034,
+  "cloud_near": 0.08,
+  "covered_near": 1,
+  "red_rise": 0.023,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8647297719462668,
+    "lake_cells": 3145,
+    "mapped_cells": 2824,
+    "area_error": -0.10206677265500796
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8647297719462668,
+    "lake_cells": 3145,
+    "mapped_cells": 2824,
+    "area_error": -0.10206677265500796
+   }
+  }
+ },
+ {
+  "case": "sikkim-shadow-11",
+  "area": "sikkim",
+  "split": "test",
+  "category": "shadow",
+  "year": 2018,
+  "lake_index": 4184,
+  "lake_2022": 4216,
+  "lon": 88.74104,
+  "lat": 27.87874,
+  "lake_km2": 0.0476,
+  "date": "2018-11-11",
+  "scene": "20181111T044019_20181111T044131_T45RXL",
+  "cloud": 0.267,
+  "shadow": 0.383,
+  "ice": 0.112,
+  "red": 0.137,
+  "nir": 0.11,
+  "cloud_near": 0.178,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 470,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 470,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-02",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4228,
+  "lake_2022": 4280,
+  "lon": 88.23196,
+  "lat": 27.84284,
+  "lake_km2": 0.1191,
+  "date": "2020-09-01",
+  "scene": "20200901T043709_20200901T043834_T45RXL",
+  "cloud": 0.547,
+  "shadow": 0,
+  "ice": 0.002,
+  "red": 0.238,
+  "nir": 0.185,
+  "cloud_near": 0.755,
+  "covered_near": 1,
+  "red_rise": 0.12,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.4716666666666667,
+    "lake_cells": 1193,
+    "mapped_cells": 573,
+    "area_error": -0.5196982397317687
+   },
+   "ndwi_mndwi": {
+    "iou": 0.47,
+    "lake_cells": 1193,
+    "mapped_cells": 571,
+    "area_error": -0.5213746856663872
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-04",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2022,
+  "lake_index": 4275,
+  "lake_2022": 4275,
+  "lon": 88.25055,
+  "lat": 27.88106,
+  "lake_km2": 0.145,
+  "date": "2022-10-01",
+  "scene": "20221001T043659_20221001T044239_T45RXL",
+  "cloud": 0.845,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.285,
+  "nir": 0.304,
+  "cloud_near": 0.822,
+  "covered_near": 1,
+  "red_rise": 0.119,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 1449,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 1449,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-08",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2022,
+  "lake_index": 4206,
+  "lake_2022": 4206,
+  "lon": 88.8556,
+  "lat": 27.87358,
+  "lake_km2": 0.0459,
+  "date": "2022-10-26",
+  "scene": "20221026T043901_20221026T044217_T45RXL",
+  "cloud": 0.312,
+  "shadow": 0,
+  "ice": 0.027,
+  "red": 0.175,
+  "nir": 0.137,
+  "cloud_near": 0.025,
+  "covered_near": 1,
+  "red_rise": 0.122,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.5327510917030568,
+    "lake_cells": 458,
+    "mapped_cells": 244,
+    "area_error": -0.4672489082969432
+   },
+   "ndwi_mndwi": {
+    "iou": 0.5240174672489083,
+    "lake_cells": 458,
+    "mapped_cells": 240,
+    "area_error": -0.4759825327510917
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-09",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4205,
+  "lake_2022": 4250,
+  "lon": 88.54623,
+  "lat": 27.99242,
+  "lake_km2": 0.6675,
+  "date": "2020-10-01",
+  "scene": "20201001T043709_20201001T044721_T45RXL",
+  "cloud": 0.622,
+  "shadow": 0.003,
+  "ice": 0.015,
+  "red": 0.165,
+  "nir": 0.147,
+  "cloud_near": 0.638,
+  "covered_near": 1,
+  "red_rise": 0.118,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.37411905832958464,
+    "lake_cells": 6664,
+    "mapped_cells": 2500,
+    "area_error": -0.6248499399759904
+   },
+   "ndwi_mndwi": {
+    "iou": 0.37423128843557824,
+    "lake_cells": 6664,
+    "mapped_cells": 2498,
+    "area_error": -0.6251500600240096
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-10",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2022,
+  "lake_index": 4827,
+  "lake_2022": 4827,
+  "lon": 88.71024,
+  "lat": 28.02704,
+  "lake_km2": 1.1268,
+  "date": "2022-10-01",
+  "scene": "20221001T043659_20221001T044239_T45RXM",
+  "cloud": 0.502,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.151,
+  "nir": 0.145,
+  "cloud_near": 0.364,
+  "covered_near": 1,
+  "red_rise": 0.117,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.5538570920725204,
+    "lake_cells": 11252,
+    "mapped_cells": 6232,
+    "area_error": -0.44614290792747957
+   },
+   "ndwi_mndwi": {
+    "iou": 0.5375044436544615,
+    "lake_cells": 11252,
+    "mapped_cells": 6048,
+    "area_error": -0.4624955563455385
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-12",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4187,
+  "lake_2022": 4224,
+  "lon": 88.79703,
+  "lat": 27.96862,
+  "lake_km2": 0.1872,
+  "date": "2020-09-16",
+  "scene": "20200916T043711_20200916T044458_T45RXM",
+  "cloud": 0.561,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.193,
+  "nir": 0.166,
+  "cloud_near": 0.511,
+  "covered_near": 1,
+  "red_rise": 0.117,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.40977639105564223,
+    "lake_cells": 1865,
+    "mapped_cells": 846,
+    "area_error": -0.5463806970509384
+   },
+   "ndwi_mndwi": {
+    "iou": 0.4078125,
+    "lake_cells": 1865,
+    "mapped_cells": 838,
+    "area_error": -0.5506702412868633
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-14",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4669,
+  "lake_2022": 4252,
+  "lon": 88.49353,
+  "lat": 28.00608,
+  "lake_km2": 0.4323,
+  "date": "2020-10-26",
+  "scene": "20201026T043901_20201026T044913_T45RXM",
+  "cloud": 0.381,
+  "shadow": 0.0,
+  "ice": 0.005,
+  "red": 0.23,
+  "nir": 0.181,
+  "cloud_near": 0.422,
+  "covered_near": 1,
+  "red_rise": 0.116,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.6145303100416474,
+    "lake_cells": 4311,
+    "mapped_cells": 2667,
+    "area_error": -0.3813500347947112
+   },
+   "ndwi_mndwi": {
+    "iou": 0.612037037037037,
+    "lake_cells": 4311,
+    "mapped_cells": 2653,
+    "area_error": -0.38459754117374156
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-15",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2018,
+  "lake_index": 4185,
+  "lake_2022": 4217,
+  "lon": 88.76128,
+  "lat": 27.89447,
+  "lake_km2": 0.4564,
+  "date": "2018-10-02",
+  "scene": "20181002T043659_20181002T044708_T45RXL",
+  "cloud": 0.703,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.193,
+  "nir": 0.171,
+  "cloud_near": 0.533,
+  "covered_near": 1,
+  "red_rise": 0.124,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.480104940970704,
+    "lake_cells": 4554,
+    "mapped_cells": 2216,
+    "area_error": -0.5133948177426438
+   },
+   "ndwi_mndwi": {
+    "iou": 0.47397200349956253,
+    "lake_cells": 4554,
+    "mapped_cells": 2185,
+    "area_error": -0.5202020202020202
+   }
+  }
+ },
+ {
+  "case": "sikkim-thin_cloud-18",
+  "area": "sikkim",
+  "split": "test",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4215,
+  "lake_2022": 4267,
+  "lon": 88.30509,
+  "lat": 27.9483,
+  "lake_km2": 0.3662,
+  "date": "2020-09-21",
+  "scene": "20200921T043659_20200921T044813_T45RXM",
+  "cloud": 0.987,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.251,
+  "nir": 0.204,
+  "cloud_near": 0.997,
+  "covered_near": 1,
+  "red_rise": 0.124,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.20877914951989027,
+    "lake_cells": 3644,
+    "mapped_cells": 762,
+    "area_error": -0.7908891328210758
+   },
+   "ndwi_mndwi": {
+    "iou": 0.20877914951989027,
+    "lake_cells": 3644,
+    "mapped_cells": 762,
+    "area_error": -0.7908891328210758
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-01",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2018,
+  "lake_index": 4247,
+  "lake_2022": 4281,
+  "lon": 88.24874,
+  "lat": 27.82111,
+  "lake_km2": 0.7631,
+  "date": "2018-11-19",
+  "scene": "20181119T045101_20181119T045059_T45RXL",
+  "cloud": 0.04,
+  "shadow": 0.002,
+  "ice": 0.008,
+  "red": 0.202,
+  "nir": 0.119,
+  "cloud_near": 0.032,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.6442970145445267,
+    "lake_cells": 7605,
+    "mapped_cells": 5283,
+    "area_error": -0.30532544378698223
+   },
+   "ndwi_mndwi": {
+    "iou": 0.6442970145445267,
+    "lake_cells": 7605,
+    "mapped_cells": 5283,
+    "area_error": -0.30532544378698223
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-02",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2022,
+  "lake_index": 4277,
+  "lake_2022": 4277,
+  "lon": 88.26542,
+  "lat": 27.88533,
+  "lake_km2": 0.0975,
+  "date": "2022-09-24",
+  "scene": "20220924T044659_20220924T045109_T45RXL",
+  "cloud": 0.033,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.172,
+  "nir": 0.118,
+  "cloud_near": 0.006,
+  "covered_near": 1,
+  "red_rise": 0.028,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 975,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 975,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-03",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4202,
+  "lake_2022": 4244,
+  "lon": 88.71398,
+  "lat": 27.95591,
+  "lake_km2": 0.3447,
+  "date": "2020-10-16",
+  "scene": "20201016T043801_20201016T044709_T45RXM",
+  "cloud": 0.018,
+  "shadow": 0,
+  "ice": 0.004,
+  "red": 0.201,
+  "nir": 0.118,
+  "cloud_near": 0.016,
+  "covered_near": 1,
+  "red_rise": 0.003,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 3446,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 3446,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-04",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2018,
+  "lake_index": 4187,
+  "lake_2022": 4219,
+  "lon": 88.78953,
+  "lat": 27.90509,
+  "lake_km2": 0.0231,
+  "date": "2018-09-17",
+  "scene": "20180917T043701_20180917T044308_T45RXL",
+  "cloud": 0.083,
+  "shadow": 0,
+  "ice": 0.01,
+  "red": 0.185,
+  "nir": 0.112,
+  "cloud_near": 0.004,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-05",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2018,
+  "lake_index": 4248,
+  "lake_2022": 4282,
+  "lon": 88.26104,
+  "lat": 27.81724,
+  "lake_km2": 0.1207,
+  "date": "2018-11-19",
+  "scene": "20181119T045101_20181119T045059_T45RXL",
+  "cloud": 0.091,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.227,
+  "nir": 0.105,
+  "cloud_near": 0.042,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8032921810699588,
+    "lake_cells": 1209,
+    "mapped_cells": 982,
+    "area_error": -0.18775847808105872
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8032921810699588,
+    "lake_cells": 1209,
+    "mapped_cells": 982,
+    "area_error": -0.18775847808105872
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-06",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2018,
+  "lake_index": 4790,
+  "lake_2022": 4790,
+  "lon": 88.80076,
+  "lat": 27.99731,
+  "lake_km2": 0.0256,
+  "date": "2018-09-27",
+  "scene": "20180927T043701_20180927T044358_T45RXL",
+  "cloud": 0.082,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.202,
+  "nir": 0.103,
+  "cloud_near": 0.017,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.7773584905660378,
+    "lake_cells": 255,
+    "mapped_cells": 216,
+    "area_error": -0.15294117647058825
+   },
+   "ndwi_mndwi": {
+    "iou": 0.7727272727272727,
+    "lake_cells": 255,
+    "mapped_cells": 213,
+    "area_error": -0.16470588235294115
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-07",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2018,
+  "lake_index": 4240,
+  "lake_2022": 4274,
+  "lon": 88.21192,
+  "lat": 27.89183,
+  "lake_km2": 0.1262,
+  "date": "2018-09-17",
+  "scene": "20180917T043701_20180917T044308_T45RXL",
+  "cloud": 0.093,
+  "shadow": 0,
+  "ice": 0.007,
+  "red": 0.156,
+  "nir": 0.101,
+  "cloud_near": 0.032,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.40188383045525905,
+    "lake_cells": 1261,
+    "mapped_cells": 525,
+    "area_error": -0.5836637589214908
+   },
+   "ndwi_mndwi": {
+    "iou": 0.4010989010989011,
+    "lake_cells": 1261,
+    "mapped_cells": 524,
+    "area_error": -0.5844567803330689
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-08",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4219,
+  "lake_2022": 4272,
+  "lon": 88.16045,
+  "lat": 27.91947,
+  "lake_km2": 0.8415,
+  "date": "2020-09-04",
+  "scene": "20200904T044659_20200904T044843_T45RXL",
+  "cloud": 0.028,
+  "shadow": 0,
+  "ice": 0.0,
+  "red": 0.201,
+  "nir": 0.098,
+  "cloud_near": 0.041,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8963937507341713,
+    "lake_cells": 8406,
+    "mapped_cells": 7738,
+    "area_error": -0.07946704734713295
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8964747356051704,
+    "lake_cells": 8406,
+    "mapped_cells": 7733,
+    "area_error": -0.08006186057577924
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-09",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2022,
+  "lake_index": 4276,
+  "lake_2022": 4276,
+  "lon": 88.26019,
+  "lat": 27.8824,
+  "lake_km2": 0.0907,
+  "date": "2022-10-14",
+  "scene": "20221014T044739_20221014T045324_T45RXL",
+  "cloud": 0.041,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.147,
+  "nir": 0.097,
+  "cloud_near": 0.037,
+  "covered_near": 1,
+  "red_rise": 0.003,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8183831672203765,
+    "lake_cells": 903,
+    "mapped_cells": 739,
+    "area_error": -0.18161683277962348
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8183831672203765,
+    "lake_cells": 903,
+    "mapped_cells": 739,
+    "area_error": -0.18161683277962348
+   }
+  }
+ },
+ {
+  "case": "sikkim-silty-10",
+  "area": "sikkim",
+  "split": "test",
+  "category": "silty",
+  "year": 2018,
+  "lake_index": 4245,
+  "lake_2022": 4279,
+  "lon": 88.24094,
+  "lat": 27.85164,
+  "lake_km2": 0.3146,
+  "date": "2018-09-07",
+  "scene": "20180907T043701_20180907T044447_T45RXL",
+  "cloud": 0.045,
+  "shadow": 0,
+  "ice": 0.001,
+  "red": 0.146,
+  "nir": 0.096,
+  "cloud_near": 0.027,
+  "covered_near": 1,
+  "red_rise": -0.016,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.5821462488129154,
+    "lake_cells": 3148,
+    "mapped_cells": 1850,
+    "area_error": -0.41232528589580686
+   },
+   "ndwi_mndwi": {
+    "iou": 0.5821462488129154,
+    "lake_cells": 3148,
+    "mapped_cells": 1850,
+    "area_error": -0.41232528589580686
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-01",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4225,
+  "lake_2022": 4277,
+  "lon": 88.26537,
+  "lat": 27.88521,
+  "lake_km2": 0.093,
+  "date": "2020-10-14",
+  "scene": "20201014T044749_20201014T050042_T45RXL",
+  "cloud": 0.043,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.104,
+  "nir": 0.04,
+  "cloud_near": 0,
+  "covered_near": 1,
+  "red_rise": -0.002,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.9034267912772586,
+    "lake_cells": 919,
+    "mapped_cells": 914,
+    "area_error": -0.005440696409140355
+   },
+   "ndwi_mndwi": {
+    "iou": 0.9063157894736842,
+    "lake_cells": 919,
+    "mapped_cells": 892,
+    "area_error": -0.029379760609357986
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-02",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4224,
+  "lake_2022": 4276,
+  "lon": 88.26011,
+  "lat": 27.88229,
+  "lake_km2": 0.0909,
+  "date": "2020-10-09",
+  "scene": "20201009T044711_20201009T045556_T45RXL",
+  "cloud": 0.025,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.115,
+  "nir": 0.055,
+  "cloud_near": 0,
+  "covered_near": 1,
+  "red_rise": 0.002,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8585106382978723,
+    "lake_cells": 906,
+    "mapped_cells": 841,
+    "area_error": -0.07174392935982343
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8566844919786096,
+    "lake_cells": 906,
+    "mapped_cells": 830,
+    "area_error": -0.08388520971302427
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-05",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4214,
+  "lake_2022": 4265,
+  "lon": 88.33187,
+  "lat": 27.94637,
+  "lake_km2": 0.6156,
+  "date": "2020-10-09",
+  "scene": "20201009T044711_20201009T045556_T45RXL",
+  "cloud": 0.07,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.031,
+  "nir": 0.023,
+  "cloud_near": 0.0,
+  "covered_near": 1,
+  "red_rise": 0.003,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.939145793192036,
+    "lake_cells": 6146,
+    "mapped_cells": 5931,
+    "area_error": -0.03498210218027986
+   },
+   "ndwi_mndwi": {
+    "iou": 0.9195346582646631,
+    "lake_cells": 6146,
+    "mapped_cells": 5734,
+    "area_error": -0.06703547022453626
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-06",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2022,
+  "lake_index": 4288,
+  "lake_2022": 4288,
+  "lon": 88.48412,
+  "lat": 27.75911,
+  "lake_km2": 0.133,
+  "date": "2022-11-05",
+  "scene": "20221105T043951_20221105T043954_T45RXL",
+  "cloud": 0.02,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.03,
+  "nir": 0.022,
+  "cloud_near": 0.0,
+  "covered_near": 1,
+  "red_rise": -0.05,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8600451467268623,
+    "lake_cells": 1327,
+    "mapped_cells": 1145,
+    "area_error": -0.1371514694800301
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8148984198645598,
+    "lake_cells": 1327,
+    "mapped_cells": 1085,
+    "area_error": -0.1823662396382818
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-07",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4831,
+  "lake_2022": 4829,
+  "lon": 88.74887,
+  "lat": 27.99954,
+  "lake_km2": 0.0413,
+  "date": "2020-10-16",
+  "scene": "20201016T043801_20201016T044709_T45RXM",
+  "cloud": 0.048,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.038,
+  "nir": 0.028,
+  "cloud_near": 0.0,
+  "covered_near": 1,
+  "red_rise": 0.004,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.7191489361702128,
+    "lake_cells": 409,
+    "mapped_cells": 399,
+    "area_error": -0.02444987775061125
+   },
+   "ndwi_mndwi": {
+    "iou": 0.6383442265795207,
+    "lake_cells": 409,
+    "mapped_cells": 343,
+    "area_error": -0.1613691931540342
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-08",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2018,
+  "lake_index": 4178,
+  "lake_2022": 4210,
+  "lon": 88.78928,
+  "lat": 27.87313,
+  "lake_km2": 0.103,
+  "date": "2018-09-17",
+  "scene": "20180917T043701_20180917T044308_T45RXL",
+  "cloud": 0.024,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.142,
+  "nir": 0.059,
+  "cloud_near": 0.0,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.9022556390977443,
+    "lake_cells": 1024,
+    "mapped_cells": 1000,
+    "area_error": -0.0234375
+   },
+   "ndwi_mndwi": {
+    "iou": 0.9022556390977443,
+    "lake_cells": 1024,
+    "mapped_cells": 1000,
+    "area_error": -0.0234375
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-09",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2022,
+  "lake_index": 4287,
+  "lake_2022": 4287,
+  "lon": 88.389,
+  "lat": 27.74644,
+  "lake_km2": 0.0433,
+  "date": "2022-10-16",
+  "scene": "20221016T043751_20221016T044956_T45RXL",
+  "cloud": 0.031,
+  "shadow": 0,
+  "ice": 0.013,
+  "red": 0.066,
+  "nir": 0.051,
+  "cloud_near": 0.001,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.7610208816705336,
+    "lake_cells": 431,
+    "mapped_cells": 328,
+    "area_error": -0.2389791183294664
+   },
+   "ndwi_mndwi": {
+    "iou": 0.7610208816705336,
+    "lake_cells": 431,
+    "mapped_cells": 328,
+    "area_error": -0.2389791183294664
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-10",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2018,
+  "lake_index": 4206,
+  "lake_2022": 4238,
+  "lon": 88.65008,
+  "lat": 27.96097,
+  "lake_km2": 0.1895,
+  "date": "2018-09-17",
+  "scene": "20180917T043701_20180917T044308_T45RXL",
+  "cloud": 0.036,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.135,
+  "nir": 0.043,
+  "cloud_near": 0.002,
+  "covered_near": 1,
+  "red_rise": 0.008,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.9246361746361746,
+    "lake_cells": 1887,
+    "mapped_cells": 1816,
+    "area_error": -0.03762586115527289
+   },
+   "ndwi_mndwi": {
+    "iou": 0.9240769630785232,
+    "lake_cells": 1887,
+    "mapped_cells": 1813,
+    "area_error": -0.039215686274509776
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-12",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2018,
+  "lake_index": 4183,
+  "lake_2022": 4215,
+  "lon": 88.74092,
+  "lat": 27.8683,
+  "lake_km2": 0.0535,
+  "date": "2018-09-17",
+  "scene": "20180917T043701_20180917T044308_T45RXL",
+  "cloud": 0.032,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.14,
+  "nir": 0.055,
+  "cloud_near": 0.003,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8611599297012302,
+    "lake_cells": 535,
+    "mapped_cells": 524,
+    "area_error": -0.020560747663551426
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8641975308641975,
+    "lake_cells": 535,
+    "mapped_cells": 522,
+    "area_error": -0.024299065420560706
+   }
+  }
+ },
+ {
+  "case": "sikkim-clear-13",
+  "area": "sikkim",
+  "split": "test",
+  "category": "clear",
+  "year": 2018,
+  "lake_index": 4828,
+  "lake_2022": 4828,
+  "lon": 88.74356,
+  "lat": 27.99741,
+  "lake_km2": 0.0288,
+  "date": "2018-10-17",
+  "scene": "20181017T043751_20181017T044518_T45RXL",
+  "cloud": 0.045,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.044,
+  "nir": 0.036,
+  "cloud_near": 0.003,
+  "covered_near": 1,
+  "red_rise": 0.006,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.7109634551495017,
+    "lake_cells": 285,
+    "mapped_cells": 230,
+    "area_error": -0.19298245614035092
+   },
+   "ndwi_mndwi": {
+    "iou": 0.6430976430976431,
+    "lake_cells": 285,
+    "mapped_cells": 203,
+    "area_error": -0.28771929824561404
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-ice-01",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "ice",
+  "year": 2022,
+  "lake_index": 4638,
+  "lake_2022": 4638,
+  "lon": 86.06027,
+  "lat": 28.17021,
+  "lake_km2": 0.0424,
+  "date": "2022-12-28",
+  "scene": "20221228T045211_20221228T045826_T45RUM",
+  "cloud": 0.266,
+  "shadow": 0.004,
+  "ice": 0.651,
+  "red": 0.297,
+  "nir": 0.251,
+  "cloud_near": 0.456,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 424,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 424,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-ice-02",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4614,
+  "lake_2022": 4678,
+  "lon": 85.86617,
+  "lat": 28.16805,
+  "lake_km2": 0.0389,
+  "date": "2020-11-21",
+  "scene": "20201121T050121_20201121T050118_T45RUM",
+  "cloud": 0.074,
+  "shadow": 0,
+  "ice": 0.649,
+  "red": 0.267,
+  "nir": 0.244,
+  "cloud_near": 0.288,
+  "covered_near": 1,
+  "red_rise": 0.221,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 390,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 390,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-ice-03",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "ice",
+  "year": 2022,
+  "lake_index": 4693,
+  "lake_2022": 4693,
+  "lon": 85.92484,
+  "lat": 28.32274,
+  "lake_km2": 0.0923,
+  "date": "2022-12-26",
+  "scene": "20221226T050219_20221226T050219_T45RUM",
+  "cloud": 0.305,
+  "shadow": 0.116,
+  "ice": 0.66,
+  "red": 0.335,
+  "nir": 0.269,
+  "cloud_near": 0.38,
+  "covered_near": 1,
+  "red_rise": 0.162,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 914,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 914,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-ice-05",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4619,
+  "lake_2022": 4684,
+  "lon": 85.78375,
+  "lat": 28.28735,
+  "lake_km2": 0.0655,
+  "date": "2020-12-28",
+  "scene": "20201228T045211_20201228T045214_T45RUM",
+  "cloud": 0.453,
+  "shadow": 0,
+  "ice": 0.633,
+  "red": 0.358,
+  "nir": 0.214,
+  "cloud_near": 0.328,
+  "covered_near": 1,
+  "red_rise": 0.218,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.7656012176560122,
+    "lake_cells": 654,
+    "mapped_cells": 506,
+    "area_error": -0.2262996941896025
+   },
+   "ndwi_mndwi": {
+    "iou": 0.7656012176560122,
+    "lake_cells": 654,
+    "mapped_cells": 506,
+    "area_error": -0.2262996941896025
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-ice-06",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "ice",
+  "year": 2018,
+  "lake_index": 4659,
+  "lake_2022": 4694,
+  "lon": 85.93042,
+  "lat": 28.32138,
+  "lake_km2": 0.1125,
+  "date": "2018-12-27",
+  "scene": "20181227T050219_20181227T050759_T45RUM",
+  "cloud": 0.489,
+  "shadow": 0.003,
+  "ice": 0.67,
+  "red": 0.439,
+  "nir": 0.384,
+  "cloud_near": 0.164,
+  "covered_near": 1,
+  "red_rise": 0.287,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.34759358288770054,
+    "lake_cells": 1122,
+    "mapped_cells": 390,
+    "area_error": -0.6524064171122994
+   },
+   "ndwi_mndwi": {
+    "iou": 0.34759358288770054,
+    "lake_cells": 1122,
+    "mapped_cells": 390,
+    "area_error": -0.6524064171122994
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-shadow-01",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2022,
+  "lake_index": 4680,
+  "lake_2022": 4680,
+  "lon": 85.84739,
+  "lat": 28.21049,
+  "lake_km2": 0.4818,
+  "date": "2022-12-18",
+  "scene": "20221218T045211_20221218T045214_T45RUM",
+  "cloud": 0.033,
+  "shadow": 0.997,
+  "ice": 0,
+  "red": 0.028,
+  "nir": 0.017,
+  "cloud_near": 0.142,
+  "covered_near": 1,
+  "red_rise": -0.026,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8592781625956981,
+    "lake_cells": 4811,
+    "mapped_cells": 5389,
+    "area_error": 0.12014134275618371
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8607247437774525,
+    "lake_cells": 4811,
+    "mapped_cells": 5356,
+    "area_error": 0.11328206194138435
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-shadow-02",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2020,
+  "lake_index": 4576,
+  "lake_2022": 4637,
+  "lon": 86.08671,
+  "lat": 28.22178,
+  "lake_km2": 0.1019,
+  "date": "2020-12-08",
+  "scene": "20201208T045201_20201208T045201_T45RVM",
+  "cloud": 0.177,
+  "shadow": 0.325,
+  "ice": 0.101,
+  "red": 0.186,
+  "nir": 0.121,
+  "cloud_near": 0.11,
+  "covered_near": 1,
+  "red_rise": -0.043,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.6625119846596357,
+    "lake_cells": 1017,
+    "mapped_cells": 717,
+    "area_error": -0.2949852507374632
+   },
+   "ndwi_mndwi": {
+    "iou": 0.6657004830917874,
+    "lake_cells": 1017,
+    "mapped_cells": 707,
+    "area_error": -0.30481809242871194
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-shadow-03",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2020,
+  "lake_index": 4580,
+  "lake_2022": 4645,
+  "lon": 85.91949,
+  "lat": 28.1385,
+  "lake_km2": 0.1053,
+  "date": "2020-12-28",
+  "scene": "20201228T045211_20201228T045214_T45RUM",
+  "cloud": 0.147,
+  "shadow": 0.237,
+  "ice": 0.082,
+  "red": 0.252,
+  "nir": 0.143,
+  "cloud_near": 0.159,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.7721639656816015,
+    "lake_cells": 1049,
+    "mapped_cells": 810,
+    "area_error": -0.2278360343183985
+   },
+   "ndwi_mndwi": {
+    "iou": 0.7721639656816015,
+    "lake_cells": 1049,
+    "mapped_cells": 810,
+    "area_error": -0.2278360343183985
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-shadow-04",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2018,
+  "lake_index": 4645,
+  "lake_2022": 4680,
+  "lon": 85.84818,
+  "lat": 28.2108,
+  "lake_km2": 0.6212,
+  "date": "2018-12-19",
+  "scene": "20181219T045211_20181219T045207_T45RUM",
+  "cloud": 0.044,
+  "shadow": 0.954,
+  "ice": 0.053,
+  "red": 0.058,
+  "nir": 0.046,
+  "cloud_near": 0.132,
+  "covered_near": 1,
+  "red_rise": 0.017,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8575285895806861,
+    "lake_cells": 6196,
+    "mapped_cells": 5499,
+    "area_error": -0.1124919302775984
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8577784840298744,
+    "lake_cells": 6196,
+    "mapped_cells": 5495,
+    "area_error": -0.11313750806972245
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-shadow-05",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2020,
+  "lake_index": 4615,
+  "lake_2022": 4680,
+  "lon": 85.8483,
+  "lat": 28.21082,
+  "lake_km2": 0.5929,
+  "date": "2020-12-28",
+  "scene": "20201228T045211_20201228T045214_T45RUM",
+  "cloud": 0.069,
+  "shadow": 0.95,
+  "ice": 0.001,
+  "red": 0.034,
+  "nir": 0.025,
+  "cloud_near": 0.089,
+  "covered_near": 1,
+  "red_rise": -0.018,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8975328947368421,
+    "lake_cells": 5917,
+    "mapped_cells": 5620,
+    "area_error": -0.05019435524759164
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8928983358049102,
+    "lake_cells": 5917,
+    "mapped_cells": 5571,
+    "area_error": -0.058475578840628706
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-thin_cloud-04",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2018,
+  "lake_index": 4659,
+  "lake_2022": 4694,
+  "lon": 85.93042,
+  "lat": 28.32138,
+  "lake_km2": 0.1125,
+  "date": "2018-09-08",
+  "scene": "20180908T045649_20180908T050146_T45RUM",
+  "cloud": 0.57,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.27,
+  "nir": 0.217,
+  "cloud_near": 0.353,
+  "covered_near": 1,
+  "red_rise": 0.118,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.1976950354609929,
+    "lake_cells": 1122,
+    "mapped_cells": 229,
+    "area_error": -0.7959001782531194
+   },
+   "ndwi_mndwi": {
+    "iou": 0.19326241134751773,
+    "lake_cells": 1122,
+    "mapped_cells": 224,
+    "area_error": -0.8003565062388591
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-thin_cloud-05",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2022,
+  "lake_index": 4680,
+  "lake_2022": 4680,
+  "lon": 85.84739,
+  "lat": 28.21049,
+  "lake_km2": 0.4818,
+  "date": "2022-09-09",
+  "scene": "20220909T044711_20220909T045826_T45RUM",
+  "cloud": 0.626,
+  "shadow": 0.002,
+  "ice": 0,
+  "red": 0.178,
+  "nir": 0.192,
+  "cloud_near": 0.555,
+  "covered_near": 1,
+  "red_rise": 0.124,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 4811,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 4811,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-thin_cloud-06",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2018,
+  "lake_index": 4658,
+  "lake_2022": 4693,
+  "lon": 85.9248,
+  "lat": 28.32262,
+  "lake_km2": 0.0915,
+  "date": "2018-10-08",
+  "scene": "20181008T045659_20181008T050205_T45RUM",
+  "cloud": 0.805,
+  "shadow": 0.008,
+  "ice": 0,
+  "red": 0.253,
+  "nir": 0.224,
+  "cloud_near": 0.598,
+  "covered_near": 1,
+  "red_rise": 0.116,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 916,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 916,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-thin_cloud-07",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2022,
+  "lake_index": 4690,
+  "lake_2022": 4690,
+  "lon": 85.87074,
+  "lat": 28.35939,
+  "lake_km2": 4.6328,
+  "date": "2022-09-19",
+  "scene": "20220919T044711_20220919T045920_T45RUM",
+  "cloud": 0.504,
+  "shadow": 0.001,
+  "ice": 0.004,
+  "red": 0.166,
+  "nir": 0.143,
+  "cloud_near": 0.394,
+  "covered_near": 1,
+  "red_rise": 0.115,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.5122894940487158,
+    "lake_cells": 27134,
+    "mapped_cells": 13905,
+    "area_error": -0.48754330360433407
+   },
+   "ndwi_mndwi": {
+    "iou": 0.49587264150943394,
+    "lake_cells": 27134,
+    "mapped_cells": 13458,
+    "area_error": -0.5040171003169456
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-thin_cloud-08",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2022,
+  "lake_index": 4689,
+  "lake_2022": 4689,
+  "lon": 85.87091,
+  "lat": 28.32812,
+  "lake_km2": 2.0633,
+  "date": "2022-09-09",
+  "scene": "20220909T044711_20220909T045826_T45RUM",
+  "cloud": 0.409,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.138,
+  "nir": 0.134,
+  "cloud_near": 0.42,
+  "covered_near": 1,
+  "red_rise": 0.11,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.3751089588377724,
+    "lake_cells": 20589,
+    "mapped_cells": 7807,
+    "area_error": -0.6208169410850455
+   },
+   "ndwi_mndwi": {
+    "iou": 0.36282156872244564,
+    "lake_cells": 20589,
+    "mapped_cells": 7541,
+    "area_error": -0.6337364612171548
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-silty-01",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "silty",
+  "year": 2018,
+  "lake_index": 4649,
+  "lake_2022": 4683,
+  "lon": 85.78324,
+  "lat": 28.27132,
+  "lake_km2": 0.0888,
+  "date": "2018-09-08",
+  "scene": "20180908T045649_20180908T050146_T45RUM",
+  "cloud": 0.046,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.206,
+  "nir": 0.16,
+  "cloud_near": 0.031,
+  "covered_near": 1,
+  "red_rise": 0.047,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 880,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 880,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-silty-02",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "silty",
+  "year": 2022,
+  "lake_index": 4630,
+  "lake_2022": 4630,
+  "lon": 86.22674,
+  "lat": 28.34655,
+  "lake_km2": 0.6349,
+  "date": "2022-09-24",
+  "scene": "20220924T044659_20220924T045109_T45RVM",
+  "cloud": 0.037,
+  "shadow": 0.0,
+  "ice": 0.002,
+  "red": 0.197,
+  "nir": 0.136,
+  "cloud_near": 0.018,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 6336,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 6336,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-silty-03",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4619,
+  "lake_2022": 4684,
+  "lon": 85.78375,
+  "lat": 28.28735,
+  "lake_km2": 0.0655,
+  "date": "2020-10-02",
+  "scene": "20201002T045701_20201002T050143_T45RUM",
+  "cloud": 0.061,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.154,
+  "nir": 0.122,
+  "cloud_near": 0.009,
+  "covered_near": 1,
+  "red_rise": 0.014,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 654,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 654,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-silty-04",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "silty",
+  "year": 2018,
+  "lake_index": 4594,
+  "lake_2022": 4629,
+  "lon": 86.2595,
+  "lat": 28.37359,
+  "lake_km2": 0.3047,
+  "date": "2018-09-10",
+  "scene": "20180910T044701_20180910T045416_T45RVM",
+  "cloud": 0.029,
+  "shadow": 0,
+  "ice": 0.008,
+  "red": 0.2,
+  "nir": 0.119,
+  "cloud_near": 0.011,
+  "covered_near": 1,
+  "red_rise": 0.018,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8005913272010512,
+    "lake_cells": 3039,
+    "mapped_cells": 2442,
+    "area_error": -0.19644619940769992
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8005913272010512,
+    "lake_cells": 3039,
+    "mapped_cells": 2442,
+    "area_error": -0.19644619940769992
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-silty-05",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4576,
+  "lake_2022": 4637,
+  "lon": 86.08671,
+  "lat": 28.22178,
+  "lake_km2": 0.1019,
+  "date": "2020-09-29",
+  "scene": "20200929T044711_20200929T045454_T45RVM",
+  "cloud": 0.041,
+  "shadow": 0,
+  "ice": 0.005,
+  "red": 0.229,
+  "nir": 0.11,
+  "cloud_near": 0.016,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8891031822565092,
+    "lake_cells": 1017,
+    "mapped_cells": 942,
+    "area_error": -0.07374631268436582
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8891031822565092,
+    "lake_cells": 1017,
+    "mapped_cells": 942,
+    "area_error": -0.07374631268436582
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-clear-01",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4615,
+  "lake_2022": 4680,
+  "lon": 85.8483,
+  "lat": 28.21082,
+  "lake_km2": 0.5929,
+  "date": "2020-09-29",
+  "scene": "20200929T044711_20200929T045454_T45RUM",
+  "cloud": 0.051,
+  "shadow": 0.002,
+  "ice": 0,
+  "red": 0.052,
+  "nir": 0.026,
+  "cloud_near": 0.0,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.9215620265948493,
+    "lake_cells": 5917,
+    "mapped_cells": 5499,
+    "area_error": -0.07064390738549942
+   },
+   "ndwi_mndwi": {
+    "iou": 0.9090449722081859,
+    "lake_cells": 5917,
+    "mapped_cells": 5417,
+    "area_error": -0.08450228156160211
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-clear-02",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4688,
+  "lake_2022": 4679,
+  "lon": 85.87174,
+  "lat": 28.19444,
+  "lake_km2": 0.0697,
+  "date": "2020-09-29",
+  "scene": "20200929T044711_20200929T045454_T45RUM",
+  "cloud": 0.048,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.033,
+  "nir": 0.026,
+  "cloud_near": 0.0,
+  "covered_near": 1,
+  "red_rise": 0.002,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8158253751705321,
+    "lake_cells": 695,
+    "mapped_cells": 636,
+    "area_error": -0.08489208633093526
+   },
+   "ndwi_mndwi": {
+    "iou": 0.7856135401974612,
+    "lake_cells": 695,
+    "mapped_cells": 571,
+    "area_error": -0.17841726618705034
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-clear-03",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4631,
+  "lake_2022": 4696,
+  "lon": 85.8562,
+  "lat": 28.41289,
+  "lake_km2": 0.0352,
+  "date": "2020-10-17",
+  "scene": "20201017T045809_20201017T050850_T45RUM",
+  "cloud": 0.088,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.11,
+  "nir": 0.043,
+  "cloud_near": 0.004,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8575342465753425,
+    "lake_cells": 351,
+    "mapped_cells": 327,
+    "area_error": -0.06837606837606836
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8575342465753425,
+    "lake_cells": 351,
+    "mapped_cells": 327,
+    "area_error": -0.06837606837606836
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-clear-04",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "clear",
+  "year": 2018,
+  "lake_index": 4659,
+  "lake_2022": 4694,
+  "lon": 85.93042,
+  "lat": 28.32138,
+  "lake_km2": 0.1125,
+  "date": "2018-09-28",
+  "scene": "20180928T045649_20180928T050316_T45RUM",
+  "cloud": 0.054,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.152,
+  "nir": 0.05,
+  "cloud_near": 0.004,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8893728222996515,
+    "lake_cells": 1122,
+    "mapped_cells": 1047,
+    "area_error": -0.0668449197860963
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8883071553228621,
+    "lake_cells": 1122,
+    "mapped_cells": 1042,
+    "area_error": -0.071301247771836
+   }
+  }
+ },
+ {
+  "case": "bhote_koshi-clear-05",
+  "area": "bhote_koshi",
+  "split": "validation",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4624,
+  "lake_2022": 4689,
+  "lon": 85.87081,
+  "lat": 28.32806,
+  "lake_km2": 2.0432,
+  "date": "2020-10-17",
+  "scene": "20201017T045809_20201017T050850_T45RUM",
+  "cloud": 0.027,
+  "shadow": 0.0,
+  "ice": 0,
+  "red": 0.026,
+  "nir": 0.015,
+  "cloud_near": 0.004,
+  "covered_near": 1,
+  "red_rise": -0.002,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.9689680409856063,
+    "lake_cells": 20390,
+    "mapped_cells": 19964,
+    "area_error": -0.020892594409024023
+   },
+   "ndwi_mndwi": {
+    "iou": 0.948650234741784,
+    "lake_cells": 20390,
+    "mapped_cells": 19456,
+    "area_error": -0.045806768023541
+   }
+  }
+ },
+ {
+  "case": "khumbu-ice-01",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4463,
+  "lake_2022": 4516,
+  "lon": 86.89704,
+  "lat": 27.8862,
+  "lake_km2": 0.0548,
+  "date": "2020-11-18",
+  "scene": "20201118T045101_20201118T045102_T45RVL",
+  "cloud": 0.22,
+  "shadow": 0.005,
+  "ice": 0.657,
+  "red": 0.342,
+  "nir": 0.331,
+  "cloud_near": 0.151,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 545,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 545,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-ice-02",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4493,
+  "lake_2022": 4551,
+  "lon": 86.58151,
+  "lat": 27.90468,
+  "lake_km2": 0.0228,
+  "date": "2020-12-08",
+  "scene": "20201208T045201_20201208T045201_T45RVL",
+  "cloud": 0.079,
+  "shadow": 0,
+  "ice": 0.642,
+  "red": 0.422,
+  "nir": 0.406,
+  "cloud_near": 0.3,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-ice-03",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "ice",
+  "year": 2022,
+  "lake_index": 4524,
+  "lake_2022": 4524,
+  "lon": 86.78196,
+  "lat": 27.95049,
+  "lake_km2": 0.0377,
+  "date": "2022-12-28",
+  "scene": "20221228T045211_20221228T045826_T45RVL",
+  "cloud": 0.187,
+  "shadow": 0.013,
+  "ice": 0.662,
+  "red": 0.292,
+  "nir": 0.276,
+  "cloud_near": 0.229,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 376,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 376,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-ice-04",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "ice",
+  "year": 2018,
+  "lake_index": 4513,
+  "lake_2022": 4548,
+  "lon": 86.54968,
+  "lat": 27.94382,
+  "lake_km2": 0.0696,
+  "date": "2018-11-09",
+  "scene": "20181109T045011_20181109T045010_T45RVL",
+  "cloud": 0.204,
+  "shadow": 0.004,
+  "ice": 0.636,
+  "red": 0.374,
+  "nir": 0.296,
+  "cloud_near": 0.329,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 692,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 692,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-ice-05",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "ice",
+  "year": 2020,
+  "lake_index": 4485,
+  "lake_2022": 4543,
+  "lon": 86.71155,
+  "lat": 27.93969,
+  "lake_km2": 0.2556,
+  "date": "2020-12-03",
+  "scene": "20201203T045149_20201203T045647_T45RVL",
+  "cloud": 0.302,
+  "shadow": 0.002,
+  "ice": 0.665,
+  "red": 0.526,
+  "nir": 0.53,
+  "cloud_near": 0.263,
+  "covered_near": 1,
+  "red_rise": 0.327,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 2556,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 2556,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-shadow-01",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2022,
+  "lake_index": 4515,
+  "lake_2022": 4515,
+  "lon": 86.91379,
+  "lat": 27.89395,
+  "lake_km2": 0.1115,
+  "date": "2022-11-28",
+  "scene": "20221128T045131_20221128T045133_T45RVL",
+  "cloud": 0.02,
+  "shadow": 1,
+  "ice": 0,
+  "red": 0.026,
+  "nir": 0.015,
+  "cloud_near": 0.127,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8896860986547085,
+    "lake_cells": 1109,
+    "mapped_cells": 998,
+    "area_error": -0.10009017132551845
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8904847396768402,
+    "lake_cells": 1109,
+    "mapped_cells": 997,
+    "area_error": -0.1009918845807033
+   }
+  }
+ },
+ {
+  "case": "khumbu-shadow-02",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2020,
+  "lake_index": 4465,
+  "lake_2022": 4519,
+  "lon": 86.80348,
+  "lat": 27.97453,
+  "lake_km2": 0.2553,
+  "date": "2020-11-23",
+  "scene": "20201123T045119_20201123T045221_T45RVL",
+  "cloud": 0.085,
+  "shadow": 0.652,
+  "ice": 0.045,
+  "red": 0.077,
+  "nir": 0.065,
+  "cloud_near": 0.108,
+  "covered_near": 1,
+  "red_rise": -0.093,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.6847785634536658,
+    "lake_cells": 2546,
+    "mapped_cells": 1981,
+    "area_error": -0.22191673212882956
+   },
+   "ndwi_mndwi": {
+    "iou": 0.6879699248120301,
+    "lake_cells": 2546,
+    "mapped_cells": 1944,
+    "area_error": -0.23644933228593867
+   }
+  }
+ },
+ {
+  "case": "khumbu-shadow-03",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2020,
+  "lake_index": 4480,
+  "lake_2022": 4538,
+  "lon": 86.65432,
+  "lat": 27.96967,
+  "lake_km2": 0.0374,
+  "date": "2020-12-08",
+  "scene": "20201208T045201_20201208T045201_T45RVL",
+  "cloud": 0.082,
+  "shadow": 0.554,
+  "ice": 0.237,
+  "red": 0.2,
+  "nir": 0.19,
+  "cloud_near": 0.181,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.4206008583690987,
+    "lake_cells": 378,
+    "mapped_cells": 284,
+    "area_error": -0.24867724867724872
+   },
+   "ndwi_mndwi": {
+    "iou": 0.425764192139738,
+    "lake_cells": 378,
+    "mapped_cells": 275,
+    "area_error": -0.27248677248677244
+   }
+  }
+ },
+ {
+  "case": "khumbu-shadow-04",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2018,
+  "lake_index": 4493,
+  "lake_2022": 4527,
+  "lon": 86.74665,
+  "lat": 27.93309,
+  "lake_km2": 0.0846,
+  "date": "2018-12-29",
+  "scene": "20181229T045211_20181229T045802_T45RVL",
+  "cloud": 0.19,
+  "shadow": 0.553,
+  "ice": 0.288,
+  "red": 0.224,
+  "nir": 0.218,
+  "cloud_near": 0.164,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.5256696428571429,
+    "lake_cells": 845,
+    "mapped_cells": 522,
+    "area_error": -0.3822485207100592
+   },
+   "ndwi_mndwi": {
+    "iou": 0.5268456375838926,
+    "lake_cells": 845,
+    "mapped_cells": 520,
+    "area_error": -0.3846153846153846
+   }
+  }
+ },
+ {
+  "case": "khumbu-shadow-05",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "shadow",
+  "year": 2018,
+  "lake_index": 4518,
+  "lake_2022": 4553,
+  "lon": 86.58658,
+  "lat": 27.87421,
+  "lake_km2": 0.4045,
+  "date": "2018-12-09",
+  "scene": "20181209T045201_20181209T045738_T45RVL",
+  "cloud": 0.099,
+  "shadow": 0.319,
+  "ice": 0,
+  "red": 0.053,
+  "nir": 0.029,
+  "cloud_near": 0.085,
+  "covered_near": 1,
+  "red_rise": null,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8964677222898904,
+    "lake_cells": 4036,
+    "mapped_cells": 3749,
+    "area_error": -0.07111000991080274
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8970588235294118,
+    "lake_cells": 4036,
+    "mapped_cells": 3704,
+    "area_error": -0.0822596630327056
+   }
+  }
+ },
+ {
+  "case": "khumbu-thin_cloud-02",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4708,
+  "lake_2022": 4517,
+  "lon": 86.85509,
+  "lat": 27.88059,
+  "lake_km2": 0.0221,
+  "date": "2020-09-04",
+  "scene": "20200904T044659_20200904T044843_T45RVL",
+  "cloud": 0.438,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.154,
+  "nir": 0.1,
+  "cloud_near": 0.171,
+  "covered_near": 1,
+  "red_rise": 0.123,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 224,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 224,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-thin_cloud-03",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4497,
+  "lake_2022": 4555,
+  "lon": 86.57335,
+  "lat": 27.82801,
+  "lake_km2": 0.0472,
+  "date": "2020-10-19",
+  "scene": "20201019T044821_20201019T045859_T45RVL",
+  "cloud": 0.51,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.241,
+  "nir": 0.21,
+  "cloud_near": 0.234,
+  "covered_near": 1,
+  "red_rise": 0.117,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 473,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 473,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-thin_cloud-04",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4481,
+  "lake_2022": 4539,
+  "lon": 86.68058,
+  "lat": 27.97499,
+  "lake_km2": 0.6159,
+  "date": "2020-09-09",
+  "scene": "20200909T044701_20200909T045716_T45RVL",
+  "cloud": 0.766,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.232,
+  "nir": 0.189,
+  "cloud_near": 0.942,
+  "covered_near": 1,
+  "red_rise": 0.116,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.37701448803516197,
+    "lake_cells": 6143,
+    "mapped_cells": 2316,
+    "area_error": -0.622985511964838
+   },
+   "ndwi_mndwi": {
+    "iou": 0.37701448803516197,
+    "lake_cells": 6143,
+    "mapped_cells": 2316,
+    "area_error": -0.622985511964838
+   }
+  }
+ },
+ {
+  "case": "khumbu-thin_cloud-05",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4483,
+  "lake_2022": 4541,
+  "lon": 86.69035,
+  "lat": 27.95149,
+  "lake_km2": 0.4294,
+  "date": "2020-09-29",
+  "scene": "20200929T044711_20200929T045454_T45RVL",
+  "cloud": 0.497,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.149,
+  "nir": 0.158,
+  "cloud_near": 0.292,
+  "covered_near": 1,
+  "red_rise": 0.115,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.3872400093479785,
+    "lake_cells": 4278,
+    "mapped_cells": 1658,
+    "area_error": -0.6124357176250584
+   },
+   "ndwi_mndwi": {
+    "iou": 0.3613838242169238,
+    "lake_cells": 4278,
+    "mapped_cells": 1546,
+    "area_error": -0.6386161757830762
+   }
+  }
+ },
+ {
+  "case": "khumbu-thin_cloud-06",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "thin_cloud",
+  "year": 2020,
+  "lake_index": 4491,
+  "lake_2022": 4549,
+  "lon": 86.56669,
+  "lat": 27.95356,
+  "lake_km2": 0.0695,
+  "date": "2020-09-14",
+  "scene": "20200914T044659_20200914T045805_T45RVM",
+  "cloud": 0.899,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.32,
+  "nir": 0.35,
+  "cloud_near": 0.486,
+  "covered_near": 1,
+  "red_rise": 0.112,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 684,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 684,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-silty-01",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4485,
+  "lake_2022": 4543,
+  "lon": 86.71155,
+  "lat": 27.93969,
+  "lake_km2": 0.2556,
+  "date": "2020-09-04",
+  "scene": "20200904T044659_20200904T044843_T45RVL",
+  "cloud": 0.068,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.199,
+  "nir": 0.137,
+  "cloud_near": 0.022,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.2692456479690522,
+    "lake_cells": 2556,
+    "mapped_cells": 725,
+    "area_error": -0.7163536776212833
+   },
+   "ndwi_mndwi": {
+    "iou": 0.2692456479690522,
+    "lake_cells": 2556,
+    "mapped_cells": 725,
+    "area_error": -0.7163536776212833
+   }
+  }
+ },
+ {
+  "case": "khumbu-silty-02",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4677,
+  "lake_2022": 4522,
+  "lon": 86.8235,
+  "lat": 27.95527,
+  "lake_km2": 0.0219,
+  "date": "2020-09-29",
+  "scene": "20200929T044711_20200929T045454_T45RVL",
+  "cloud": 0.099,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.224,
+  "nir": 0.128,
+  "cloud_near": 0.014,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 218,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 218,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-silty-03",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4466,
+  "lake_2022": 4520,
+  "lon": 86.81572,
+  "lat": 27.9407,
+  "lake_km2": 0.0642,
+  "date": "2020-10-19",
+  "scene": "20201019T044821_20201019T045859_T45RVL",
+  "cloud": 0.087,
+  "shadow": 0,
+  "ice": 0.003,
+  "red": 0.238,
+  "nir": 0.127,
+  "cloud_near": 0.01,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.0,
+    "lake_cells": 641,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_cells": 641,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  }
+ },
+ {
+  "case": "khumbu-silty-04",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4491,
+  "lake_2022": 4549,
+  "lon": 86.56669,
+  "lat": 27.95356,
+  "lake_km2": 0.0695,
+  "date": "2020-09-04",
+  "scene": "20200904T044659_20200904T044843_T45RVL",
+  "cloud": 0.086,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.208,
+  "nir": 0.125,
+  "cloud_near": 0.019,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.7435158501440923,
+    "lake_cells": 684,
+    "mapped_cells": 526,
+    "area_error": -0.23099415204678364
+   },
+   "ndwi_mndwi": {
+    "iou": 0.7377521613832853,
+    "lake_cells": 684,
+    "mapped_cells": 522,
+    "area_error": -0.23684210526315785
+   }
+  }
+ },
+ {
+  "case": "khumbu-silty-05",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "silty",
+  "year": 2020,
+  "lake_index": 4460,
+  "lake_2022": 4513,
+  "lon": 86.92607,
+  "lat": 27.89841,
+  "lake_km2": 1.5914,
+  "date": "2020-10-19",
+  "scene": "20201019T044821_20201019T045859_T45RVL",
+  "cloud": 0.011,
+  "shadow": 0.001,
+  "ice": 0.006,
+  "red": 0.227,
+  "nir": 0.115,
+  "cloud_near": 0.013,
+  "covered_near": 1,
+  "red_rise": -0.002,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8544004150723133,
+    "lake_cells": 15415,
+    "mapped_cells": 13178,
+    "area_error": -0.14511839117742453
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8541409948764511,
+    "lake_cells": 15415,
+    "mapped_cells": 13174,
+    "area_error": -0.14537787868958807
+   }
+  }
+ },
+ {
+  "case": "khumbu-clear-01",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4481,
+  "lake_2022": 4539,
+  "lon": 86.68058,
+  "lat": 27.97499,
+  "lake_km2": 0.6159,
+  "date": "2020-10-19",
+  "scene": "20201019T044821_20201019T045859_T45RVL",
+  "cloud": 0.075,
+  "shadow": 0.0,
+  "ice": 0,
+  "red": 0.116,
+  "nir": 0.033,
+  "cloud_near": 0.002,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.9425287356321839,
+    "lake_cells": 6143,
+    "mapped_cells": 5856,
+    "area_error": -0.0467198437245645
+   },
+   "ndwi_mndwi": {
+    "iou": 0.9384416005183865,
+    "lake_cells": 6143,
+    "mapped_cells": 5823,
+    "area_error": -0.05209181181832978
+   }
+  }
+ },
+ {
+  "case": "khumbu-clear-02",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4471,
+  "lake_2022": 4527,
+  "lon": 86.74662,
+  "lat": 27.93313,
+  "lake_km2": 0.09,
+  "date": "2020-09-29",
+  "scene": "20200929T044711_20200929T045454_T45RVL",
+  "cloud": 0.065,
+  "shadow": 0,
+  "ice": 0,
+  "red": 0.129,
+  "nir": 0.044,
+  "cloud_near": 0.005,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8366445916114791,
+    "lake_cells": 902,
+    "mapped_cells": 762,
+    "area_error": -0.155210643015521
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8200883002207505,
+    "lake_cells": 902,
+    "mapped_cells": 747,
+    "area_error": -0.17184035476718407
+   }
+  }
+ },
+ {
+  "case": "khumbu-clear-03",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4483,
+  "lake_2022": 4541,
+  "lon": 86.69035,
+  "lat": 27.95149,
+  "lake_km2": 0.4294,
+  "date": "2020-11-23",
+  "scene": "20201123T045119_20201123T045221_T45RVL",
+  "cloud": 0.052,
+  "shadow": 0.002,
+  "ice": 0,
+  "red": 0.033,
+  "nir": 0.019,
+  "cloud_near": 0.007,
+  "covered_near": 1,
+  "red_rise": 0.0,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.925531914893617,
+    "lake_cells": 4278,
+    "mapped_cells": 4048,
+    "area_error": -0.053763440860215006
+   },
+   "ndwi_mndwi": {
+    "iou": 0.9004399166473721,
+    "lake_cells": 4278,
+    "mapped_cells": 3930,
+    "area_error": -0.0813464235624124
+   }
+  }
+ },
+ {
+  "case": "khumbu-clear-04",
+  "area": "khumbu",
+  "split": "validation",
+  "category": "clear",
+  "year": 2020,
+  "lake_index": 4470,
+  "lake_2022": 4526,
+  "lon": 86.78725,
+  "lat": 27.92373,
+  "lake_km2": 0.5865,
+  "date": "2020-10-09",
+  "scene": "20201009T044711_20201009T045556_T45RVL",
+  "cloud": 0.031,
+  "shadow": 0.001,
+  "ice": 0,
+  "red": 0.102,
+  "nir": 0.031,
+  "cloud_near": 0.009,
+  "covered_near": 1,
+  "red_rise": -0.002,
+  "baseline": {
+   "ndwi": {
+    "iou": 0.8786324786324786,
+    "lake_cells": 5845,
+    "mapped_cells": 5145,
+    "area_error": -0.11976047904191611
+   },
+   "ndwi_mndwi": {
+    "iou": 0.8760259917920656,
+    "lake_cells": 5845,
+    "mapped_cells": 5126,
+    "area_error": -0.12301112061591102
+   }
+  }
+ }
+]

@@ -218,6 +218,24 @@ does not list.
 - **Quota:** the Community tier allows 150 EECU-hours a month. Past that, the project runs in
   restricted mode until the 1st of the next month.
 
+```
+.venv\Scripts\python pipeline\scripts\p1_hard_cases.py --project master-bruin-515809-p2
+```
+
+P1 step 4, the hard-case set (`moraine/hard_cases.py` flags, `moraine/tiles.py` tiles). It
+measures ice, terrain shadow, thin cloud and silt for every inventory lake in every
+September–December scene of the inventory years. It then picks the strongest cases per category,
+exports each as a 256 × 256 tile of 10 m cells to `pipeline/data/p1_hard_cases/` (not in git), and
+draws contact sheets in `pipeline/out/p1_hard_cases/sheets/`.
+
+- **Visual check:** cases that fail it are listed with a reason in
+  `docs/p1/hard-case-review.json`. After a change that adds candidates, look at the new ones
+  before trusting the results.
+- **Good run:** ends with **8 of 8 checks passed**, 49 test cases (North Sikkim) and 49 validation
+  cases. The baseline scores a median overlap of 0.21 on the hard test cases against 0.86 on clear
+  ones.
+- **Time:** about 25 minutes the first time, then a minute from the caches.
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the

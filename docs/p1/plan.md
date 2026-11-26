@@ -95,12 +95,52 @@ in Sikkim.
    - **Earth Engine quota:** these runs used up the Community tier's 150 EECU-hours for November,
      so the project is in restricted mode (slower, not blocked) until 1 December.
    - Every-autumn runs (2017–2025) move to step 7 and use only the NDWI rule.
-4. **Hard-case set.**
-   - Pick tiles of shadow, ice, thin cloud and silty water from the inventory lakes, using
-     automatic flags with a quick visual check.
-   - Keep the Sikkim tiles for the final test only.
+4. **Hard-case set.** Done 26 Nov 2026 (`pipeline/scripts/p1_hard_cases.py`), 8 of 8 checks
+   passed. The cases are in `hard-cases.json`, the visual-check drops in `hard-case-review.json`,
+   and the kept tiles with the baseline drawn on are in `hard-cases-test.jpg` and
+   `hard-cases-validation.jpg`.
+   - **A case** is one inventory lake in one Sentinel-2 scene (1 Sep–31 Dec of an inventory year,
+     so that year's outline is the label). It becomes a 256 × 256 tile of 10 m cells, 2.56 km
+     across, centred on the lake.
+   - **Flags**, measured for 18,335 lake-scenes inside each lake and in the 1.3 km around it:
+     - **Ice:** snow or ice on at least 30% of the lake, ranked toward partly frozen lakes.
+     - **Shadow:** at least 20% of the lake in terrain shadow cast by that scene's sun.
+     - **Thin cloud:** the lake brighter in red than on its own clear days that year, by between
+       0.03 and 0.25: veiled, not white.
+     - **Silty:** water bright in near-infrared (B8 ≥ 0.09) with clear surroundings, so the
+       brightness is silt rather than haze.
+     - **Clear:** none of the above, and no cloud within 1.3 km. This is the control.
+   - **The flags never look at a lake map or at what the baseline finds**, so the cases are not
+     chosen for being hard for one method.
+   - **Visual check:** a case was dropped if no part of its lake could be told apart by eye, or if
+     its flag was plainly wrong. 16 of the 182 candidates were dropped, all thin cloud: 7 because the
+     lake was hidden and 9 because no cloud was over the lake. Another 17 ran off the edge of their
+     scene and were dropped automatically.
+   - **Split:** North Sikkim gives the test set, 49 cases on 36 lakes, used only in step 6.
+     Bhote Koshi and Khumbu give a validation set of 49 cases that step 5 may tune against.
+
+   | Baseline (NDWI rule), median overlap with the case lake | Ice | Shadow | Thin cloud | Silty | Clear |
+   |---|---|---|---|---|---|
+   | Test, North Sikkim | 0.00 (10) | 0.28 (10) | 0.47 (9) | 0.61 (10) | 0.86 (10) |
+   | Validation, Bhote Koshi and Khumbu | 0.00 (10) | 0.81 (10) | 0.10 (10) | 0.13 (10) | 0.89 (9) |
+
+   - **The cases are hard:** the baseline's median overlap on the hard test cases is 0.21, against
+     0.86 on clear ones. It misses frozen lakes almost entirely (9 of 10 test cases score zero),
+     small lakes in deep shadow, and brown silty water. The MNDWI variant differs on only 17 of the
+     98 cases, and only slightly.
+   - **Weak spot, shadow:** North Sikkim's lakes are mostly on the open plateau, and only 6 are ever
+     a fifth in shadow. The 10 test shadow cases therefore come from 5 lakes in different years, so
+     they are less independent than the other categories.
+   - **What went wrong first:** measuring the flags inside the lake only let cloud surround
+     "clear" lakes and let haze pass as silt, and ranking ice by its share picked lakes buried under
+     one snowfall. The neighbourhood measures and the ranking above fixed both.
+   - **The tiles** (98 MB of .npz) are in `pipeline/data/p1_hard_cases/`, outside git. The script
+     rebuilds them from `hard-cases.json`'s scenes, and `moraine/tiles.py` reads and scores them
+     with numpy alone, so step 6 can run in Colab.
 5. **U-Net in Colab.** Train on Sentinel-2 patches plus slope outside the study areas, and save
-   the model. A single notebook runs on a free GPU.
+   the model. A single notebook runs on a free GPU. Training scenes should include frozen,
+   shadowed, veiled and silty lakes, not only clear autumn ones; the validation hard cases pick the
+   checkpoint.
 6. **The gate.** Run the U-Net and both rule variants from step 3 on the held-out Sikkim hard
    cases, and report IoU and area error per case. The U-Net must beat the better rule.
 7. **Growth curves.** Area per year for every lake above the cut-off in the three study areas.
