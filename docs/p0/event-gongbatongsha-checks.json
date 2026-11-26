@@ -29,7 +29,19 @@
    6034.0
   ],
   "point_elevations_m": [
-   4811.0
+   4811.0,
+   3193.0
+  ]
+ },
+ "run_start": {
+  "name": "Run starts: confluence",
+  "along_km": 8.71,
+  "lon": 85.99792,
+  "lat": 28.07958,
+  "elevation_m": 3193.0,
+  "upstream_km2": [
+   49.5,
+   1725.9
   ]
  },
  "clear_scenes": {

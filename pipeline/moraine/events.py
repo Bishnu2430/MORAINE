@@ -19,6 +19,11 @@ EVENTS = {
         "when": "night of 5 July 2016; flood front passed the Nepal seismometers about 15:15-15:40 UTC",
         "lake": {"name": "Gongbatongsha lake", "lon": 86.0700, "lat": 28.0781},  # 28°04'41"N 86°04'12"E, 4,623 m
         "places": [],
+        # Decided 26 Nov 2026: the first 6.5 km were a debris flow, beyond a water-only solver, so the run
+        # starts at the Zhangzangbo-Poiqu confluence, fed with Sattar et al.'s (2022) modelled flow there,
+        # and is scored in Nepal against the seismic record (Cook et al. 2018)
+        # (found as the biggest jump in upstream area within 15 km of the lake)
+        "run_start": {"name": "Run starts: confluence", "search_km": 15.0},
         "length_km": 52.0,  # 6.5 km to the Zhangzangbo-Poiqu confluence, then about 45 km to Barabise
         "half_width_m": 3000.0,
         "crs": "EPSG:32645",

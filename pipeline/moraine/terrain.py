@@ -26,6 +26,12 @@ D8 = {1: (0, 1), 2: (1, 1), 4: (1, 0), 8: (1, -1), 16: (0, -1), 32: (-1, -1), 64
 
 def merit_directions(west: float, south: float, east: float, north: float):
     """MERIT flow directions on their native grid. Returns (array, lon of column 0's west edge, lat of row 0's north edge)."""
+    data, x0, y0 = merit_band("dir", west, south, east, north)
+    return data.astype(np.int32), x0, y0
+
+
+def merit_band(band: str, west: float, south: float, east: float, north: float):
+    """One MERIT Hydro band (e.g. "dir", or "upa" for upstream area in km2) on its native grid, as merit_directions."""
     import ee
 
     x0 = np.floor(west / MERIT_STEP) * MERIT_STEP
@@ -33,7 +39,7 @@ def merit_directions(west: float, south: float, east: float, north: float):
     width = int(round((east - x0) / MERIT_STEP))
     height = int(round((y0 - south) / MERIT_STEP))
     data = ee.data.computePixels({
-        "expression": ee.Image(MERIT).select("dir"),
+        "expression": ee.Image(MERIT).select(band),
         "fileFormat": "NUMPY_NDARRAY",
         "grid": {
             "dimensions": {"width": width, "height": height},
@@ -42,7 +48,7 @@ def merit_directions(west: float, south: float, east: float, north: float):
             "crsCode": "EPSG:4326",
         },
     })
-    return np.asarray(data["dir"]).astype(np.int32), x0, y0
+    return np.asarray(data[band]).astype(np.float64), x0, y0
 
 
 def glo30_utm(x0: float, y_top: float, width: int, height: int, cell: float = 30.0, crs: str = UTM_45N) -> np.ndarray:

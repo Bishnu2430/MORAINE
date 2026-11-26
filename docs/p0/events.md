@@ -17,7 +17,7 @@ numbers are in `event-<name>-checks.json`. Each check covers:
 
 | Event | Route and terrain | Lake before → after | First clear image after | Satellite rain | Verdict |
 |---|---|---|---|---|---|
-| Gongbatongsha 2016 | 52 km to Barabise, 312 km² | Too small to measure; published 0.017 km², drained | Landsat, 17 Oct 2016 | 93 mm, 29 Jun–5 Jul | **Keep, but start the run at the confluence 6.5 km below the lake** |
+| Gongbatongsha 2016 | 52 km to Barabise, 312 km² | Too small to measure; published 0.017 km², drained | Landsat, 17 Oct 2016 | 93 mm, 29 Jun–5 Jul | **Keep, with the run starting at the confluence (decided 26 Nov)** |
 | Thame 2024 | 20 km, passes 49 m from Thame at km 9.7, 132 km² | 0.044 → 0.015 km² (Sentinel-2) | Sentinel-2, 8 Sep 2024 | 88 mm, 9–16 Aug | Keep as planned |
 | Kedarnath 2013 | 20 km, passes 144 m from Kedarnath at km 1.5, 134 km² | Documented 400 × 200 m, 262,000 m³ | Landsat, 22 Jun 2013 | 345 mm, 10–17 Jun | Keep; check the elevation model's date first |
 
@@ -66,12 +66,20 @@ Koshi recorded the flood (Cook 2018, Fig. 1C):
   check works from these.
 
 **What it means.** Moraine's solver moves water, not sediment, so it can't grow a
-120,000 m³ water release into a 4,100 m³/s debris flow. Proposed change: **start the
-Gongbatongsha run at the confluence, fed with Sattar's modelled flow there.** Then score it in
-Nepal against the seismometer timing and the Chaku peak. That keeps a strong, independent timing
-test while being honest about where the model starts. The station positions and exact arrival
-times are in Cook's supplementary table S1 and the GFZ data repository, to collect in P3. The
-other option is to drop it: the week-15 gate already allows keeping Kedarnath and one Nepal event.
+120,000 m³ water release into a 4,100 m³/s debris flow.
+
+**Decision (26 Nov 2026): keep it, with the run starting at the confluence.**
+
+- **Inflow:** the run is fed with Sattar's modelled flow there, which peaks at about 4,100 m³/s
+  about 47 minutes after release.
+- **Scoring:** in Nepal, against the seismometer timing and the Chaku peak. That keeps a strong,
+  independent timing test while being honest about where the model starts.
+- **Start point:** 8.7 km down the traced route, at 28.0796°N 85.9979°E and 3,193 m. Upstream
+  area jumps there from 50 to 1,726 km² as the Zhangzangbo joins the Poiqu.
+  - It sits at the sharp southward bend that Sattar describes.
+  - Sattar gives 6.5 km, probably measured along a straighter line than the traced cells.
+- **Still to collect in P3:** the station positions and exact arrival times, from Cook's
+  supplementary table S1 and the GFZ data repository, and Sattar's confluence hydrograph.
 
 ## Thame 2024 (Khumbu, Nepal)
 

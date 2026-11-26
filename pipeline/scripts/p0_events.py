@@ -54,17 +54,26 @@ def trace(event: dict, lake: dict):
     start = (int((y0 - lake["lat"]) / step), int((lake["lon"] - x0) / step))
     cells = terrain.trace_downhill(directions, start)
     lonlat = np.array([(x0 + (c + 0.5) * step, y0 - (r + 0.5) * step) for r, c in cells])
+    if event.get("run_start"):
+        # Upstream area along the route; joining a much larger river shows as a jump
+        upstream, _, _ = terrain.merit_band("upa", *event["search"])
+        event = {**event, "_upstream_km2": np.array([upstream[r, c] for r, c in cells])}
     cos = np.cos(np.radians(lake["lat"]))
     steps = np.hypot(np.diff(lonlat[:, 0]) * 111.32 * cos, np.diff(lonlat[:, 1]) * 110.57)
     along = np.concatenate([[0], np.cumsum(steps)])
     keep = along <= event["length_km"]
     lonlat, along = lonlat[keep], along[keep]
+    if "_upstream_km2" in event:
+        area = event["_upstream_km2"][: len(lonlat)]
+        within = np.nonzero(along <= event["run_start"]["search_km"])[0][1:]
+        jump = within[int(np.argmax(area[within] / np.maximum(area[within - 1], 1e-6)))]
+        event["run_start"]["found"] = {"index": int(jump), "upstream_km2": [float(area[jump - 1]), float(area[jump])]}
     passes = []
     for place in event["places"]:
         km = np.hypot((lonlat[:, 0] - place["lon"]) * 111.32 * cos, (lonlat[:, 1] - place["lat"]) * 110.57)
         i = int(np.argmin(km))
         passes.append({"name": place["name"], "miss_m": round(1000 * float(km[i])), "along_km": round(float(along[i]), 1)})
-    return lonlat, float(along[-1]), passes
+    return lonlat, along, passes
 
 
 def corridor(event: dict, lonlat: np.ndarray, points: list[tuple[float, float]]):
@@ -111,7 +120,9 @@ def draw_map(event, heights, line, marks, names, origin, path):
     ax.plot((line[:, 0] - left) / CELL, (top - line[:, 1]) / CELL, color="#2a78d6", linewidth=1.6)
     for (x, y), name in zip(marks, names):
         ax.plot((x - left) / CELL, (top - y) / CELL, "o", color="#eb6834", markersize=6)
-        ax.annotate(name, ((x - left) / CELL, (top - y) / CELL), xytext=(8, 6), textcoords="offset points",
+        start = name.startswith("Run starts")  # labelled to the left so it clears the lake's label
+        ax.annotate(name, ((x - left) / CELL, (top - y) / CELL), xytext=(-10, -4) if start else (8, 6),
+                    textcoords="offset points", ha="right" if start else "left", va="top" if start else "baseline",
                     fontsize=9, color="#0b0b0b")
     ax.set_axis_off()
     ax.set_title(f"{event['name']}: flood route and GLO-30 within {event['half_width_m'] / 1000:g} km (north up)",
@@ -153,14 +164,29 @@ def check_event(key: str, event: dict, out: Path) -> list[tuple[str, bool, str]]
     result["water_mask_code"] = events.water_mask_code(lake["lon"], lake["lat"])
 
     # The route and the corridor
-    lonlat, length, passes = trace(event, lake)
+    lonlat, along, passes = trace(event, lake)
+    length = float(along[-1])
     result["route"] = {"length_km": round(length, 1), "passes": passes}
     print(f"  route: {length:.1f} km traced; " + ", ".join(f"passes {p['miss_m']} m from {p['name']} at km "
                                                              f"{p['along_km']}" for p in passes))
     points = [(lake["lon"], lake["lat"])] + [(p["lon"], p["lat"]) for p in event["places"]]
     names = [lake["name"]] + [p["name"] for p in event["places"]]
+    start = event.get("run_start")
+    if start:
+        i = start["found"]["index"]
+        points.append((float(lonlat[i, 0]), float(lonlat[i, 1])))
+        names.append(start["name"])
     info, heights, line, marks, origin = corridor(event, lonlat, points)
     result["corridor"] = info
+    if start:
+        lon, lat = points[-1]
+        before_km2, after_km2 = start["found"]["upstream_km2"]
+        result["run_start"] = {"name": start["name"], "along_km": round(float(along[i]), 2), "lon": round(lon, 5),
+                               "lat": round(lat, 5), "elevation_m": info["point_elevations_m"][-1],
+                               "upstream_km2": [round(before_km2, 1), round(after_km2, 1)]}
+        print(f"  run starts {along[i]:.1f} km down the route at {lat:.4f} N, {lon:.4f} E, "
+              f"{info['point_elevations_m'][-1]:.0f} m, where upstream area jumps {before_km2:.0f} -> "
+              f"{after_km2:.0f} km2")
     print(f"  corridor: {info['km2']} km2, {info['cells']:,} cells of 30 m, {info['elevation_m'][0]:.0f}-"
           f"{info['elevation_m'][1]:.0f} m; lake and places at {info['point_elevations_m']} m")
     draw_map(event, heights, line, marks, names, origin, out / "map.png")
