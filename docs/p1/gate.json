@@ -1,0 +1,1429 @@
+{
+ "criteria_passed": true,
+ "checks": [
+  {
+   "name": "the model is step 5's",
+   "passed": true,
+   "detail": "sha256 d787c41dc22c, step 5 recorded d787c41dc22c"
+  },
+  {
+   "name": "hard cases: the U-Net's mean overlap beats the better rule (ndwi_mndwi)",
+   "passed": true,
+   "detail": "0.729 against 0.405 over 39 cases"
+  },
+  {
+   "name": "the lead is not luck: 95% interval above zero, resampling lakes",
+   "passed": true,
+   "detail": "U-Net minus rule +0.324, interval +0.208 to +0.450, 28 lakes"
+  }
+ ],
+ "model": {
+  "sha256": "d787c41dc22c6aa93f52feca7e79338b6deaa2004cf16b2a96de68086950418d",
+  "epoch": 11
+ },
+ "hard_cases": {
+  "cases": 39,
+  "mean": {
+   "unet": 0.7295,
+   "ndwi": 0.4044,
+   "ndwi_mndwi": 0.4051
+  },
+  "better_rule": "ndwi_mndwi",
+  "difference_interval_95": [
+   0.2084,
+   0.4499
+  ],
+  "won_tied_lost": [
+   33,
+   6,
+   0
+  ]
+ },
+ "by_category": {
+  "ice": {
+   "cases": 10,
+   "lakes": 10,
+   "unet": 0.771,
+   "ndwi": 0.161,
+   "ndwi_mndwi": 0.161,
+   "abs_area_error": {
+    "unet": 0.062,
+    "ndwi": 1.0,
+    "ndwi_mndwi": 1.0
+   }
+  },
+  "shadow": {
+   "cases": 10,
+   "lakes": 5,
+   "unet": 0.872,
+   "ndwi": 0.377,
+   "ndwi_mndwi": 0.377,
+   "abs_area_error": {
+    "unet": 0.095,
+    "ndwi": 0.7,
+    "ndwi_mndwi": 0.7
+   }
+  },
+  "thin_cloud": {
+   "cases": 9,
+   "lakes": 9,
+   "unet": 0.759,
+   "ndwi": 0.501,
+   "ndwi_mndwi": 0.493,
+   "abs_area_error": {
+    "unet": 0.107,
+    "ndwi": 0.52,
+    "ndwi_mndwi": 0.521
+   }
+  },
+  "silty": {
+   "cases": 10,
+   "lakes": 10,
+   "unet": 0.868,
+   "ndwi": 0.653,
+   "ndwi_mndwi": 0.653,
+   "abs_area_error": {
+    "unet": 0.039,
+    "ndwi": 0.359,
+    "ndwi_mndwi": 0.359
+   }
+  },
+  "clear": {
+   "cases": 10,
+   "lakes": 10,
+   "unet": 0.891,
+   "ndwi": 0.857,
+   "ndwi_mndwi": 0.85,
+   "abs_area_error": {
+    "unet": 0.027,
+    "ndwi": 0.036,
+    "ndwi_mndwi": 0.075
+   }
+  }
+ },
+ "cases": [
+  {
+   "case": "sikkim-ice-01",
+   "category": "ice",
+   "date": "2020-12-18",
+   "lake": 4264,
+   "unet": {
+    "iou": 0.819,
+    "lake_iou": 0.815,
+    "lake_cells": 521,
+    "mapped_cells": 492,
+    "area_error": -0.056
+   },
+   "ndwi": {
+    "iou": 0.28,
+    "lake_iou": 0.0,
+    "lake_cells": 521,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.28,
+    "lake_iou": 0.0,
+    "lake_cells": 521,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-ice-02",
+   "category": "ice",
+   "date": "2018-11-16",
+   "lake": 4216,
+   "unet": {
+    "iou": 0.559,
+    "lake_iou": 0.574,
+    "lake_cells": 470,
+    "mapped_cells": 273,
+    "area_error": -0.419
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 470,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 470,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-ice-03",
+   "category": "ice",
+   "date": "2022-12-25",
+   "lake": 4250,
+   "unet": {
+    "iou": 0.881,
+    "lake_iou": 0.913,
+    "lake_cells": 6611,
+    "mapped_cells": 6235,
+    "area_error": -0.057
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 6611,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 6611,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-ice-04",
+   "category": "ice",
+   "date": "2018-12-01",
+   "lake": 4219,
+   "unet": {
+    "iou": 0.715,
+    "lake_iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi": {
+    "iou": 0.721,
+    "lake_iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.717,
+    "lake_iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-ice-05",
+   "category": "ice",
+   "date": "2022-12-20",
+   "lake": 4213,
+   "unet": {
+    "iou": 0.464,
+    "lake_iou": 0.0,
+    "lake_cells": 273,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi": {
+    "iou": 0.434,
+    "lake_iou": 0.0,
+    "lake_cells": 273,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.427,
+    "lake_iou": 0.0,
+    "lake_cells": 273,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-ice-06",
+   "category": "ice",
+   "date": "2020-12-05",
+   "lake": 4789,
+   "unet": {
+    "iou": 0.752,
+    "lake_iou": 0.572,
+    "lake_cells": 835,
+    "mapped_cells": 603,
+    "area_error": -0.278
+   },
+   "ndwi": {
+    "iou": 0.553,
+    "lake_iou": 0.0,
+    "lake_cells": 835,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.553,
+    "lake_iou": 0.0,
+    "lake_cells": 835,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-ice-08",
+   "category": "ice",
+   "date": "2020-12-10",
+   "lake": 4257,
+   "unet": {
+    "iou": 0.86,
+    "lake_iou": 0.921,
+    "lake_cells": 1338,
+    "mapped_cells": 1428,
+    "area_error": 0.067
+   },
+   "ndwi": {
+    "iou": 0.134,
+    "lake_iou": 0.0,
+    "lake_cells": 1338,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.134,
+    "lake_iou": 0.0,
+    "lake_cells": 1338,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-ice-09",
+   "category": "ice",
+   "date": "2020-11-15",
+   "lake": "sikkim-ice-09",
+   "unet": {
+    "iou": 0.509,
+    "lake_iou": 0.702,
+    "lake_cells": 285,
+    "mapped_cells": 270,
+    "area_error": -0.053
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 285,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 285,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-ice-10",
+   "category": "ice",
+   "date": "2018-12-01",
+   "lake": 4244,
+   "unet": {
+    "iou": 0.941,
+    "lake_iou": 0.941,
+    "lake_cells": 2895,
+    "mapped_cells": 2925,
+    "area_error": 0.01
+   },
+   "ndwi": {
+    "iou": 0.189,
+    "lake_iou": 0.189,
+    "lake_cells": 2895,
+    "mapped_cells": 546,
+    "area_error": -0.811
+   },
+   "ndwi_mndwi": {
+    "iou": 0.189,
+    "lake_iou": 0.189,
+    "lake_cells": 2895,
+    "mapped_cells": 546,
+    "area_error": -0.811
+   }
+  },
+  {
+   "case": "sikkim-ice-11",
+   "category": "ice",
+   "date": "2018-12-09",
+   "lake": 4263,
+   "unet": {
+    "iou": 0.79,
+    "lake_iou": 0.833,
+    "lake_cells": 390,
+    "mapped_cells": 391,
+    "area_error": 0.003
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 390,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 390,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-shadow-01",
+   "category": "shadow",
+   "date": "2018-11-26",
+   "lake": 4227,
+   "unet": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 222,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 222,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 222,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-shadow-02",
+   "category": "shadow",
+   "date": "2022-12-20",
+   "lake": 4234,
+   "unet": {
+    "iou": 0.895,
+    "lake_iou": 0.935,
+    "lake_cells": 3017,
+    "mapped_cells": 3132,
+    "area_error": 0.038
+   },
+   "ndwi": {
+    "iou": 0.841,
+    "lake_iou": 0.841,
+    "lake_cells": 3017,
+    "mapped_cells": 2589,
+    "area_error": -0.142
+   },
+   "ndwi_mndwi": {
+    "iou": 0.841,
+    "lake_iou": 0.841,
+    "lake_cells": 3017,
+    "mapped_cells": 2589,
+    "area_error": -0.142
+   }
+  },
+  {
+   "case": "sikkim-shadow-03",
+   "category": "shadow",
+   "date": "2022-12-05",
+   "lake": 4216,
+   "unet": {
+    "iou": 0.693,
+    "lake_iou": 0.693,
+    "lake_cells": 458,
+    "mapped_cells": 358,
+    "area_error": -0.218
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 458,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 458,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-shadow-04",
+   "category": "shadow",
+   "date": "2018-12-16",
+   "lake": 4789,
+   "unet": {
+    "iou": 0.886,
+    "lake_iou": 0.746,
+    "lake_cells": 978,
+    "mapped_cells": 861,
+    "area_error": -0.12
+   },
+   "ndwi": {
+    "iou": 0.755,
+    "lake_iou": 0.559,
+    "lake_cells": 978,
+    "mapped_cells": 586,
+    "area_error": -0.401
+   },
+   "ndwi_mndwi": {
+    "iou": 0.755,
+    "lake_iou": 0.559,
+    "lake_cells": 978,
+    "mapped_cells": 586,
+    "area_error": -0.401
+   }
+  },
+  {
+   "case": "sikkim-shadow-06",
+   "category": "shadow",
+   "date": "2018-12-06",
+   "lake": 4250,
+   "unet": {
+    "iou": 0.906,
+    "lake_iou": 0.91,
+    "lake_cells": 6779,
+    "mapped_cells": 6675,
+    "area_error": -0.015
+   },
+   "ndwi": {
+    "iou": 0.848,
+    "lake_iou": 0.858,
+    "lake_cells": 6779,
+    "mapped_cells": 6032,
+    "area_error": -0.11
+   },
+   "ndwi_mndwi": {
+    "iou": 0.844,
+    "lake_iou": 0.854,
+    "lake_cells": 6779,
+    "mapped_cells": 6000,
+    "area_error": -0.115
+   }
+  },
+  {
+   "case": "sikkim-shadow-07",
+   "category": "shadow",
+   "date": "2020-11-30",
+   "lake": 4227,
+   "unet": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 221,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 221,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 221,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-shadow-08",
+   "category": "shadow",
+   "date": "2022-12-10",
+   "lake": 4227,
+   "unet": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 230,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 230,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 230,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-shadow-09",
+   "category": "shadow",
+   "date": "2020-12-20",
+   "lake": 4234,
+   "unet": {
+    "iou": 0.875,
+    "lake_iou": 0.875,
+    "lake_cells": 3144,
+    "mapped_cells": 3222,
+    "area_error": 0.025
+   },
+   "ndwi": {
+    "iou": 0.826,
+    "lake_iou": 0.826,
+    "lake_cells": 3144,
+    "mapped_cells": 2684,
+    "area_error": -0.146
+   },
+   "ndwi_mndwi": {
+    "iou": 0.826,
+    "lake_iou": 0.826,
+    "lake_cells": 3144,
+    "mapped_cells": 2684,
+    "area_error": -0.146
+   }
+  },
+  {
+   "case": "sikkim-shadow-10",
+   "category": "shadow",
+   "date": "2018-12-11",
+   "lake": 4234,
+   "unet": {
+    "iou": 0.885,
+    "lake_iou": 0.885,
+    "lake_cells": 3145,
+    "mapped_cells": 3111,
+    "area_error": -0.011
+   },
+   "ndwi": {
+    "iou": 0.865,
+    "lake_iou": 0.865,
+    "lake_cells": 3145,
+    "mapped_cells": 2824,
+    "area_error": -0.102
+   },
+   "ndwi_mndwi": {
+    "iou": 0.865,
+    "lake_iou": 0.865,
+    "lake_cells": 3145,
+    "mapped_cells": 2824,
+    "area_error": -0.102
+   }
+  },
+  {
+   "case": "sikkim-shadow-11",
+   "category": "shadow",
+   "date": "2018-11-11",
+   "lake": 4216,
+   "unet": {
+    "iou": 0.87,
+    "lake_iou": 0.87,
+    "lake_cells": 470,
+    "mapped_cells": 437,
+    "area_error": -0.07
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 470,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 470,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-02",
+   "category": "thin_cloud",
+   "date": "2020-09-01",
+   "lake": 4280,
+   "unet": {
+    "iou": 0.728,
+    "lake_iou": 0.745,
+    "lake_cells": 1193,
+    "mapped_cells": 981,
+    "area_error": -0.178
+   },
+   "ndwi": {
+    "iou": 0.461,
+    "lake_iou": 0.472,
+    "lake_cells": 1193,
+    "mapped_cells": 573,
+    "area_error": -0.52
+   },
+   "ndwi_mndwi": {
+    "iou": 0.459,
+    "lake_iou": 0.47,
+    "lake_cells": 1193,
+    "mapped_cells": 571,
+    "area_error": -0.521
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-04",
+   "category": "thin_cloud",
+   "date": "2022-10-01",
+   "lake": 4275,
+   "unet": {
+    "iou": 0.508,
+    "lake_iou": 0.673,
+    "lake_cells": 1449,
+    "mapped_cells": 1464,
+    "area_error": 0.01
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 1449,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 1449,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-08",
+   "category": "thin_cloud",
+   "date": "2022-10-26",
+   "lake": 4206,
+   "unet": {
+    "iou": 0.759,
+    "lake_iou": 0.759,
+    "lake_cells": 458,
+    "mapped_cells": 409,
+    "area_error": -0.107
+   },
+   "ndwi": {
+    "iou": 0.533,
+    "lake_iou": 0.533,
+    "lake_cells": 458,
+    "mapped_cells": 244,
+    "area_error": -0.467
+   },
+   "ndwi_mndwi": {
+    "iou": 0.524,
+    "lake_iou": 0.524,
+    "lake_cells": 458,
+    "mapped_cells": 240,
+    "area_error": -0.476
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-09",
+   "category": "thin_cloud",
+   "date": "2020-10-01",
+   "lake": 4250,
+   "unet": {
+    "iou": 0.891,
+    "lake_iou": 0.904,
+    "lake_cells": 6664,
+    "mapped_cells": 6513,
+    "area_error": -0.023
+   },
+   "ndwi": {
+    "iou": 0.375,
+    "lake_iou": 0.374,
+    "lake_cells": 6664,
+    "mapped_cells": 2500,
+    "area_error": -0.625
+   },
+   "ndwi_mndwi": {
+    "iou": 0.375,
+    "lake_iou": 0.374,
+    "lake_cells": 6664,
+    "mapped_cells": 2498,
+    "area_error": -0.625
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-10",
+   "category": "thin_cloud",
+   "date": "2022-10-01",
+   "lake": 4827,
+   "unet": {
+    "iou": 0.76,
+    "lake_iou": 0.76,
+    "lake_cells": 11252,
+    "mapped_cells": 8569,
+    "area_error": -0.238
+   },
+   "ndwi": {
+    "iou": 0.554,
+    "lake_iou": 0.554,
+    "lake_cells": 11252,
+    "mapped_cells": 6232,
+    "area_error": -0.446
+   },
+   "ndwi_mndwi": {
+    "iou": 0.538,
+    "lake_iou": 0.538,
+    "lake_cells": 11252,
+    "mapped_cells": 6048,
+    "area_error": -0.462
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-12",
+   "category": "thin_cloud",
+   "date": "2020-09-16",
+   "lake": 4224,
+   "unet": {
+    "iou": 0.671,
+    "lake_iou": 0.8,
+    "lake_cells": 1865,
+    "mapped_cells": 2122,
+    "area_error": 0.138
+   },
+   "ndwi": {
+    "iou": 0.548,
+    "lake_iou": 0.41,
+    "lake_cells": 1865,
+    "mapped_cells": 846,
+    "area_error": -0.546
+   },
+   "ndwi_mndwi": {
+    "iou": 0.544,
+    "lake_iou": 0.408,
+    "lake_cells": 1865,
+    "mapped_cells": 838,
+    "area_error": -0.551
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-14",
+   "category": "thin_cloud",
+   "date": "2020-10-26",
+   "lake": 4252,
+   "unet": {
+    "iou": 0.899,
+    "lake_iou": 0.919,
+    "lake_cells": 4311,
+    "mapped_cells": 4327,
+    "area_error": 0.004
+   },
+   "ndwi": {
+    "iou": 0.615,
+    "lake_iou": 0.615,
+    "lake_cells": 4311,
+    "mapped_cells": 2667,
+    "area_error": -0.381
+   },
+   "ndwi_mndwi": {
+    "iou": 0.612,
+    "lake_iou": 0.612,
+    "lake_cells": 4311,
+    "mapped_cells": 2653,
+    "area_error": -0.385
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-15",
+   "category": "thin_cloud",
+   "date": "2018-10-02",
+   "lake": 4217,
+   "unet": {
+    "iou": 0.79,
+    "lake_iou": 0.784,
+    "lake_cells": 4554,
+    "mapped_cells": 3816,
+    "area_error": -0.162
+   },
+   "ndwi": {
+    "iou": 0.501,
+    "lake_iou": 0.48,
+    "lake_cells": 4554,
+    "mapped_cells": 2216,
+    "area_error": -0.513
+   },
+   "ndwi_mndwi": {
+    "iou": 0.493,
+    "lake_iou": 0.474,
+    "lake_cells": 4554,
+    "mapped_cells": 2185,
+    "area_error": -0.52
+   }
+  },
+  {
+   "case": "sikkim-thin_cloud-18",
+   "category": "thin_cloud",
+   "date": "2020-09-21",
+   "lake": 4267,
+   "unet": {
+    "iou": 0.607,
+    "lake_iou": 0.901,
+    "lake_cells": 3644,
+    "mapped_cells": 3669,
+    "area_error": 0.007
+   },
+   "ndwi": {
+    "iou": 0.185,
+    "lake_iou": 0.209,
+    "lake_cells": 3644,
+    "mapped_cells": 762,
+    "area_error": -0.791
+   },
+   "ndwi_mndwi": {
+    "iou": 0.185,
+    "lake_iou": 0.209,
+    "lake_cells": 3644,
+    "mapped_cells": 762,
+    "area_error": -0.791
+   }
+  },
+  {
+   "case": "sikkim-silty-01",
+   "category": "silty",
+   "date": "2018-11-19",
+   "lake": 4281,
+   "unet": {
+    "iou": 0.87,
+    "lake_iou": 0.909,
+    "lake_cells": 7605,
+    "mapped_cells": 7957,
+    "area_error": 0.046
+   },
+   "ndwi": {
+    "iou": 0.612,
+    "lake_iou": 0.644,
+    "lake_cells": 7605,
+    "mapped_cells": 5283,
+    "area_error": -0.305
+   },
+   "ndwi_mndwi": {
+    "iou": 0.612,
+    "lake_iou": 0.644,
+    "lake_cells": 7605,
+    "mapped_cells": 5283,
+    "area_error": -0.305
+   }
+  },
+  {
+   "case": "sikkim-silty-02",
+   "category": "silty",
+   "date": "2022-09-24",
+   "lake": 4277,
+   "unet": {
+    "iou": 0.944,
+    "lake_iou": 0.951,
+    "lake_cells": 975,
+    "mapped_cells": 951,
+    "area_error": -0.025
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 975,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 975,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-silty-03",
+   "category": "silty",
+   "date": "2020-10-16",
+   "lake": 4244,
+   "unet": {
+    "iou": 0.889,
+    "lake_iou": 0.889,
+    "lake_cells": 3446,
+    "mapped_cells": 3267,
+    "area_error": -0.052
+   },
+   "ndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 3446,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.0,
+    "lake_iou": 0.0,
+    "lake_cells": 3446,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-silty-04",
+   "category": "silty",
+   "date": "2018-09-17",
+   "lake": 4219,
+   "unet": {
+    "iou": 0.837,
+    "lake_iou": 0.791,
+    "lake_cells": 229,
+    "mapped_cells": 224,
+    "area_error": -0.022
+   },
+   "ndwi": {
+    "iou": 0.693,
+    "lake_iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   },
+   "ndwi_mndwi": {
+    "iou": 0.693,
+    "lake_iou": 0.0,
+    "lake_cells": 229,
+    "mapped_cells": 0,
+    "area_error": -1.0
+   }
+  },
+  {
+   "case": "sikkim-silty-05",
+   "category": "silty",
+   "date": "2018-11-19",
+   "lake": 4282,
+   "unet": {
+    "iou": 0.95,
+    "lake_iou": 0.946,
+    "lake_cells": 1209,
+    "mapped_cells": 1247,
+    "area_error": 0.031
+   },
+   "ndwi": {
+    "iou": 0.782,
+    "lake_iou": 0.803,
+    "lake_cells": 1209,
+    "mapped_cells": 982,
+    "area_error": -0.188
+   },
+   "ndwi_mndwi": {
+    "iou": 0.782,
+    "lake_iou": 0.803,
+    "lake_cells": 1209,
+    "mapped_cells": 982,
+    "area_error": -0.188
+   }
+  },
+  {
+   "case": "sikkim-silty-06",
+   "category": "silty",
+   "date": "2018-09-27",
+   "lake": 4790,
+   "unet": {
+    "iou": 0.865,
+    "lake_iou": 0.824,
+    "lake_cells": 255,
+    "mapped_cells": 285,
+    "area_error": 0.118
+   },
+   "ndwi": {
+    "iou": 0.864,
+    "lake_iou": 0.777,
+    "lake_cells": 255,
+    "mapped_cells": 216,
+    "area_error": -0.153
+   },
+   "ndwi_mndwi": {
+    "iou": 0.86,
+    "lake_iou": 0.773,
+    "lake_cells": 255,
+    "mapped_cells": 213,
+    "area_error": -0.165
+   }
+  },
+  {
+   "case": "sikkim-silty-07",
+   "category": "silty",
+   "date": "2018-09-17",
+   "lake": 4274,
+   "unet": {
+    "iou": 0.752,
+    "lake_iou": 0.755,
+    "lake_cells": 1261,
+    "mapped_cells": 1387,
+    "area_error": 0.1
+   },
+   "ndwi": {
+    "iou": 0.402,
+    "lake_iou": 0.402,
+    "lake_cells": 1261,
+    "mapped_cells": 525,
+    "area_error": -0.584
+   },
+   "ndwi_mndwi": {
+    "iou": 0.401,
+    "lake_iou": 0.401,
+    "lake_cells": 1261,
+    "mapped_cells": 524,
+    "area_error": -0.584
+   }
+  },
+  {
+   "case": "sikkim-silty-08",
+   "category": "silty",
+   "date": "2020-09-04",
+   "lake": 4272,
+   "unet": {
+    "iou": 0.93,
+    "lake_iou": 0.93,
+    "lake_cells": 8406,
+    "mapped_cells": 8826,
+    "area_error": 0.05
+   },
+   "ndwi": {
+    "iou": 0.896,
+    "lake_iou": 0.896,
+    "lake_cells": 8406,
+    "mapped_cells": 7738,
+    "area_error": -0.079
+   },
+   "ndwi_mndwi": {
+    "iou": 0.896,
+    "lake_iou": 0.896,
+    "lake_cells": 8406,
+    "mapped_cells": 7733,
+    "area_error": -0.08
+   }
+  },
+  {
+   "case": "sikkim-silty-09",
+   "category": "silty",
+   "date": "2022-10-14",
+   "lake": 4276,
+   "unet": {
+    "iou": 0.856,
+    "lake_iou": 0.962,
+    "lake_cells": 903,
+    "mapped_cells": 906,
+    "area_error": 0.003
+   },
+   "ndwi": {
+    "iou": 0.768,
+    "lake_iou": 0.818,
+    "lake_cells": 903,
+    "mapped_cells": 739,
+    "area_error": -0.182
+   },
+   "ndwi_mndwi": {
+    "iou": 0.856,
+    "lake_iou": 0.818,
+    "lake_cells": 903,
+    "mapped_cells": 739,
+    "area_error": -0.182
+   }
+  },
+  {
+   "case": "sikkim-silty-10",
+   "category": "silty",
+   "date": "2018-09-07",
+   "lake": 4279,
+   "unet": {
+    "iou": 0.644,
+    "lake_iou": 0.84,
+    "lake_cells": 3148,
+    "mapped_cells": 3173,
+    "area_error": 0.008
+   },
+   "ndwi": {
+    "iou": 0.539,
+    "lake_iou": 0.582,
+    "lake_cells": 3148,
+    "mapped_cells": 1850,
+    "area_error": -0.412
+   },
+   "ndwi_mndwi": {
+    "iou": 0.539,
+    "lake_iou": 0.582,
+    "lake_cells": 3148,
+    "mapped_cells": 1850,
+    "area_error": -0.412
+   }
+  },
+  {
+   "case": "sikkim-clear-01",
+   "category": "clear",
+   "date": "2020-10-14",
+   "lake": 4277,
+   "unet": {
+    "iou": 0.904,
+    "lake_iou": 0.904,
+    "lake_cells": 919,
+    "mapped_cells": 945,
+    "area_error": 0.028
+   },
+   "ndwi": {
+    "iou": 0.911,
+    "lake_iou": 0.903,
+    "lake_cells": 919,
+    "mapped_cells": 914,
+    "area_error": -0.005
+   },
+   "ndwi_mndwi": {
+    "iou": 0.904,
+    "lake_iou": 0.906,
+    "lake_cells": 919,
+    "mapped_cells": 892,
+    "area_error": -0.029
+   }
+  },
+  {
+   "case": "sikkim-clear-02",
+   "category": "clear",
+   "date": "2020-10-09",
+   "lake": 4276,
+   "unet": {
+    "iou": 0.769,
+    "lake_iou": 0.879,
+    "lake_cells": 906,
+    "mapped_cells": 898,
+    "area_error": -0.009
+   },
+   "ndwi": {
+    "iou": 0.854,
+    "lake_iou": 0.859,
+    "lake_cells": 906,
+    "mapped_cells": 841,
+    "area_error": -0.072
+   },
+   "ndwi_mndwi": {
+    "iou": 0.858,
+    "lake_iou": 0.857,
+    "lake_cells": 906,
+    "mapped_cells": 830,
+    "area_error": -0.084
+   }
+  },
+  {
+   "case": "sikkim-clear-05",
+   "category": "clear",
+   "date": "2020-10-09",
+   "lake": 4265,
+   "unet": {
+    "iou": 0.934,
+    "lake_iou": 0.934,
+    "lake_cells": 6146,
+    "mapped_cells": 6166,
+    "area_error": 0.003
+   },
+   "ndwi": {
+    "iou": 0.939,
+    "lake_iou": 0.939,
+    "lake_cells": 6146,
+    "mapped_cells": 5931,
+    "area_error": -0.035
+   },
+   "ndwi_mndwi": {
+    "iou": 0.92,
+    "lake_iou": 0.92,
+    "lake_cells": 6146,
+    "mapped_cells": 5734,
+    "area_error": -0.067
+   }
+  },
+  {
+   "case": "sikkim-clear-06",
+   "category": "clear",
+   "date": "2022-11-05",
+   "lake": 4288,
+   "unet": {
+    "iou": 0.939,
+    "lake_iou": 0.939,
+    "lake_cells": 1327,
+    "mapped_cells": 1318,
+    "area_error": -0.007
+   },
+   "ndwi": {
+    "iou": 0.86,
+    "lake_iou": 0.86,
+    "lake_cells": 1327,
+    "mapped_cells": 1145,
+    "area_error": -0.137
+   },
+   "ndwi_mndwi": {
+    "iou": 0.815,
+    "lake_iou": 0.815,
+    "lake_cells": 1327,
+    "mapped_cells": 1085,
+    "area_error": -0.182
+   }
+  },
+  {
+   "case": "sikkim-clear-07",
+   "category": "clear",
+   "date": "2020-10-16",
+   "lake": 4829,
+   "unet": {
+    "iou": 0.81,
+    "lake_iou": 0.733,
+    "lake_cells": 409,
+    "mapped_cells": 449,
+    "area_error": 0.098
+   },
+   "ndwi": {
+    "iou": 0.807,
+    "lake_iou": 0.719,
+    "lake_cells": 409,
+    "mapped_cells": 399,
+    "area_error": -0.024
+   },
+   "ndwi_mndwi": {
+    "iou": 0.765,
+    "lake_iou": 0.638,
+    "lake_cells": 409,
+    "mapped_cells": 343,
+    "area_error": -0.161
+   }
+  },
+  {
+   "case": "sikkim-clear-08",
+   "category": "clear",
+   "date": "2018-09-17",
+   "lake": 4210,
+   "unet": {
+    "iou": 0.841,
+    "lake_iou": 0.899,
+    "lake_cells": 1024,
+    "mapped_cells": 1090,
+    "area_error": 0.064
+   },
+   "ndwi": {
+    "iou": 0.841,
+    "lake_iou": 0.902,
+    "lake_cells": 1024,
+    "mapped_cells": 1000,
+    "area_error": -0.023
+   },
+   "ndwi_mndwi": {
+    "iou": 0.841,
+    "lake_iou": 0.902,
+    "lake_cells": 1024,
+    "mapped_cells": 1000,
+    "area_error": -0.023
+   }
+  },
+  {
+   "case": "sikkim-clear-09",
+   "category": "clear",
+   "date": "2022-10-16",
+   "lake": 4287,
+   "unet": {
+    "iou": 0.953,
+    "lake_iou": 0.953,
+    "lake_cells": 431,
+    "mapped_cells": 442,
+    "area_error": 0.026
+   },
+   "ndwi": {
+    "iou": 0.761,
+    "lake_iou": 0.761,
+    "lake_cells": 431,
+    "mapped_cells": 328,
+    "area_error": -0.239
+   },
+   "ndwi_mndwi": {
+    "iou": 0.761,
+    "lake_iou": 0.761,
+    "lake_cells": 431,
+    "mapped_cells": 328,
+    "area_error": -0.239
+   }
+  },
+  {
+   "case": "sikkim-clear-10",
+   "category": "clear",
+   "date": "2018-09-17",
+   "lake": 4238,
+   "unet": {
+    "iou": 0.931,
+    "lake_iou": 0.937,
+    "lake_cells": 1887,
+    "mapped_cells": 1980,
+    "area_error": 0.049
+   },
+   "ndwi": {
+    "iou": 0.891,
+    "lake_iou": 0.925,
+    "lake_cells": 1887,
+    "mapped_cells": 1816,
+    "area_error": -0.038
+   },
+   "ndwi_mndwi": {
+    "iou": 0.89,
+    "lake_iou": 0.924,
+    "lake_cells": 1887,
+    "mapped_cells": 1813,
+    "area_error": -0.039
+   }
+  },
+  {
+   "case": "sikkim-clear-12",
+   "category": "clear",
+   "date": "2018-09-17",
+   "lake": 4215,
+   "unet": {
+    "iou": 0.878,
+    "lake_iou": 0.863,
+    "lake_cells": 535,
+    "mapped_cells": 568,
+    "area_error": 0.062
+   },
+   "ndwi": {
+    "iou": 0.875,
+    "lake_iou": 0.861,
+    "lake_cells": 535,
+    "mapped_cells": 524,
+    "area_error": -0.021
+   },
+   "ndwi_mndwi": {
+    "iou": 0.876,
+    "lake_iou": 0.864,
+    "lake_cells": 535,
+    "mapped_cells": 522,
+    "area_error": -0.024
+   }
+  },
+  {
+   "case": "sikkim-clear-13",
+   "category": "clear",
+   "date": "2018-10-17",
+   "lake": 4828,
+   "unet": {
+    "iou": 0.554,
+    "lake_iou": 0.751,
+    "lake_cells": 285,
+    "mapped_cells": 284,
+    "area_error": -0.004
+   },
+   "ndwi": {
+    "iou": 0.536,
+    "lake_iou": 0.711,
+    "lake_cells": 285,
+    "mapped_cells": 230,
+    "area_error": -0.193
+   },
+   "ndwi_mndwi": {
+    "iou": 0.481,
+    "lake_iou": 0.643,
+    "lake_cells": 285,
+    "mapped_cells": 203,
+    "area_error": -0.288
+   }
+  }
+ ]
+}

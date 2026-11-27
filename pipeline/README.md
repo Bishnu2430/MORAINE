@@ -168,6 +168,109 @@ it covers:
 Findings and verdicts are written up in `docs/p0/events.md`. The facts behind each event, with
 their sources, are in `moraine/events.py`.
 
+## P1: the glacial lake inventory used as labels
+
+```
+.venv\Scripts\python pipeline\scripts\p1_inventory.py
+```
+
+This fetches the Zhang et al. (2023) Third Pole inventory (Zenodo 10.5281/zenodo.8369314, CC BY
+4.0, 17.3 MB). It holds hand-drawn Sentinel-2 outlines of the 5,894 glacial lakes of at least
+0.02 km² within 10 km of a glacier, for 2018, 2020 and 2022.
+
+The script saves the zip to `pipeline/data/zhang2023/`, which stays out of git, and checks it
+against the published MD5. It then tests the outlines against what P0 measured. A good run ends
+with **7 of 7 checks passed**: South Lhonak within 2.2% of P0 in every year, Thame's breached lake
+present, the two drained lakes absent, and every 2018 and 2020 outline paired with its 2022 lake.
+
+The three year files list the same lakes in **different orders**, so never pair lakes across years
+by their position in the file. Use `inventory.match()`, which pairs them on the listed areas (the
+2022 file repeats each lake's 2018 and 2020 area). The P1 plan is in `docs/p1/plan.md`.
+
+```
+.venv\Scripts\python pipeline\scripts\p1_study_areas.py --project master-bruin-515809-p2
+```
+
+Builds the study areas: the whole catchment draining to the end of each P0 flood route, from
+HydroSHEDS level-12 basins. It writes them to `pipeline/moraine/study_areas.geojson` and counts the
+inventory lakes in each. A good run ends with **12 of 12 checks passed**: each catchment closes
+inside its search box, holds its key lake, and holds exactly the lakes MERIT Hydro's own catchment
+holds. North Sikkim has 101 inventory lakes, Bhote Koshi/Poiqu 36 and Khumbu 54 (89, 32 and 45 of
+them at least 0.02 km² in 2022; the inventory keeps a lake that reached that size in any year).
+
+```
+.venv\Scripts\python pipeline\scripts\p1_baseline.py --project master-bruin-515809-p2
+```
+
+P1 step 3, the simple lake mapper (`moraine/watch.py`): Sentinel-2 autumn composites, water where
+NDWI > 0.25 on slopes under 12°, patches of at least 0.02 km². It scores both rule variants against
+the inventory for 2018, 2020 and 2022 in the three study areas. A good run ends with the NDWI rule
+finding **449 of 505** inventory lakes (overlap at least 0.5), lake area 9.1% low. It also reports
+the water it maps away from inventory lakes, which is partly error and partly lakes the inventory
+does not list.
+
+- **Time:** about 1–2 hours on Earth Engine.
+- **Cache:** each area-year is saved in `pipeline/out/p1_baseline/cache/`, stamped with a
+  fingerprint of `watch.py` and the lake list, so a rerun skips finished work and recomputes anything
+  made by older code.
+- **Run one copy at a time.** Check that no earlier run is still going before starting another.
+- **Sum at 10 m.** Over a whole study area, Earth Engine requests at 30 m lose mapped water.
+- **Quota:** the Community tier allows 150 EECU-hours a month. Past that, the project runs in
+  restricted mode until the 1st of the next month.
+
+```
+.venv\Scripts\python pipeline\scripts\p1_hard_cases.py --project master-bruin-515809-p2
+```
+
+P1 step 4, the hard-case set (`moraine/hard_cases.py` flags, `moraine/tiles.py` tiles). It
+measures ice, terrain shadow, thin cloud and silt for every inventory lake in every
+September–December scene of the inventory years. It then picks the strongest cases per category,
+exports each as a 256 × 256 tile of 10 m cells to `pipeline/data/p1_hard_cases/` (not in git), and
+draws contact sheets in `pipeline/out/p1_hard_cases/sheets/`.
+
+- **Visual check:** cases that fail it are listed with a reason in
+  `docs/p1/hard-case-review.json`. After a change that adds candidates, look at the new ones
+  before trusting the results.
+- **Good run:** ends with **8 of 8 checks passed**, 49 test cases (North Sikkim) and 49 validation
+  cases. The baseline scores a median overlap of 0.46 on the hard test cases against 0.86 on clear
+  ones (overlap with every inventory lake within 500 m of the case lake, `tiles.score`).
+- **Time:** about 25 minutes the first time, then a minute from the caches.
+
+P1 step 5, the lake U-Net (`moraine/training.py`, `moraine/unet.py`), in three commands:
+
+```
+.venv\Scripts\python pipeline\scripts\p1_unet_data.py --project master-bruin-515809-p2
+```
+
+```
+.venv\Scripts\python pipeline\scripts\p1_unet.py --epochs 25
+```
+
+```
+.venv\Scripts\python pipeline\scripts\p1_unet_report.py
+```
+
+- **Data:** the first command exports about 2,700 training tiles from lakes outside every study
+  area to `pipeline/data/p1_unet/` (not in git). It takes about 30 minutes and resumes if stopped.
+- **Training:** the second trains and keeps the pass that scores best on the validation hard cases.
+  It takes about 2 hours on the laptop's CPU. On a free GPU it takes 7 minutes: run
+  `pipeline\scripts\p1_unet_bundle.py`, upload `pipeline/data/p1_unet_bundle.zip` to a `MORAINE`
+  folder in Google Drive, and run `pipeline/notebooks/p1_unet_colab.ipynb` in Colab. Then put
+  `model.pt` and `history.json` in `pipeline/data/p1_unet/`.
+- **Report:** the third scores the model on the validation cases. A good run gives a mean overlap
+  of **0.768 against the baseline's 0.454**, better on 40 of 49 cases.
+- **No slope input.** The U-Net never sees slope, only the 12° mask: GLO-30's flattened lakes
+  would hand it 2011–2015 lake outlines.
+
+```
+.venv\Scripts\python pipeline\scripts\p1_gate.py
+```
+
+P1 step 6, the gate: the U-Net and both baseline rules on the held-out North Sikkim cases. The
+criteria are in the script's docstring and were committed before it first ran. A good run ends with
+**GATE PASSED**: on the 39 hard cases, overlap 0.729 for the U-Net against 0.405 for the better rule,
+95% interval of the difference +0.21 to +0.45. It needs no Earth Engine and takes about a minute.
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the

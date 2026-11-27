@@ -183,3 +183,193 @@ def plot_dam_break(run: dict, refinement: list[tuple[float, float]], t_end: floa
     fig.tight_layout(rect=(0, 0.07, 1, 1))
     fig.savefig(path, facecolor=c["surface"])
     plt.close(fig)
+
+
+def plot_baseline(summary: dict, variant: str, label: str, names: dict, path: Path) -> None:
+    """One panel per study area: mapped lake area every autumn against the inventory's totals."""
+    c = COLORS
+    plt.rcParams["font.family"] = ["Segoe UI", "DejaVu Sans"]
+    keys = list(summary)
+    fig, axes = plt.subplots(1, len(keys), figsize=(4.2 * len(keys), 4.2), dpi=150, sharey=False)
+    fig.patch.set_facecolor(c["surface"])
+    for ax, key in zip(axes, keys):
+        _style(ax, c)
+        rows = [r for r in summary[key] if variant in r["variants"]]
+        years = [r["year"] for r in rows]
+        total = [r["variants"][variant]["total"]["km2"] for r in rows]
+        ax.plot(years, total, color=c["Landsat"], linewidth=2, marker="o", markersize=5,
+                markeredgecolor=c["surface"], label="Mapped, all water patches ≥ 0.02 km²", zorder=2)
+        scored = [r for r in rows if "found" in r["variants"][variant]]
+        ax.scatter([r["year"] for r in scored], [r["variants"][variant]["truth_km2"] for r in scored], marker="D",
+                   s=40, facecolor=c["surface"], edgecolor=c["ink"], linewidth=1.3, label="Inventory lakes", zorder=3)
+        ax.scatter([r["year"] for r in scored], [r["variants"][variant]["mapped_km2"] for r in scored], marker="o",
+                   s=30, facecolor="none", edgecolor=c["Sentinel-2"], linewidth=1.4,
+                   label="Mapped, at inventory lakes", zorder=3)
+        for r in scored:
+            e = r["variants"][variant]
+            ax.annotate(f"{e['found']}/{e['seen']} found", (r["year"], e["mapped_km2"]), xytext=(0, -9),
+                        textcoords="offset points", ha="center", va="top", fontsize=7.5, color=c["ink2"])
+        ax.set_ylim(0, max(total + [r["variants"][variant]["truth_km2"] for r in scored]) * 1.25)
+        ax.set_xticks(years if len(years) <= 5 else list(range(min(years), max(years) + 1, 2)))
+        ax.set_xlim(min(years) - 0.7, max(years) + 0.7)  # room for the labels at either end
+        ax.set_title(names[key], loc="left", fontsize=10.5, fontweight="bold", color=c["ink"])
+        ax.set_ylabel("Lake area (km²)", color=c["ink2"])
+    legend = axes[0].legend(loc="lower left", frameon=False, fontsize=7.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+    fig.text(0.01, 0.015, f"Sentinel-2 autumn composites (1 Sep-15 Nov), rule: {label}. Labels show inventory "
+             "lakes found (overlap at least 0.5) out of those seen by 3+ scenes. Inventory: Zhang et al. (2023).",
+             fontsize=7.2, color=c["muted"])
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.savefig(path, facecolor=c["surface"])
+    plt.close(fig)
+
+
+CATEGORY_NAMES = {"ice": "Ice", "shadow": "Shadow", "thin_cloud": "Thin cloud", "silty": "Silty", "clear": "Clear"}
+
+
+def plot_unet(history: dict, kept_epoch: int, medians: dict, path: Path) -> None:
+    """Left: the U-Net's validation score after each pass, against the baseline's. Right: median score per
+    category, baseline against U-Net. `medians` is {category: (baseline, unet)}."""
+    c = COLORS
+    unet_c, base_c = c["Landsat"], c["Sentinel-2"]
+    plt.rcParams["font.family"] = ["Segoe UI", "DejaVu Sans"]
+    fig, (left, right) = plt.subplots(1, 2, figsize=(11.5, 4.4), dpi=150, gridspec_kw={"width_ratios": [1.35, 1]})
+    fig.patch.set_facecolor(c["surface"])
+
+    _style(left, c)
+    epochs = [e["epoch"] for e in history["epochs"]]
+    scores = [e["mean_iou"] for e in history["epochs"]]
+    every = [v for vals in history["baseline"].values() for v in vals]
+    baseline = sum(every) / len(every)
+    left.axhline(baseline, color=base_c, linewidth=2, linestyle=(0, (4, 3)), zorder=2)
+    left.text(epochs[-1], baseline - 0.035, f"Baseline (NDWI rule) {baseline:.2f}", ha="right", va="top", fontsize=8,
+              color=c["ink2"])
+    left.plot(epochs, scores, color=unet_c, linewidth=2, marker="o", markersize=4.5, markeredgecolor=c["surface"],
+              zorder=3)
+    best = scores[epochs.index(kept_epoch)]
+    left.scatter([kept_epoch], [best], s=90, facecolor="none", edgecolor=c["ink"], linewidth=1.3, zorder=4)
+    left.annotate(f"Kept: pass {kept_epoch}, {best:.2f}", (kept_epoch, best), xytext=(0, 14), textcoords="offset points",
+                  ha="center", fontsize=8, color=c["ink"])
+    left.text(epochs[0], scores[0] + 0.04, "U-Net", fontsize=8.5, color=c["ink2"], ha="left")
+    left.set_ylim(0, 1)
+    left.set_xlim(0.5, epochs[-1] + 0.5)
+    left.set_xlabel("Training pass (epoch)", color=c["ink2"])
+    left.set_ylabel("Mean overlap, 49 validation cases", color=c["ink2"])
+    left.set_title("Validation score while training", loc="left", fontsize=10.5, fontweight="bold", color=c["ink"])
+
+    _style(right, c)
+    right.grid(axis="y", visible=False)
+    right.grid(axis="x", color=c["grid"], linewidth=0.8)
+    names = list(medians)
+    ys = list(range(len(names)))[::-1]
+    for y, name in zip(ys, names):
+        b, u = medians[name]
+        right.plot([b, u], [y, y], color=c["axis"], linewidth=2, zorder=1, solid_capstyle="round")
+        right.scatter([b], [y], s=64, color=base_c, edgecolor=c["surface"], linewidth=2, zorder=3)
+        right.scatter([u], [y], s=64, color=unet_c, edgecolor=c["surface"], linewidth=2, zorder=3)
+    top_b, top_u = medians[names[0]]
+    right.annotate("Baseline", (top_b, ys[0]), xytext=(0, 9), textcoords="offset points", ha="center", fontsize=8,
+                   color=c["ink2"])
+    right.annotate("U-Net", (top_u, ys[0]), xytext=(0, 9), textcoords="offset points", ha="center", fontsize=8,
+                   color=c["ink2"])
+    right.set_yticks(ys, [CATEGORY_NAMES.get(n, n) for n in names])
+    right.set_xlim(-0.03, 1.03)
+    right.set_ylim(-0.6, len(names) - 0.4)
+    right.set_xlabel("Median overlap", color=c["ink2"])
+    right.set_title("By condition, kept model", loc="left", fontsize=10.5, fontweight="bold", color=c["ink"])
+    handles = [plt.Line2D([], [], marker="o", linestyle="", color=col, markersize=7, label=lab)
+               for col, lab in ((unet_c, "U-Net"), (base_c, "Baseline (NDWI rule)"))]
+    legend = right.legend(handles=handles, loc="lower left", frameon=False, fontsize=7.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+    fig.text(0.01, 0.015, "Validation cases: Bhote Koshi and Khumbu, never trained on. Overlap with every inventory lake "
+             "within 500 m of the case lake. The North Sikkim test cases are untouched until step 6.",
+             fontsize=7.2, color=c["muted"])
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.savefig(path, facecolor=c["surface"])
+    plt.close(fig)
+
+
+def plot_tiles(panels: list[tuple], title: str, path: Path, columns: int = 7) -> None:
+    """True-colour case tiles in a grid: each panel is (tile, lake map or None, caption). A lake map is shaded
+    magenta; the case's own lake is outlined in cyan and other inventory lakes in yellow."""
+    import numpy as np
+
+    from . import tiles
+
+    rows = (len(panels) + columns - 1) // columns
+    fig, axes = plt.subplots(rows, columns, figsize=(2.3 * columns, 2.55 * rows + 0.5), dpi=110, squeeze=False)
+    for ax in axes.ravel():
+        ax.axis("off")
+    for ax, (tile, mapped, caption) in zip(axes.ravel(), panels):
+        ax.imshow(tiles.rgb(tile))
+        if mapped is not None:
+            ax.imshow(np.ma.masked_where(~mapped, mapped), cmap="cool", alpha=0.45, vmin=0, vmax=1)
+        ax.contour(tile["label"], levels=[0.5], colors="#ffd60a", linewidths=0.6)
+        ax.contour(tile["lake"], levels=[0.5], colors="#00e5ff", linewidths=1.0)
+        ax.set_title(caption, fontsize=7)
+    fig.suptitle(title, fontsize=10, x=0.01, ha="left")
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    fig.savefig(path, facecolor="white", **({"pil_kwargs": {"quality": 85}} if path.suffix == ".jpg" else {}))
+    plt.close(fig)
+
+
+def plot_gate(rows: list[dict], better: str, path: Path) -> None:
+    """Left: every test case, the better rule's overlap against the U-Net's (above the diagonal, the U-Net
+    wins). Right: median overlap per condition."""
+    import statistics
+
+    c = COLORS
+    unet_c, base_c = c["Landsat"], c["Sentinel-2"]
+    plt.rcParams["font.family"] = ["Segoe UI", "DejaVu Sans"]
+    fig, (left, right) = plt.subplots(1, 2, figsize=(11.5, 4.9), dpi=150, gridspec_kw={"width_ratios": [1, 1.1]})
+    fig.patch.set_facecolor(c["surface"])
+
+    _style(left, c)
+    left.grid(axis="x", color=c["grid"], linewidth=0.8)
+    left.plot([0, 1], [0, 1], color=c["axis"], linewidth=1.2, zorder=1)
+    hard = [r for r in rows if r["category"] != "clear"]
+    clear = [r for r in rows if r["category"] == "clear"]
+    left.scatter([r[better]["iou"] for r in hard], [r["unet"]["iou"] for r in hard], s=42, color=unet_c,
+                 edgecolor=c["surface"], linewidth=1.5, zorder=3, label=f"Hard cases ({len(hard)})")
+    left.scatter([r[better]["iou"] for r in clear], [r["unet"]["iou"] for r in clear], s=42, facecolor="none",
+                 edgecolor=c["muted"], linewidth=1.3, zorder=2, label=f"Clear controls ({len(clear)})")
+    left.set_xlim(-0.03, 1.03)
+    left.set_ylim(-0.03, 1.03)
+    left.set_aspect("equal")
+    left.set_xlabel("Overlap, baseline rule", color=c["ink2"])
+    left.set_ylabel("Overlap, U-Net (above the line: U-Net better)", color=c["ink2"])
+    left.set_title("Each North Sikkim test case", loc="left", fontsize=10.5, fontweight="bold", color=c["ink"])
+    legend = left.legend(loc="lower right", bbox_to_anchor=(1, 0.1), frameon=False, fontsize=7.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+
+    _style(right, c)
+    right.grid(axis="y", visible=False)
+    right.grid(axis="x", color=c["grid"], linewidth=0.8)
+    names = [n for n in CATEGORY_NAMES if any(r["category"] == n for r in rows)]
+    ys = list(range(len(names)))[::-1]
+    for y, name in zip(ys, names):
+        group = [r for r in rows if r["category"] == name]
+        b = statistics.median(r[better]["iou"] for r in group)
+        u = statistics.median(r["unet"]["iou"] for r in group)
+        right.plot([b, u], [y, y], color=c["axis"], linewidth=2, zorder=1, solid_capstyle="round")
+        right.scatter([b], [y], s=64, color=base_c, edgecolor=c["surface"], linewidth=2, zorder=3)
+        right.scatter([u], [y], s=64, color=unet_c, edgecolor=c["surface"], linewidth=2, zorder=3)
+    right.set_yticks(ys, [f"{CATEGORY_NAMES[n]} ({sum(r['category'] == n for r in rows)})" for n in names])
+    right.set_xlim(-0.03, 1.03)
+    right.set_ylim(-0.6, len(names) - 0.4)
+    right.set_xlabel("Median overlap", color=c["ink2"])
+    right.set_title("By condition", loc="left", fontsize=10.5, fontweight="bold", color=c["ink"])
+    handles = [plt.Line2D([], [], marker="o", linestyle="", color=col, markersize=7, label=lab)
+               for col, lab in ((unet_c, "U-Net"), (base_c, "Baseline rule"))]
+    legend = right.legend(handles=handles, loc="lower left", frameon=False, fontsize=7.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+    fig.text(0.01, 0.015, "Overlap with every inventory lake within 500 m of the case lake; water mapped where there is "
+             "no lake counts against. Cases: P1 step 4, never used in training or tuning.", fontsize=7.2,
+             color=c["muted"])
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.savefig(path, facecolor=c["surface"])
+    plt.close(fig)

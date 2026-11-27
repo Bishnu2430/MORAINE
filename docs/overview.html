@@ -736,6 +736,17 @@ html{scroll-behavior:smooth}
     <section class="sec" id="plan">
       <div class="sec-head"><span class="sec-no">§10</span><h2>Delivery plan</h2></div>
       <p class="intro">26 weeks from Monday 26 October 2026 to a final demo in late April 2027. Shift the dates to match your college's review calendar. Every week ends with one thing you can open and look at.</p>
+      <p class="prose"><b>Where things stand (27 Nov 2026).</b> P0 is done: all four items pass, and the event list is confirmed. P1 Watch's gate has passed; only step 7, the growth curves, remains. The step list is in <span class="mono">docs/p1/plan.md</span>:</p>
+      <ol class="prose">
+        <li>Lake inventory fetched and checked (done).</li>
+        <li>Study areas traced (done).</li>
+        <li>Simple water-index mapper (done): it finds 449 of 505 inventory lakes, with lake area 9% low.</li>
+        <li>Hard-case set (done): 49 held-out Sikkim cases of ice, shadow, thin cloud and silty water, plus clear controls. The simple mapper overlaps 0.46 on the hard cases against 0.86 on clear ones.</li>
+        <li>U-Net training in Colab (done): on the Nepal validation cases it overlaps 0.77 against the simple mapper's 0.45, and it maps frozen lakes the simple mapper misses.</li>
+        <li>The gate (passed): on 39 held-out Sikkim hard cases the U-Net overlaps 0.73 against the simple mapper's 0.41, better on 33 cases and worse on none. Its main remaining errors are bright snow mapped as lake and one small lake in deep shadow that neither method finds.</li>
+        <li>Growth curves.</li>
+      </ol>
+      <p class="prose">P2 to P7 have not started.</p>
       <p class="legend-line"><span><i class="g-bar" style="width:22px;height:10px"></i>Phase</span><span><i class="g-bar vis" style="width:22px"></i>Visual track, runs throughout</span><span><i class="g-gate" style="transform:rotate(45deg)"></i>Review gate</span></p>
       <div class="gantt-wrap">
         <div class="gantt" role="img" aria-label="Gantt chart. P0 weeks 1 to 3, P1 weeks 4 to 7, P2 weeks 8 to 12, P3 weeks 13 to 15, P4 weeks 16 to 17, P5 weeks 18 to 22, P6 weeks 23 to 24, P7 weeks 25 to 26. Visual track runs all 26 weeks. Gates at the end of weeks 3, 12, 15 and 24.">
