@@ -119,15 +119,21 @@ in Sikkim.
    - **Split:** North Sikkim gives the test set, 49 cases on 36 lakes, used only in step 6.
      Bhote Koshi and Khumbu give a validation set of 49 cases that step 5 may tune against.
 
-   | Baseline (NDWI rule), median overlap with the case lake | Ice | Shadow | Thin cloud | Silty | Clear |
-   |---|---|---|---|---|---|
-   | Test, North Sikkim | 0.00 (10) | 0.28 (10) | 0.47 (9) | 0.61 (10) | 0.86 (10) |
-   | Validation, Bhote Koshi and Khumbu | 0.00 (10) | 0.81 (10) | 0.10 (10) | 0.13 (10) | 0.89 (9) |
+   - **Score:** overlap (IoU) between a lake map and every inventory lake within 500 m of the case
+     lake's bounding box. Mapped water where there is no lake counts against it. (Step 4 first
+     scored only the 60 m round the case lake, as step 3 did; step 5 found that painting the whole
+     tile as lake scored 0.56 that way, against about 0.1 now. That narrower measure is still
+     reported as `lake_iou`.)
 
-   - **The cases are hard:** the baseline's median overlap on the hard test cases is 0.21, against
-     0.86 on clear ones. It misses frozen lakes almost entirely (9 of 10 test cases score zero),
-     small lakes in deep shadow, and brown silty water. The MNDWI variant differs on only 17 of the
-     98 cases, and only slightly.
+   | Baseline (NDWI rule), median overlap | Ice | Shadow | Thin cloud | Silty | Clear |
+   |---|---|---|---|---|---|
+   | Test, North Sikkim | 0.16 (10) | 0.38 (10) | 0.50 (9) | 0.65 (10) | 0.86 (10) |
+   | Validation, Bhote Koshi and Khumbu | 0.00 (10) | 0.80 (10) | 0.24 (10) | 0.33 (10) | 0.88 (9) |
+
+   - **The cases are hard:** the baseline's median overlap on the hard test cases is 0.46, against
+     0.86 on clear ones. It misses frozen lakes (4 of 10 test cases score zero; the rest score only
+     for open lakes nearby), small lakes in deep shadow (5 of 10 zero), and brown silty water. The
+     MNDWI variant differs on only 22 of the 98 cases, and only slightly.
    - **Weak spot, shadow:** North Sikkim's lakes are mostly on the open plateau, and only 6 are ever
      a fifth in shadow. The 10 test shadow cases therefore come from 5 lakes in different years, so
      they are less independent than the other categories.
@@ -137,12 +143,43 @@ in Sikkim.
    - **The tiles** (98 MB of .npz) are in `pipeline/data/p1_hard_cases/`, outside git. The script
      rebuilds them from `hard-cases.json`'s scenes, and `moraine/tiles.py` reads and scores them
      with numpy alone, so step 6 can run in Colab.
-5. **U-Net in Colab.** Train on Sentinel-2 patches plus slope outside the study areas, and save
-   the model. A single notebook runs on a free GPU. Training scenes should include frozen,
-   shadowed, veiled and silty lakes, not only clear autumn ones; the validation hard cases pick the
-   checkpoint.
+5. **U-Net in Colab.** Done 27 Nov 2026. Chart `unet-training.png`, every validation case in
+   `unet-validation.json` and, as lake maps, in `unet-validation.jpg`.
+   - **Training tiles** (`pipeline/scripts/p1_unet_data.py`): 3,500 inventory lakes at least 5 km
+     outside all four study areas, each in one random inventory year and one random
+     September–December scene. Each tile is 160 × 160 cells of 10 m in the lake's own UTM zone
+     (42–48), with every inventory lake of that year as the label. 2,707 were kept: 772 were dropped
+     because cloud hid the lakes and 21 because they ran off the scene. The kept scenes spread
+     evenly over the four months (612, 717, 666, 712), so frozen and shadowed lakes are well
+     represented.
+   - **Inputs:** the six bands, NDWI, MNDWI, and only the baseline's own "steeper than 12°" mask.
+     **Not slope itself:** GLO-30 levels lake surfaces flat (from radar of about 2011–2015). In the
+     training tiles, ground flatter than 1° covers half of all lake cells and 0.5% of everything
+     else, so a model given slope would copy those old outlines instead of reading the scene.
+   - **Model and training** (`moraine/unet.py`, `pipeline/scripts/p1_unet.py`): a U-Net with 4.4
+     million weights (24 channels at full resolution, 4 halvings). Training used random 128-cell
+     crops with flips and rotations and a cross-entropy plus Dice loss, for 25 passes on Colab's T4
+     GPU at about 16 seconds each (`pipeline/notebooks/p1_unet_colab.ipynb`). Its output keeps
+     patches of 0.02 km² or more, as the baseline's does.
+   - **Checkpoint:** the pass with the best mean score on the 49 validation cases, pass 11 (0.768).
+     Scores wobble between passes on so few cases; passes 19–25 average 0.759, so the pick's edge is
+     noise. The North Sikkim test cases were never read.
+
+   | Validation, median overlap | Ice | Shadow | Thin cloud | Silty | Clear | Mean, all 49 |
+   |---|---|---|---|---|---|---|
+   | Baseline (NDWI rule) | 0.00 | 0.80 | 0.24 | 0.33 | 0.88 | 0.454 |
+   | U-Net | 0.84 | 0.83 | 0.70 | 0.81 | 0.93 | 0.768 |
+
+   - **Case by case:** the U-Net is better on 40 of the 49 cases and worse on 3 (two shadowed Bhote
+     Koshi lakes and one clear one, where it maps a little water beside the lake); 6 are within
+     0.02.
+   - **Its mistakes:** bright snow patches mapped as lake, and a lake behind a gap in the cloud.
+   - **The model** is `pipeline/data/p1_unet/model.pt` (17.5 MB, outside git, sha256
+     `d787c41dc22c6aa9…`, in `unet-validation.json`). `pipeline/scripts/p1_unet_report.py`
+     rebuilds the report from it.
 6. **The gate.** Run the U-Net and both rule variants from step 3 on the held-out Sikkim hard
-   cases, and report IoU and area error per case. The U-Net must beat the better rule.
+   cases, and report the score (`tiles.score`) and area error per case. The U-Net must beat the
+   better rule.
 7. **Growth curves.** Area per year for every lake above the cut-off in the three study areas.
    - Back to 1987: Landsat, for lakes big enough to see.
    - From 2017: every autumn, with the better method from step 6.

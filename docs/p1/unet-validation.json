@@ -1,0 +1,485 @@
+{
+ "model": {
+  "sha256": "d787c41dc22c6aa93f52feca7e79338b6deaa2004cf16b2a96de68086950418d",
+  "epoch": 11,
+  "base": 24,
+  "depth": 4,
+  "trained_on": "cuda",
+  "epochs": 25,
+  "training_tiles": 2707
+ },
+ "mean": {
+  "unet": 0.7681,
+  "baseline": 0.4541
+ },
+ "median_by_category": {
+  "ice": {
+   "baseline": 0.0,
+   "unet": 0.836
+  },
+  "shadow": {
+   "baseline": 0.798,
+   "unet": 0.829
+  },
+  "thin_cloud": {
+   "baseline": 0.241,
+   "unet": 0.698
+  },
+  "silty": {
+   "baseline": 0.327,
+   "unet": 0.813
+  },
+  "clear": {
+   "baseline": 0.879,
+   "unet": 0.931
+  }
+ },
+ "cases_better_same_worse": [
+  40,
+  6,
+  3
+ ],
+ "cases": [
+  {
+   "case": "bhote_koshi-ice-01",
+   "category": "ice",
+   "unet": 0.904,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.904,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.092
+  },
+  {
+   "case": "bhote_koshi-ice-02",
+   "category": "ice",
+   "unet": 0.802,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.802,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": 0.103
+  },
+  {
+   "case": "bhote_koshi-ice-03",
+   "category": "ice",
+   "unet": 0.923,
+   "baseline": 0.11,
+   "unet_lake_iou": 0.939,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.053
+  },
+  {
+   "case": "bhote_koshi-ice-05",
+   "category": "ice",
+   "unet": 0.633,
+   "baseline": 0.575,
+   "unet_lake_iou": 0.912,
+   "baseline_lake_iou": 0.766,
+   "unet_area_error": 0.026
+  },
+  {
+   "case": "bhote_koshi-ice-06",
+   "category": "ice",
+   "unet": 0.882,
+   "baseline": 0.402,
+   "unet_lake_iou": 0.933,
+   "baseline_lake_iou": 0.348,
+   "unet_area_error": -0.004
+  },
+  {
+   "case": "bhote_koshi-shadow-01",
+   "category": "shadow",
+   "unet": 0.664,
+   "baseline": 0.826,
+   "unet_lake_iou": 0.817,
+   "baseline_lake_iou": 0.859,
+   "unet_area_error": 0.222
+  },
+  {
+   "case": "bhote_koshi-shadow-02",
+   "category": "shadow",
+   "unet": 0.803,
+   "baseline": 0.663,
+   "unet_lake_iou": 0.803,
+   "baseline_lake_iou": 0.663,
+   "unet_area_error": -0.059
+  },
+  {
+   "case": "bhote_koshi-shadow-03",
+   "category": "shadow",
+   "unet": 0.909,
+   "baseline": 0.772,
+   "unet_lake_iou": 0.909,
+   "baseline_lake_iou": 0.772,
+   "unet_area_error": 0.0
+  },
+  {
+   "case": "bhote_koshi-shadow-04",
+   "category": "shadow",
+   "unet": 0.876,
+   "baseline": 0.825,
+   "unet_lake_iou": 0.893,
+   "baseline_lake_iou": 0.858,
+   "unet_area_error": 0.072
+  },
+  {
+   "case": "bhote_koshi-shadow-05",
+   "category": "shadow",
+   "unet": 0.803,
+   "baseline": 0.859,
+   "unet_lake_iou": 0.856,
+   "baseline_lake_iou": 0.898,
+   "unet_area_error": 0.071
+  },
+  {
+   "case": "bhote_koshi-thin_cloud-04",
+   "category": "thin_cloud",
+   "unet": 0.548,
+   "baseline": 0.125,
+   "unet_lake_iou": 0.728,
+   "baseline_lake_iou": 0.198,
+   "unet_area_error": -0.135
+  },
+  {
+   "case": "bhote_koshi-thin_cloud-05",
+   "category": "thin_cloud",
+   "unet": 0.729,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.829,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.058
+  },
+  {
+   "case": "bhote_koshi-thin_cloud-06",
+   "category": "thin_cloud",
+   "unet": 0.667,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.749,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.223
+  },
+  {
+   "case": "bhote_koshi-thin_cloud-07",
+   "category": "thin_cloud",
+   "unet": 0.819,
+   "baseline": 0.512,
+   "unet_lake_iou": 0.819,
+   "baseline_lake_iou": 0.512,
+   "unet_area_error": -0.175
+  },
+  {
+   "case": "bhote_koshi-thin_cloud-08",
+   "category": "thin_cloud",
+   "unet": 0.763,
+   "baseline": 0.375,
+   "unet_lake_iou": 0.765,
+   "baseline_lake_iou": 0.375,
+   "unet_area_error": -0.184
+  },
+  {
+   "case": "bhote_koshi-silty-01",
+   "category": "silty",
+   "unet": 0.907,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.907,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": 0.052
+  },
+  {
+   "case": "bhote_koshi-silty-02",
+   "category": "silty",
+   "unet": 0.8,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.8,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.14
+  },
+  {
+   "case": "bhote_koshi-silty-03",
+   "category": "silty",
+   "unet": 0.664,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.72,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": 0.372
+  },
+  {
+   "case": "bhote_koshi-silty-04",
+   "category": "silty",
+   "unet": 0.826,
+   "baseline": 0.801,
+   "unet_lake_iou": 0.933,
+   "baseline_lake_iou": 0.801,
+   "unet_area_error": 0.067
+  },
+  {
+   "case": "bhote_koshi-silty-05",
+   "category": "silty",
+   "unet": 0.886,
+   "baseline": 0.889,
+   "unet_lake_iou": 0.886,
+   "baseline_lake_iou": 0.889,
+   "unet_area_error": 0.12
+  },
+  {
+   "case": "bhote_koshi-clear-01",
+   "category": "clear",
+   "unet": 0.81,
+   "baseline": 0.922,
+   "unet_lake_iou": 0.928,
+   "baseline_lake_iou": 0.922,
+   "unet_area_error": -0.019
+  },
+  {
+   "case": "bhote_koshi-clear-02",
+   "category": "clear",
+   "unet": 0.758,
+   "baseline": 0.709,
+   "unet_lake_iou": 0.88,
+   "baseline_lake_iou": 0.816,
+   "unet_area_error": 0.05
+  },
+  {
+   "case": "bhote_koshi-clear-03",
+   "category": "clear",
+   "unet": 0.864,
+   "baseline": 0.858,
+   "unet_lake_iou": 0.864,
+   "baseline_lake_iou": 0.858,
+   "unet_area_error": 0.103
+  },
+  {
+   "case": "bhote_koshi-clear-04",
+   "category": "clear",
+   "unet": 0.923,
+   "baseline": 0.849,
+   "unet_lake_iou": 0.918,
+   "baseline_lake_iou": 0.889,
+   "unet_area_error": 0.055
+  },
+  {
+   "case": "bhote_koshi-clear-05",
+   "category": "clear",
+   "unet": 0.976,
+   "baseline": 0.969,
+   "unet_lake_iou": 0.976,
+   "baseline_lake_iou": 0.969,
+   "unet_area_error": 0.007
+  },
+  {
+   "case": "khumbu-ice-01",
+   "category": "ice",
+   "unet": 0.757,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.757,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.198
+  },
+  {
+   "case": "khumbu-ice-02",
+   "category": "ice",
+   "unet": 0.869,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.883,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.1
+  },
+  {
+   "case": "khumbu-ice-03",
+   "category": "ice",
+   "unet": 0.873,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.84,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.16
+  },
+  {
+   "case": "khumbu-ice-04",
+   "category": "ice",
+   "unet": 0.726,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.726,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.11
+  },
+  {
+   "case": "khumbu-ice-05",
+   "category": "ice",
+   "unet": 0.301,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.301,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.677
+  },
+  {
+   "case": "khumbu-shadow-01",
+   "category": "shadow",
+   "unet": 0.911,
+   "baseline": 0.931,
+   "unet_lake_iou": 0.89,
+   "baseline_lake_iou": 0.89,
+   "unet_area_error": 0.079
+  },
+  {
+   "case": "khumbu-shadow-02",
+   "category": "shadow",
+   "unet": 0.632,
+   "baseline": 0.568,
+   "unet_lake_iou": 0.8,
+   "baseline_lake_iou": 0.685,
+   "unet_area_error": 0.045
+  },
+  {
+   "case": "khumbu-shadow-03",
+   "category": "shadow",
+   "unet": 0.484,
+   "baseline": 0.346,
+   "unet_lake_iou": 0.63,
+   "baseline_lake_iou": 0.421,
+   "unet_area_error": 0.294
+  },
+  {
+   "case": "khumbu-shadow-04",
+   "category": "shadow",
+   "unet": 0.854,
+   "baseline": 0.519,
+   "unet_lake_iou": 0.854,
+   "baseline_lake_iou": 0.526,
+   "unet_area_error": -0.001
+  },
+  {
+   "case": "khumbu-shadow-05",
+   "category": "shadow",
+   "unet": 0.929,
+   "baseline": 0.896,
+   "unet_lake_iou": 0.929,
+   "baseline_lake_iou": 0.896,
+   "unet_area_error": 0.044
+  },
+  {
+   "case": "khumbu-thin_cloud-02",
+   "category": "thin_cloud",
+   "unet": 0.384,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.0,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -1.0
+  },
+  {
+   "case": "khumbu-thin_cloud-03",
+   "category": "thin_cloud",
+   "unet": 0.768,
+   "baseline": 0.358,
+   "unet_lake_iou": 0.517,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.438
+  },
+  {
+   "case": "khumbu-thin_cloud-04",
+   "category": "thin_cloud",
+   "unet": 0.845,
+   "baseline": 0.377,
+   "unet_lake_iou": 0.908,
+   "baseline_lake_iou": 0.377,
+   "unet_area_error": 0.047
+  },
+  {
+   "case": "khumbu-thin_cloud-05",
+   "category": "thin_cloud",
+   "unet": 0.502,
+   "baseline": 0.391,
+   "unet_lake_iou": 0.611,
+   "baseline_lake_iou": 0.387,
+   "unet_area_error": -0.341
+  },
+  {
+   "case": "khumbu-thin_cloud-06",
+   "category": "thin_cloud",
+   "unet": 0.0,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.0,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -1.0
+  },
+  {
+   "case": "khumbu-silty-01",
+   "category": "silty",
+   "unet": 0.544,
+   "baseline": 0.269,
+   "unet_lake_iou": 0.601,
+   "baseline_lake_iou": 0.269,
+   "unet_area_error": -0.171
+  },
+  {
+   "case": "khumbu-silty-02",
+   "category": "silty",
+   "unet": 0.827,
+   "baseline": 0.385,
+   "unet_lake_iou": 0.833,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.032
+  },
+  {
+   "case": "khumbu-silty-03",
+   "category": "silty",
+   "unet": 0.717,
+   "baseline": 0.0,
+   "unet_lake_iou": 0.736,
+   "baseline_lake_iou": 0.0,
+   "unet_area_error": -0.101
+  },
+  {
+   "case": "khumbu-silty-04",
+   "category": "silty",
+   "unet": 0.796,
+   "baseline": 0.744,
+   "unet_lake_iou": 0.796,
+   "baseline_lake_iou": 0.744,
+   "unet_area_error": 0.124
+  },
+  {
+   "case": "khumbu-silty-05",
+   "category": "silty",
+   "unet": 0.967,
+   "baseline": 0.846,
+   "unet_lake_iou": 0.982,
+   "baseline_lake_iou": 0.854,
+   "unet_area_error": 0.008
+  },
+  {
+   "case": "khumbu-clear-01",
+   "category": "clear",
+   "unet": 0.965,
+   "baseline": 0.943,
+   "unet_lake_iou": 0.965,
+   "baseline_lake_iou": 0.943,
+   "unet_area_error": 0.028
+  },
+  {
+   "case": "khumbu-clear-02",
+   "category": "clear",
+   "unet": 0.943,
+   "baseline": 0.837,
+   "unet_lake_iou": 0.943,
+   "baseline_lake_iou": 0.837,
+   "unet_area_error": 0.04
+  },
+  {
+   "case": "khumbu-clear-03",
+   "category": "clear",
+   "unet": 0.931,
+   "baseline": 0.92,
+   "unet_lake_iou": 0.935,
+   "baseline_lake_iou": 0.926,
+   "unet_area_error": 0.002
+  },
+  {
+   "case": "khumbu-clear-04",
+   "category": "clear",
+   "unet": 0.973,
+   "baseline": 0.879,
+   "unet_lake_iou": 0.973,
+   "baseline_lake_iou": 0.879,
+   "unet_area_error": 0.011
+  }
+ ]
+}

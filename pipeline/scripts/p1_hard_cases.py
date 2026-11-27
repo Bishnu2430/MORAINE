@@ -172,31 +172,16 @@ def fully_covered(case: dict) -> bool:
 
 def sheet(cases: list[dict], title: str, path: Path, show_baseline: bool = False) -> None:
     """Stage 4: true-colour tiles in a grid, the case's lake outlined in cyan and other lakes in yellow."""
-    import matplotlib
+    from moraine import plot
 
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    columns = 7
-    rows = (len(cases) + columns - 1) // columns
-    fig, axes = plt.subplots(rows, columns, figsize=(2.3 * columns, 2.55 * rows + 0.5), dpi=110, squeeze=False)
-    for ax in axes.ravel():
-        ax.axis("off")
-    for ax, case in zip(axes.ravel(), cases):
+    panels = []
+    for case in cases:
         tile = tiles.load(TILES / f"{case['case']}.npz")
-        ax.imshow(tiles.rgb(tile))
-        if show_baseline:
-            mapped = tiles.baseline(tile)
-            ax.imshow(np.ma.masked_where(~mapped, mapped), cmap="cool", alpha=0.45, vmin=0, vmax=1)
-        ax.contour(tile["label"], levels=[0.5], colors="#ffd60a", linewidths=0.6)
-        ax.contour(tile["lake"], levels=[0.5], colors="#00e5ff", linewidths=1.0)
         flag = {"ice": "ice", "shadow": "shadow", "thin_cloud": "red_rise", "silty": "nir",
                 "clear": "cloud_near"}[case["category"]]
-        ax.set_title(f"{case['case'].split('-', 1)[1]}\n{case['date']}, {flag} {case[flag]:.2f}", fontsize=7)
-    fig.suptitle(title, fontsize=10, x=0.01, ha="left")
-    fig.tight_layout(rect=(0, 0, 1, 0.97))
-    fig.savefig(path, facecolor="white", **({"pil_kwargs": {"quality": 85}} if path.suffix == ".jpg" else {}))
-    plt.close(fig)
+        panels.append((tile, tiles.baseline(tile) if show_baseline else None,
+                       f"{case['case'].split('-', 1)[1]}\n{case['date']}, {flag} {case[flag]:.2f}"))
+    plot.plot_tiles(panels, title, path)
 
 
 def kept(cases: list[dict], review: dict) -> list[dict]:
@@ -274,7 +259,8 @@ def main() -> int:
     import statistics
 
     checks = []
-    print("\n5. Baseline on the kept cases (median overlap with the case's lake, NDWI rule / with MNDWI):")
+    print("\n5. Baseline on the kept cases (median overlap with the inventory lakes within 500 m of the case's "
+          "lake, NDWI rule / with MNDWI):")
     for split in ("test", "validation"):
         print(f"  {split}:")
         medians = {}

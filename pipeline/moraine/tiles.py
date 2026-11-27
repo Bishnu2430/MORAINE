@@ -23,6 +23,7 @@ MNDWI_CUT = 0.10
 MAX_SLOPE_DEG = 12
 MIN_LAKE_CELLS = 200  # 0.02 km2
 BUFFER_CELLS = 6  # 60 m, as in step 3
+NEAR_CELLS = 50  # 500 m: the neighbourhood the main score covers
 
 
 def load(path) -> dict:
@@ -100,11 +101,31 @@ def dilate(mask: np.ndarray, cells: int) -> np.ndarray:
     return out
 
 
+def neighbourhood(lake: np.ndarray, cells: int = NEAR_CELLS) -> np.ndarray:
+    """The lake's bounding box grown by `cells` on every side, clipped to the tile."""
+    rows, cols = np.nonzero(lake)
+    out = np.zeros(lake.shape, dtype=bool)
+    out[max(rows.min() - cells, 0):rows.max() + cells + 1, max(cols.min() - cells, 0):cols.max() + cells + 1] = True
+    return out
+
+
 def score(mapped: np.ndarray, tile: dict) -> dict:
-    """Overlap and area error for the case's own lake, inside its outline grown by 60 m (as in step 3)."""
+    """How well a lake map matches the inventory around one case's lake.
+
+    - iou (the main score): overlap with every inventory lake within 500 m of the case lake's bounding
+      box. Water mapped where there is no lake counts against it, so painting everything as lake
+      scores about 0.1, not the 0.56 the narrower measure below would give.
+    - lake_iou: overlap with the case's own lake inside its outline grown by 60 m, as in step 3.
+    - area_error: mapped against listed area for the case's own lake, inside that 60 m window."""
+    mapped = mapped.astype(bool)
     lake = tile["lake"].astype(bool)
+    near = neighbourhood(lake)
+    truth = tile["label"].astype(bool) & near
+    got_near = mapped & near
     window = dilate(lake, BUFFER_CELLS)
-    got = mapped.astype(bool) & window
-    both, union = (got & lake).sum(), (got | lake).sum()
-    return {"iou": float(both / union) if union else 0.0, "lake_cells": int(lake.sum()), "mapped_cells": int(got.sum()),
-            "area_error": float(got.sum() / lake.sum() - 1) if lake.sum() else None}
+    got = mapped & window
+    def overlap(a, b):
+        union = (a | b).sum()
+        return float((a & b).sum() / union) if union else 0.0
+    return {"iou": overlap(got_near, truth), "lake_iou": overlap(got, lake), "lake_cells": int(lake.sum()),
+            "mapped_cells": int(got.sum()), "area_error": float(got.sum() / lake.sum() - 1) if lake.sum() else None}

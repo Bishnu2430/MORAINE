@@ -232,9 +232,35 @@ draws contact sheets in `pipeline/out/p1_hard_cases/sheets/`.
   `docs/p1/hard-case-review.json`. After a change that adds candidates, look at the new ones
   before trusting the results.
 - **Good run:** ends with **8 of 8 checks passed**, 49 test cases (North Sikkim) and 49 validation
-  cases. The baseline scores a median overlap of 0.21 on the hard test cases against 0.86 on clear
-  ones.
+  cases. The baseline scores a median overlap of 0.46 on the hard test cases against 0.86 on clear
+  ones (overlap with every inventory lake within 500 m of the case lake, `tiles.score`).
 - **Time:** about 25 minutes the first time, then a minute from the caches.
+
+P1 step 5, the lake U-Net (`moraine/training.py`, `moraine/unet.py`), in three commands:
+
+```
+.venv\Scripts\python pipeline\scripts\p1_unet_data.py --project master-bruin-515809-p2
+```
+
+```
+.venv\Scripts\python pipeline\scripts\p1_unet.py --epochs 25
+```
+
+```
+.venv\Scripts\python pipeline\scripts\p1_unet_report.py
+```
+
+- **Data:** the first command exports about 2,700 training tiles from lakes outside every study
+  area to `pipeline/data/p1_unet/` (not in git). It takes about 30 minutes and resumes if stopped.
+- **Training:** the second trains and keeps the pass that scores best on the validation hard cases.
+  It takes about 2 hours on the laptop's CPU. On a free GPU it takes 7 minutes: run
+  `pipeline\scripts\p1_unet_bundle.py`, upload `pipeline/data/p1_unet_bundle.zip` to a `MORAINE`
+  folder in Google Drive, and run `pipeline/notebooks/p1_unet_colab.ipynb` in Colab. Then put
+  `model.pt` and `history.json` in `pipeline/data/p1_unet/`.
+- **Report:** the third scores the model on the validation cases. A good run gives a mean overlap
+  of **0.768 against the baseline's 0.454**, better on 40 of 49 cases.
+- **No slope input.** The U-Net never sees slope, only the 12° mask: GLO-30's flattened lakes
+  would hand it 2011–2015 lake outlines.
 
 ## Chorabari (Kedarnath) is not measured from satellites
 

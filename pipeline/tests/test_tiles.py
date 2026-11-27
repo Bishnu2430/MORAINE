@@ -25,10 +25,20 @@ def test_baseline_and_score_on_a_synthetic_lake():
     lake = np.zeros(shape, dtype=bool)
     lake[20:40, 15:45] = True  # 600 cells, above the 200-cell cut-off
     tile = {"B3": np.where(lake, 900, 1200), "B8": np.where(lake, 300, 1500), "B11": np.where(lake, 100, 1400),
-            "slope": np.zeros(shape), "lake": lake}
+            "slope": np.zeros(shape), "lake": lake, "label": lake}
     for variant in ("ndwi", "ndwi_mndwi"):
         mapped = tiles.baseline(tile, variant)
         assert (mapped == lake).all()
-        assert tiles.score(mapped, tile) == {"iou": 1.0, "lake_cells": 600, "mapped_cells": 600, "area_error": 0.0}
+        assert tiles.score(mapped, tile) == {"iou": 1.0, "lake_iou": 1.0, "lake_cells": 600, "mapped_cells": 600,
+                                             "area_error": 0.0}
     steep = dict(tile, slope=np.full(shape, 20.0))
     assert tiles.score(tiles.baseline(steep), tile)["iou"] == 0.0
+
+
+def test_painting_everything_as_lake_scores_low():
+    shape = (200, 200)
+    lake = np.zeros(shape, dtype=bool)
+    lake[80:120, 80:120] = True  # 0.16 km2
+    tile = {"lake": lake, "label": lake}
+    everything = tiles.score(np.ones(shape, dtype=bool), tile)
+    assert everything["iou"] < 0.1 < 0.5 < everything["lake_iou"]  # the 60 m window alone would be fooled
