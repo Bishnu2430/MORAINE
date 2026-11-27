@@ -262,6 +262,15 @@ P1 step 5, the lake U-Net (`moraine/training.py`, `moraine/unet.py`), in three c
 - **No slope input.** The U-Net never sees slope, only the 12° mask: GLO-30's flattened lakes
   would hand it 2011–2015 lake outlines.
 
+```
+.venv\Scripts\python pipeline\scripts\p1_gate.py
+```
+
+P1 step 6, the gate: the U-Net and both baseline rules on the held-out North Sikkim cases. The
+criteria are in the script's docstring and were committed before it first ran. A good run ends with
+**GATE PASSED**: on the 39 hard cases, overlap 0.729 for the U-Net against 0.405 for the better rule,
+95% interval of the difference +0.21 to +0.45. It needs no Earth Engine and takes about a minute.
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the

@@ -177,10 +177,42 @@ in Sikkim.
    - **The model** is `pipeline/data/p1_unet/model.pt` (17.5 MB, outside git, sha256
      `d787c41dc22c6aa9…`, in `unet-validation.json`). `pipeline/scripts/p1_unet_report.py`
      rebuilds the report from it.
-6. **The gate.** Run the U-Net and both rule variants from step 3 on the held-out Sikkim hard
-   cases, and report the score (`tiles.score`) and area error per case. The U-Net must beat the
-   better rule.
+6. **The gate. Passed 27 Nov 2026** (`pipeline/scripts/p1_gate.py`). Every case is in
+   `gate.json`, the chart is `gate.png`, and the U-Net's maps on every test case are in
+   `gate-cases.jpg`.
+   - **Criteria, committed before the script read a test case** (commit c4c91f0):
+     1. The model is step 5's, by sha256.
+     2. On the hard test cases, the U-Net's mean overlap beats the better of the two rule variants.
+     3. Resampling lakes rather than cases, the 95% interval of the difference lies above zero.
+   - **Result:** on the 39 hard North Sikkim cases (28 lakes), the U-Net's mean overlap is
+     **0.729 against 0.405** for the better rule (NDWI with MNDWI). The difference is +0.32, with a
+     95% interval of +0.21 to +0.45. The U-Net is better on 33 cases, worse on none, and within 0.02
+     on 6.
+
+   | North Sikkim test, median overlap | Ice | Shadow | Thin cloud | Silty | Clear |
+   |---|---|---|---|---|---|
+   | NDWI rule | 0.16 | 0.38 | 0.50 | 0.65 | 0.86 |
+   | U-Net | 0.77 | 0.87 | 0.76 | 0.87 | 0.89 |
+   | Median area error of the case lake, rule / U-Net | 100% / 6% | 70% / 10% | 52% / 11% | 36% / 4% | 4% / 3% |
+
+   - **Where the U-Net still fails:**
+     - **One small lake in deep shadow** (shadow-01, 07 and 08, the same lake in three years):
+       both methods score zero. These are three of the six ties.
+     - **Bright snow patches mapped as lake** (ice-02, 04, 09), which lowers its scores but stays
+       above the rule's.
+     - **One frozen lake missed** (ice-05).
+   - **Clear controls:** 0.89 against the rule's 0.86, worse on one (clear-02, 0.77 against 0.85).
+     So the U-Net gives up nothing on easy scenes.
+   - **Limits of the test:**
+     - 39 hard cases from 28 lakes, and shadow has only 5 lakes.
+     - The truth is the inventory's hand-drawn outline of that year, not a field survey.
+     - The cases were chosen by automatic flags and checked by eye, so they are hard cases of
+       these four kinds, not a random sample of scenes.
+     - The model was trained once. A second training run would give a somewhat different model,
+       and its spread is not measured.
 7. **Growth curves.** Area per year for every lake above the cut-off in the three study areas.
    - Back to 1987: Landsat, for lakes big enough to see.
-   - From 2017: every autumn, with the better method from step 6.
+   - From 2017: every autumn, with the better method from step 6: the U-Net. It maps one scene at
+     a time, so each autumn needs a way to combine its scenes (for example, the median of the
+     U-Net's lake probability over the season's usable scenes).
    - The inventory's 1990 areas give a cross-check.
