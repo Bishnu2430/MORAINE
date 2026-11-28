@@ -271,6 +271,23 @@ criteria are in the script's docstring and were committed before it first ran. A
 **GATE PASSED**: on the 39 hard cases, overlap 0.729 for the U-Net against 0.405 for the better rule,
 95% interval of the difference +0.21 to +0.45. It needs no Earth Engine and takes about a minute.
 
+```
+.venv\Scripts\python pipeline\scripts\p1_growth.py --project master-bruin-515809-p2
+```
+
+P1 step 7a, growth curves 2017–2025 (`moraine/growth.py`): every inventory lake's area each autumn
+in the three study areas, mapped by the U-Net, so it needs `pipeline/data/p1_unet/model.pt`.
+
+- **Good run:** ends with **5 of 5 checks passed**. 1,572 of 1,719 lake-autumns are mapped, the
+  median lake comes out 4.5% above its listed area, and South Lhonak is within 1.5% of the inventory
+  and 0.20 km² smaller after the October 2023 outburst. It writes `docs/p1/growth.json` and
+  `docs/p1/growth.png`.
+- **Time:** about 45 minutes of flags and an hour of maps the first time. Both are cached
+  (`pipeline/out/p1_growth/`, `pipeline/data/p1_growth/`), so a stopped run resumes where it left
+  off. Keep the laptop on: a shutdown stops the run.
+- **Tiles off the edge of a scene:** step 4's coverage flag cannot see them, so the script checks
+  every tile it fetches and tries the next scene, or the overlapping granule of the same date.
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the

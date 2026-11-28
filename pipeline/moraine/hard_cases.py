@@ -16,6 +16,11 @@ covers (covered_near); and the lake's inventory outline itself:
 The flags never look at any lake map or at how much water a method finds, so the cases are not
 chosen for being hard for one particular method.
 
+covered and covered_near do not catch the edge of the swath: cells off the edge are masked, not zero,
+and a mean skips masked cells, so both read 1 for a lake half off the edge. Steps 4 and 7a therefore
+check each fetched tile for empty cells (p1_hard_cases.fully_covered, p1_growth.whole). The measure is
+left as it is because the cached flags are stamped with this module's code.
+
 Scenes come from the inventory years only (2018, 2020, 2022), 1 September to 31 December, so the
 year's inventory outline is the label; the extra six weeks past the mapping season bring frozen lakes.
 """

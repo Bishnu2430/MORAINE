@@ -373,3 +373,73 @@ def plot_gate(rows: list[dict], better: str, path: Path) -> None:
     fig.tight_layout(rect=(0, 0.05, 1, 1))
     fig.savefig(path, facecolor=c["surface"])
     plt.close(fig)
+
+
+AREA_NAMES = {"sikkim": "North Sikkim", "bhote_koshi": "Bhote Koshi / Poiqu", "khumbu": "Khumbu"}
+
+
+def plot_growth(series: list[dict], south_lhonak: dict, outburst: str, path: Path) -> None:
+    """Total lake area per study area each autumn (lakes mapped every autumn and listed in every inventory
+    year, so the two totals cover the same lakes), and South Lhonak alone with its 2023 scenes either side of
+    the outburst. Inventory areas are black diamonds."""
+    import datetime
+
+    c = COLORS
+    unet_c, after_c = c["Landsat"], c["Sentinel-2"]
+    plt.rcParams["font.family"] = ["Segoe UI", "DejaVu Sans"]
+    fig, axes = plt.subplots(1, 4, figsize=(15, 4.2), dpi=150)
+    fig.patch.set_facecolor(c["surface"])
+    years = sorted({int(y) for s in series for y in s["autumns"]})
+    for ax, key in zip(axes[:3], AREA_NAMES):
+        _style(ax, c)
+        lakes = [s for s in series if s["area"] == key]
+        inv = [2018, 2020, 2022]
+        full = [s for s in lakes if all(y in s["autumns"] or str(y) in s["autumns"] for y in years)
+                and all(y in s["listed_km2"] or str(y) in s["listed_km2"] for y in inv)]
+        get = lambda s, y: s["autumns"].get(y, s["autumns"].get(str(y)))
+        ax.plot(years, [sum(get(s, y)["km2"] for s in full) for y in years], color=unet_c, linewidth=2, marker="o",
+                markersize=4.5, markeredgecolor=c["surface"], zorder=2, label="U-Net, each autumn")
+        listed = [sum(s["listed_km2"].get(y, s["listed_km2"].get(str(y))) for s in full) for y in inv]
+        ax.scatter(inv, listed, marker="D", s=36, facecolor=c["surface"], edgecolor=c["ink"], linewidth=1.3, zorder=3,
+                   label="Inventory")
+        top = max(listed + [sum(get(s, y)["km2"] for s in full) for y in years])
+        ax.set_ylim(0, top * 1.2)
+        ax.set_xticks(years[::2])
+        ax.set_title(f"{AREA_NAMES[key]}\n{len(full)} of {len(lakes)} lakes, mapped every autumn", loc="left",
+                     fontsize=9.5, fontweight="bold", color=c["ink"])
+        ax.set_ylabel("Total lake area (km²)", color=c["ink2"])
+    legend = axes[0].legend(loc="lower left", frameon=False, fontsize=7.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+
+    ax = axes[3]
+    _style(ax, c)
+    sl = south_lhonak
+    get = lambda y: sl["autumns"].get(y, sl["autumns"].get(str(y)))
+    have = [y for y in years if get(y)]
+    ax.plot(have, [get(y)["km2"] for y in have], color=unet_c, linewidth=2, marker="o", markersize=4.5,
+            markeredgecolor=c["surface"], zorder=2)
+    burst = datetime.date.fromisoformat(outburst)
+    frac = lambda d: d.year + (d.timetuple().tm_yday - 0.5) / 365.25
+    scenes = get(2023)["scenes"] if get(2023) else []
+    for s in scenes:
+        d = datetime.date.fromisoformat(s["date"])
+        ax.scatter([frac(d)], [s["km2"]], s=22, zorder=3, linewidth=1.1,
+                   facecolor=after_c if d >= burst else "none", edgecolor=after_c if d >= burst else c["muted"])
+    ax.axvline(frac(burst), color=c["axis"], linewidth=1, zorder=1)
+    ax.text(frac(burst) + 0.1, 0.12, "Outburst\n4 Oct 2023", fontsize=7.5, color=c["ink2"], transform=ax.get_xaxis_transform())
+    inv = [2018, 2020, 2022]
+    ax.scatter(inv, [sl["listed_km2"].get(y, sl["listed_km2"].get(str(y))) for y in inv], marker="D", s=36,
+               facecolor=c["surface"], edgecolor=c["ink"], linewidth=1.3, zorder=4)
+    ax.set_ylim(0, max([get(y)["km2"] for y in have] + [s["km2"] for s in scenes]) * 1.2)
+    ax.set_xticks(years[::2])
+    ax.set_title("South Lhonak\nautumns, and each 2023 scene", loc="left", fontsize=9.5, fontweight="bold",
+                 color=c["ink"])
+    ax.set_ylabel("Lake area (km²)", color=c["ink2"])
+    fig.text(0.01, 0.015, "U-Net (P1 step 5) on the clearest Sentinel-2 scenes of 1 Sep-15 Nov; an autumn is the median "
+             "of up to three scenes' lake probability. Totals: lakes mapped every autumn and listed in 2018, 2020 and "
+             "2022. 2023 scenes: hollow before the outburst, filled after. Inventory: Zhang et al. (2023).",
+             fontsize=7.2, color=c["muted"])
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.savefig(path, facecolor=c["surface"])
+    plt.close(fig)
