@@ -287,7 +287,9 @@ in Sikkim.
      - **147 lake-autumns have no map:** 133 for want of a clear scene, 13 because every scene was
        cut by an edge, and 1 for shadow. Khumbu has 92 of them: 62 for cloud, 20 for ice or shadow
        on the lake and 10 cut by an edge.
-   - **7b, Landsat before 2017** (`pipeline/scripts/p1_landsat.py`, `moraine/landsat.py`).
+   - **7b, Landsat before 2017. Done 29 Nov 2026, Landsat 8 only, 2013–2016**
+     (`pipeline/scripts/p1_landsat.py`, `moraine/landsat.py`). Every lake and autumn is in
+     `landsat.json`, and the chart is `growth-history.png`.
      - **Now Landsat 8 only, 2013–2016, without the open-water gate:** decided after the third run
        (see "Decision after the third run", below). The method that follows was run three times on
        1988–2016; the decision says what changed.
@@ -413,3 +415,25 @@ in Sikkim.
          gate, and counts check 1 on one window.
        - The rerun reuses the saved maps. Autumns 2013–2016 whose saved scenes included Landsat 7
          are mapped again from Landsat 8 scenes.
+     - **Fourth run, Landsat 8 only, 2013–2016, no gate: 4 of 4 checks passed.**
+       - The 2013–2016 flags were taken again for Landsat 8 alone. 41 lake-autumns whose saved
+         scenes had included Landsat 7 were mapped again, and the rest were reused. All 884 scenes
+         used are Landsat 8. The U-Net was chosen again (0.047 against the rule's 0.164, over 290
+         lake-autumns).
+       - Check 1: 113 of 114 lakes have a mapped autumn. The one without is Khumbu lake 4544,
+         listed at 0.06–0.11 km² in 2018–2022 and not in 1990.
+       - Check 2: median 1.022. Check 3: median 0.985 over 275 lake-autumns.
+       - Check 4: South Lhonak's 2016 autumn is 1.407 km², 1.6% under 7a's 1.430 in 2017.
+       - Lakes mapped each autumn: 87 in 2013, 105 in 2014, 113 in 2015 and 108 in 2016. 2013 has
+         fewer scenes (6 over Sikkim, against 8–10 later).
+   - **What the 2013–2016 curves show:**
+     - **South Lhonak:** 1.333 km² in 2014, 1.367 in 2015 and 1.407 in 2016, about 0.035 km² a
+       year, running on into 7a's 1.430 in 2017. No 2013 autumn was clear. The inventory gives
+       0.491 km² in 1990.
+     - **Study areas,** over lakes mapped in all four autumns: North Sikkim (39 lakes) 11.48 to
+       12.12 km², Bhote Koshi / Poiqu (22) 7.27 to 7.59, Khumbu (19) 3.67 to 3.73. The same lakes
+       held 10.52, 6.06 and 2.97 km² in the 1990 inventory.
+     - **Bhote Koshi's 2015 and 2016 sit about 3% above 7a's 2017** on the chart, inside the 10%
+       of check 3. It reads as the two series' difference there, not as a lake shrinking.
+     - **The chart** (`growth-history.png`) shows each study area relative to 2017 and South
+       Lhonak in km². Before 2013 there is only the inventory's 1990 point.

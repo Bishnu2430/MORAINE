@@ -288,6 +288,25 @@ in the three study areas, mapped by the U-Net, so it needs `pipeline/data/p1_une
 - **Tiles off the edge of a scene:** step 4's coverage flag cannot see them, so the script checks
   every tile it fetches and tries the next scene, or the overlapping granule of the same date.
 
+```
+.venv\Scripts\python pipeline\scripts\p1_landsat.py --project master-bruin-515809-p2
+```
+
+P1 step 7b, growth curves 2013–2016 from Landsat 8 (`moraine/landsat.py`): the 114 lakes of
+0.05 km² or more, mapped by the U-Net on Landsat 8 scenes resampled to step 7a's 10 m grid. It needs
+`pipeline/data/p1_unet/model.pt` and step 7a's `docs/p1/growth.json`.
+
+- **Good run:** ends with **4 of 4 checks passed**. 113 of 114 lakes are mapped, the median lake
+  comes out 2.2% above its listed area in the inventory years, and South Lhonak's 2016 autumn is
+  1.6% under step 7a's 2017. It writes `docs/p1/landsat.json` and `docs/p1/growth-history.png`.
+- **Why only 2013–2016:** Landsat 5 and 7 (1988–2012) were run three times and dropped. The U-Net
+  counts snow, glacier ice and debris as lake on them, and filtering those out also removed frozen
+  and silty lake. Before 2013 the chart shows only the inventory's 1990 areas. `docs/p1/plan.md`
+  has all four runs.
+- **Time:** a few minutes from the saved flags and maps; one to two hours the first time.
+  Flags are cached in `pipeline/out/p1_landsat/` and maps in `pipeline/data/p1_landsat/`, so a stopped
+  run resumes.
+
 ## Chorabari (Kedarnath) is not measured from satellites
 
 Even generous composites of 1990-2012 Landsat find at most about 0.02 km² of water near the

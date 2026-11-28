@@ -519,7 +519,7 @@ def plot_history(series: list[dict], sentinel: dict, south_lhonak: int, outburst
     ax.set_xticks(range(1990, 2026, 5))
     ax.set_title("South Lhonak\neach autumn", loc="left", fontsize=9.5, fontweight="bold", color=c["ink"])
     ax.set_ylabel("Lake area (km²)", color=c["ink2"])
-    fig.text(0.01, 0.015, "Landsat 4-8 (step 7b) to 2016 and Sentinel-2 (step 7a) from 2017, both from the clearest "
+    fig.text(0.01, 0.015, "Landsat 8 (step 7b) 2013-2016 and Sentinel-2 (step 7a) from 2017, both from the clearest "
              "scenes of 1 Sep-15 Nov. Study areas: lakes mapped that year over the same lakes' 2017 area; years whose "
              "lakes hold under 80% of the 2017 area are left out. Inventory: Zhang et al. (2023), 1990 to 2022.",
              fontsize=7.2, color=c["muted"])
