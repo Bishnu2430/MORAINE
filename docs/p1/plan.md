@@ -294,8 +294,9 @@ in Sikkim.
        their bands renamed to the Sentinel-2 ones they match. A survey of scene counts (no lake
        maps) found none in 1987, none for Bhote Koshi or Khumbu in 1990, and none for Sikkim in
        1995. Landsat 7 has striped gaps from mid-2003 and is the only Landsat in 2003 and 2012.
-     - **Flags** as in 7a, from each scene's own cloud and fill mask (QA_PIXEL), with coverage
-       counted so that cells off the scene or in a gap count as uncovered.
+     - **Flags** as in 7a, with coverage counted so that cells off the scene or in a gap count as
+       uncovered. Cloud was first taken from each scene's own cloud mask (QA_PIXEL); after the first
+       run it is a spectral test instead (see the runs, below). The checks did not change.
      - **Choosing scenes and areas** as in 7a: up to three scenes per autumn, one per date, whose
        10 m tile (resampled from 30 m) has no empty cell; the median of their lake probability; the
        same attribution to inventory outlines. A striped Landsat 7 scene passes only where the tile
@@ -303,6 +304,24 @@ in Sikkim.
      - **Mapper, chosen by rule before any history is mapped:** both the step 3 NDWI rule and the
        U-Net map the Landsat 8 scenes of the inventory autumns (2018, 2020, 2022), and the one whose
        mapped / listed areas have the smaller median |log ratio| maps 1988–2016.
+     - **Open-water gate, added after the second run** (see the runs, below). A cell the mapper
+       calls water counts only within 30 m (one Landsat cell) of a cell that is open water by its
+       bands: near-infrared (B8) and shortwave (B11) both at or below thresholds taken from Landsat 8.
+       - Snow and ice are bright in near-infrared; debris, rock and dry sediment are bright in
+         shortwave. Water is dark in both, and turbid water is lighter only in near-infrared.
+       - The 30 m allowance keeps the lake's edge cells, which at 30 m mix water with shore.
+       - **Thresholds:** the 98th percentile of each band, each lake weighted equally, over cells at
+         least 30 m inside the outlines of stable lakes. Stable means listed at 0.05 km² or more in
+         2022, with the 2018, 2020 and 2022 areas within 10% of each other. The cells come from the
+         tier 1 Landsat 8 scenes of autumn 2022 that the selection keeps.
+       - **When the percentile was chosen:** after a diagnostic on those same cells, and before any
+         1988–2016 map was gated or compared with 1990. The diagnostic gave near-infrared 0.018 at
+         the median, 0.142 at the 98th percentile and 0.178 at the 99th; shortwave 0.008, 0.103 and
+         0.157. The 99th is pulled up by a few Khumbu lakes with ice or islands inside.
+       - The gate applies to both mappers before the mapper is chosen, and to every year. The checks
+         did not change.
+       - So 7b measures open water: the frozen or snow-covered part of a lake more than 30 m from
+         open water is not counted. Step 7a (Sentinel-2) is not gated.
    - **7b checks, fixed before the run** (lakes of 0.05 km² or more):
      1. At least 90% of lake-windows have a mapped autumn, the windows being 1988–1992, 1993–1997,
         1998–2002, 2003–2007, 2008–2012 and 2013–2016.
@@ -316,3 +335,30 @@ in Sikkim.
      5. The same, each study area's total within 20% of the inventory's.
      6. South Lhonak within 20% of its 1990 area, and its latest autumn of 2014–2016 within 10% of
         7a's 2017 area.
+   - **7b runs.**
+     - **First run, cloud from QA_PIXEL: 3 of 6 checks passed.**
+       - The scene cloud mask calls the cold, bright moraines and glaciers cloud. The median
+         lake-scene came out 98–100% cloudy, so few autumns had a usable scene.
+       - Only 49 Landsat 8 lake-autumns chose the mapper (U-Net 0.045 against the rule's 0.103), and
+         172 of 684 lake-windows were mapped.
+       - Checks 2–4 passed (0.973, 0.964, 1.038 over 19 lakes). Checks 1, 5 (Khumbu had no lake) and
+         6 (no South Lhonak autumn) failed.
+       - Replaced by the spectral cloud test, checked by eye on 8 scenes.
+     - **Second run, spectral cloud test: 4 of 6 checks passed.**
+       - The U-Net was chosen on 290 lake-autumns (0.047 against the rule's 0.164). 2,402
+         lake-autumns of 1988–2016 were mapped.
+       - Passed: check 1 (619 of 684), check 2 (1.022), check 3 (0.985 over 275) and check 4
+         (1.092 over 82 lakes).
+       - Failed, check 5: Sikkim +6%, Bhote Koshi +53%, Khumbu +18%.
+       - Failed, check 6: South Lhonak 1991 was +74.8% of its 1990 area of 0.491 km², though 2016
+         was within 1.6% of 2017.
+       - **The cause, seen in false colour** (shortwave, near-infrared, green): on Landsat 5 and 7,
+         the U-Net calls water much of the ground that the lake fills by 2022. Snow on a flat
+         glacier tongue, glacier ice, debris and dry or silty lake bed were all counted.
+       - South Lhonak's 1991 open water looks like the inventory's 0.49 km². The extra came from the
+         glacier tongue to its west. Lakes 4629, 4630, 4646, 4680, 4688 and 4690 show the same.
+       - The model makes the snow error on Sentinel-2 too: flat snow next to a lake looks like a
+         frozen lake, which the training outlines include.
+       - The errors run one way. 46 of the 82 lakes were within 15% of 1990. The 14 lakes above
+         1.3 times held 6.79 of the 27.11 km² listed in 1990.
+       - Hence the open-water gate above.

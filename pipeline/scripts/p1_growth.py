@@ -64,7 +64,18 @@ def lakes_by_area(by_year: dict) -> dict:
     return out
 
 
-def tile_image(scene: str, lakes_near: list[dict]):
+def add_boxes(lakes: list[dict]) -> None:
+    """Give each lake its tile ("box": growth.tile_box round all its outlines, in UTM 45N)."""
+    corners = [(lk.bbox[i], lk.bbox[j]) for lake in lakes for lk in lake["outlines"].values() for i, j in ((0, 1), (2, 3))]
+    utm = iter(terrain.to_utm(corners).tolist())
+    for lake in lakes:
+        points = [next(utm) for lk in lake["outlines"].values() for _ in range(2)]
+        lake["box"] = growth.tile_box([p[0] for p in points], [p[1] for p in points])
+
+
+def with_slope_and_ids(bands, lakes_near: list[dict]):
+    """Six bands named as Sentinel-2's, plus slope (degrees x 100) and the lake ids painted from every
+    inventory year's outline of the lakes nearby (see moraine/growth.py)."""
     import ee
 
     painted = []
@@ -73,19 +84,26 @@ def tile_image(scene: str, lakes_near: list[dict]):
             painted.append(ee.Feature(ee.Geometry.Polygon([[list(p) for p in ring] for ring in outline.rings], None,
                                                           False), {"v": lake["i22"] + 1}))
     ids = ee.Image(0).paint(ee.FeatureCollection(painted), "v").rename("ids").toUint16()
-    bands = ee.Image(f"{watch.S2_L1C}/{scene}").select(list(unet.BANDS)).toUint16()
     slope = watch.slope_deg().multiply(100).round().rename("slope_x100").toUint16()
     return ee.Image.cat(bands, slope, ids)
 
 
-def fetch(scene: str, lakes_near: list[dict], box: tuple) -> dict:
+def tile_image(scene: str, lakes_near: list[dict]):
+    import ee
+
+    return with_slope_and_ids(ee.Image(f"{watch.S2_L1C}/{scene}").select(list(unet.BANDS)).toUint16(), lakes_near)
+
+
+def fetch(scene: str, lakes_near: list[dict], box: tuple, image=None) -> dict:
+    """The tile `box` of a Sentinel-2 scene (or of `image`, if given) as {band: array}."""
     import ee
 
     x0, y_top, size = box
     for attempt in range(3):
         try:
             data = ee.data.computePixels({
-                "expression": tile_image(scene, lakes_near), "fileFormat": "NUMPY_NDARRAY",
+                "expression": image if image is not None else tile_image(scene, lakes_near),
+                "fileFormat": "NUMPY_NDARRAY",
                 "grid": {"dimensions": {"width": size, "height": size},
                          "affineTransform": {"scaleX": tiles.CELL, "shearX": 0, "translateX": x0,
                                              "shearY": 0, "scaleY": -tiles.CELL, "translateY": y_top},
@@ -155,11 +173,7 @@ def main() -> int:
 
     # 2. Scenes, tiles and U-Net maps per lake and autumn
     every = [lake for _, lakes in areas.values() for lake in lakes]
-    corners = [(lk.bbox[i], lk.bbox[j]) for lake in every for lk in lake["outlines"].values() for i, j in ((0, 1), (2, 3))]
-    utm = iter(terrain.to_utm(corners).tolist())
-    for lake in every:
-        points = [next(utm) for lk in lake["outlines"].values() for _ in range(2)]
-        lake["box"] = growth.tile_box([p[0] for p in points], [p[1] for p in points])
+    add_boxes(every)
     south_lhonak = min(every, key=lambda lk: (lk["lon"] - SOUTH_LHONAK[0]) ** 2 + (lk["lat"] - SOUTH_LHONAK[1]) ** 2)
     jobs, plan = [], {}
     for lake in every:

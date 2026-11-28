@@ -443,3 +443,84 @@ def plot_growth(series: list[dict], south_lhonak: dict, outburst: str, path: Pat
     fig.tight_layout(rect=(0, 0.05, 1, 1))
     fig.savefig(path, facecolor=c["surface"])
     plt.close(fig)
+
+
+def plot_history(series: list[dict], sentinel: dict, south_lhonak: int, outburst: str, path: Path) -> None:
+    """Lake area 1988-2025 per study area relative to 2017 (Landsat to 2016, step 7a's Sentinel-2 from 2017),
+    and South Lhonak in km2. A year's value is the area of the lakes mapped that year over the same lakes'
+    2017 area, drawn when they hold at least 80% of the study area's 2017 lake area, so a year missing a
+    few lakes does not dip. Inventory areas are black diamonds."""
+    import datetime
+
+    import numpy as np
+
+    c = COLORS
+    land_c, sent_c = c["Landsat"], c["Sentinel-2"]
+    plt.rcParams["font.family"] = ["Segoe UI", "DejaVu Sans"]
+    fig, axes = plt.subplots(1, 4, figsize=(15, 4.2), dpi=150)
+    fig.patch.set_facecolor(c["surface"])
+    get = lambda d, y: d.get(y, d.get(str(y)))  # noqa: E731 (keys are ints in memory, strings from JSON)
+    landsat_years, sentinel_years = list(range(1988, 2017)), list(range(2017, 2026))
+    land = lambda s, y: (get(s["autumns"], y) or {}).get("km2")  # noqa: E731
+    sent = lambda s, y: (get(sentinel[s["i22"]]["autumns"], y) or {}).get("km2")  # noqa: E731
+
+    def line(ax, years, values, colour, label):
+        ys = [np.nan if v is None else v for v in values]  # gaps stay gaps
+        ax.plot(years, ys, color=colour, linewidth=2, marker="o", markersize=4, markeredgecolor=c["surface"],
+                zorder=2, label=label)
+
+    def diamonds(ax, points, label=None):
+        ax.scatter([p[0] for p in points], [p[1] for p in points], marker="D", s=36, facecolor=c["surface"],
+                   edgecolor=c["ink"], linewidth=1.3, zorder=3, label=label)
+
+    for ax, key in zip(axes[:3], AREA_NAMES):
+        _style(ax, c)
+        lakes = [s for s in series if s["area"] == key and (sent(s, 2017) or 0) > 0]
+        base = {s["i22"]: sent(s, 2017) for s in lakes}
+        whole = sum(base.values())
+
+        def index(year, area_of):
+            got = [(area_of(s, year), base[s["i22"]]) for s in lakes]
+            got = [(a, b) for a, b in got if a is not None]
+            seen = sum(b for _, b in got)
+            return sum(a for a, _ in got) / seen if seen >= 0.8 * whole else None
+
+        landsat_index = [index(y, land) for y in landsat_years]
+        sentinel_index = [index(y, sent) for y in sentinel_years]
+        line(ax, landsat_years, landsat_index, land_c, "Landsat")
+        line(ax, sentinel_years, sentinel_index, sent_c, "Sentinel-2 (step 7a)")
+        inv = [(1990, sum(s["km2_1990"] for s in lakes) / whole)] + [
+            (y, sum(get(s["listed_km2"], y) or 0 for s in lakes) / whole) for y in (2018, 2020, 2022)]
+        diamonds(ax, inv, "Inventory")
+        top = max([v for v in landsat_index + sentinel_index if v is not None] + [p[1] for p in inv])
+        ax.set_ylim(0, top * 1.15)
+        ax.set_xticks(range(1990, 2026, 5))
+        ax.set_title(f"{AREA_NAMES[key]}\n{len(lakes)} lakes of 0.05 km² or more", loc="left", fontsize=9.5,
+                     fontweight="bold", color=c["ink"])
+        ax.set_ylabel("Lake area, 2017 = 1", color=c["ink2"])
+    legend = axes[0].legend(loc="lower right", frameon=False, fontsize=7.5)
+    for text in legend.get_texts():
+        text.set_color(c["ink2"])
+
+    ax = axes[3]
+    _style(ax, c)
+    sl = next(s for s in series if s["i22"] == south_lhonak)
+    line(ax, landsat_years, [land(sl, y) for y in landsat_years], land_c, "Landsat")
+    line(ax, sentinel_years, [sent(sl, y) for y in sentinel_years], sent_c, "Sentinel-2")
+    diamonds(ax, [(1990, sl["km2_1990"])] + [(y, get(sl["listed_km2"], y)) for y in (2018, 2020, 2022)])
+    burst = datetime.date.fromisoformat(outburst)
+    ax.axvline(burst.year + (burst.timetuple().tm_yday - 0.5) / 365.25, color=c["axis"], linewidth=1, zorder=1)
+    ax.text(2023.4, 0.06, "Outburst\n4 Oct 2023", fontsize=7.5, color=c["ink2"], ha="right",
+            transform=ax.get_xaxis_transform())
+    values = [v for v in [land(sl, y) for y in landsat_years] + [sent(sl, y) for y in sentinel_years] if v]
+    ax.set_ylim(0, max(values + [sl["km2_1990"]]) * 1.15)
+    ax.set_xticks(range(1990, 2026, 5))
+    ax.set_title("South Lhonak\neach autumn", loc="left", fontsize=9.5, fontweight="bold", color=c["ink"])
+    ax.set_ylabel("Lake area (km²)", color=c["ink2"])
+    fig.text(0.01, 0.015, "Landsat 4-8 (step 7b) to 2016 and Sentinel-2 (step 7a) from 2017, both from the clearest "
+             "scenes of 1 Sep-15 Nov. Study areas: lakes mapped that year over the same lakes' 2017 area; years whose "
+             "lakes hold under 80% of the 2017 area are left out. Inventory: Zhang et al. (2023), 1990 to 2022.",
+             fontsize=7.2, color=c["muted"])
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.savefig(path, facecolor=c["surface"])
+    plt.close(fig)
