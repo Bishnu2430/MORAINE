@@ -40,3 +40,13 @@ def test_match_pairs_lakes_by_listed_area_not_by_position():
     reference = [lake(2022, 0, 88.00, 0.05, Area_2018=0.041), lake(2022, 1, 88.02, 0.09, Area_2018=0.072)]
     earlier = [lake(2018, 0, 88.02, 0.072), lake(2018, 1, 88.00, 0.041), lake(2018, 2, 88.30, 0.041)]
     assert inventory.match(earlier, reference, 2018) == {0: 1, 1: 0}
+
+
+def test_match_can_pair_areas_the_2022_file_rounded():
+    def lake(year, index, lon, area, **extra):
+        return inventory.Lake(year, {"Area": area, "index": index, **extra}, [], (lon, 28.0, lon + 0.001, 28.001))
+
+    reference = [lake(2022, 0, 88.00, 1.129, Area_2018=1.11)]  # listed to two decimals
+    earlier = [lake(2018, 0, 88.03, 1.108), lake(2018, 1, 88.00, 1.113552833)]  # 1.108 rounds to 1.11 too
+    assert inventory.match(earlier, reference, 2018) == {}
+    assert inventory.match(earlier, reference, 2018, rounded=True) == {0: 1}  # the nearer of the two

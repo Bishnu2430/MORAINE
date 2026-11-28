@@ -87,27 +87,48 @@ def load(root: Path, year: int) -> list[Lake]:
     return lakes
 
 
-def match(lakes: list[Lake], reference: list[Lake], year: int) -> dict[int, int]:
+def match(lakes: list[Lake], reference: list[Lake], year: int, rounded: bool = False) -> dict[int, int]:
     """Pair each lake of the 2022 file (`reference`) with the same lake in `year`'s file.
 
     The 2022 file repeats every lake's earlier areas (Area_2018, Area_2020), and each earlier file carries
     its own area column, so a lake is the nearby outline (same 0.1-degree cell or a neighbour) listing the
     same area to the published six decimals. Returns {2022 index: index in that year's file}; the few lakes
-    with no such partner are left out."""
+    with no such partner are left out.
+
+    The 2022 file gives a few earlier areas to fewer decimals (lake 4827, 1.1 km2 near South Lhonak:
+    Area_2018 1.11, Area_2020 1.13), which leaves 6 lakes unpaired with 2018 and 10 with 2020. With
+    `rounded`, each of those is then paired with the nearest unpaired outline nearby whose area rounds to
+    the listed one. Steps 4 and 5 ran without it, so it is off by default to keep their results."""
     cells: dict[tuple[int, int], list[Lake]] = {}
     for lake in lakes:
         cells.setdefault((math.floor(lake.lon * 10), math.floor(lake.lat * 10)), []).append(lake)
+
+    def nearby(ref: Lake, fits) -> Lake | None:
+        x, y = math.floor(ref.lon * 10), math.floor(ref.lat * 10)
+        same = [lake for dx in (-1, 0, 1) for dy in (-1, 0, 1) for lake in cells.get((x + dx, y + dy), [])
+                if fits(lake)]
+        return min(same, key=lambda lake: (lake.lon - ref.lon) ** 2 + (lake.lat - ref.lat) ** 2, default=None)
+
     pairs = {}
     for ref in reference:
         want = ref.attrs.get(f"Area_{year}")
         if want is None:
             continue
-        x, y = math.floor(ref.lon * 10), math.floor(ref.lat * 10)
-        same = [lake for dx in (-1, 0, 1) for dy in (-1, 0, 1) for lake in cells.get((x + dx, y + dy), [])
-                if abs(float(lake.attrs["Area"]) - float(want)) < 5e-7]
-        if same:
-            best = min(same, key=lambda lake: (lake.lon - ref.lon) ** 2 + (lake.lat - ref.lat) ** 2)
+        best = nearby(ref, lambda lake: abs(float(lake.attrs["Area"]) - float(want)) < 5e-7)
+        if best is not None:
             pairs[ref.attrs["index"]] = best.attrs["index"]
+    if rounded:
+        used = set(pairs.values())
+        for ref in reference:
+            want = ref.attrs.get(f"Area_{year}")
+            if want is None or ref.attrs["index"] in pairs:
+                continue
+            places = len(format(float(want), ".10f").rstrip("0").split(".")[1])
+            best = nearby(ref, lambda lake: lake.attrs["index"] not in used
+                          and abs(round(float(lake.attrs["Area"]), places) - float(want)) < 1e-9)
+            if best is not None:
+                pairs[ref.attrs["index"]] = best.attrs["index"]
+                used.add(best.attrs["index"])
     return pairs
 
 

@@ -17,7 +17,7 @@ in Sikkim.
   - Fallback for the Landsat years: the Hi-MAG database (Chen et al. 2021, annual 2008–2017, 30 m).
 - **Size cut-off.** 0.02 km² from 2017 on (Sentinel-2, 10 m), matching the inventory and the P0
   evidence: Thame's 0.044 km² lake measured well, while Gongbatongsha's 0.017 km² lake did not.
-  For 1987–2016 (Landsat, 30 m) the cut-off is 0.05 km², about 55 cells.
+  For Landsat (30 m; step 7b, now 2013–2016) the cut-off is 0.05 km², about 55 cells.
 
 ## Steps, each with its own check
 
@@ -210,9 +210,230 @@ in Sikkim.
        these four kinds, not a random sample of scenes.
      - The model was trained once. A second training run would give a somewhat different model,
        and its spread is not measured.
-7. **Growth curves.** Area per year for every lake above the cut-off in the three study areas.
-   - Back to 1987: Landsat, for lakes big enough to see.
-   - From 2017: every autumn, with the better method from step 6: the U-Net. It maps one scene at
-     a time, so each autumn needs a way to combine its scenes (for example, the median of the
-     U-Net's lake probability over the season's usable scenes).
-   - The inventory's 1990 areas give a cross-check.
+7. **Growth curves.** Area per year for every inventory lake in the three study areas, in two
+   parts.
+   - **7a, 2017–2025, with the U-Net. Done 28 Nov 2026** (`pipeline/scripts/p1_growth.py`,
+     `moraine/growth.py`). Every lake and autumn is in `growth.json`, and the chart is
+     `growth.png`.
+     - **Scenes:** for each lake and autumn (1 September–15 November), Sentinel-2 scenes are
+       ranked clear first (little cloud within 1.3 km of the lake), then thin cloud. Scenes with
+       20% or more of the lake in terrain shadow are skipped. The first three, one per date, whose
+       tile lies wholly inside the scene are mapped.
+     - **Mapping:** the U-Net maps each scene, and the median of its lake probability across the
+       scenes gives the autumn's map.
+     - **A lake's area** is the mapped water joined to any of its inventory outlines (2018, 2020 or
+       2022). Water inside an outline belongs to that lake; the rest of a patch goes to the lake
+       whose outline is nearest through the water. So a lake that grows past its old outline is
+       still counted in full, and a patch touching two lakes is shared, not counted twice.
+   - **7a checks, fixed before the run:**
+     1. Lake-autumns with a usable scene: at least 90%.
+     2. Inventory years, lakes of 0.02 km² or more: the median ratio of mapped to listed area is
+        within 10% of 1.
+     3. Inventory years, each study area's total within 10% of the inventory's.
+     4. South Lhonak within 5% of the inventory in 2018, 2020 and 2022.
+     5. South Lhonak's 2023 scenes show the outburst of 3–4 October: the median area after it is at
+        least 0.15 km² below the median before it.
+   - **Result: 5 of 5 passed** on 191 lakes (101 North Sikkim, 36 Bhote Koshi / Poiqu, 54
+     Khumbu).
+
+   | Check | Result |
+   |---|---|
+   | 1. Lake-autumns with a usable scene | 1,572 of 1,719 (91.4%) |
+   | 2. Median mapped / listed area, 453 lake-years | 1.045 |
+   | 3. Study-area totals against the inventory | +2% to +5% in all nine area-years |
+   | 4. South Lhonak against the inventory, 2018 / 2020 / 2022 | +0.8% / +1.5% / −0.3% |
+   | 5. South Lhonak, drop across the 2023 outburst | 0.197 km² (3 scenes before, 10 after) |
+
+   - **Bugs found by looking at the maps.** A first run passed all five checks, but its maps had
+     three bugs the checks were too coarse to see. The thresholds were not changed.
+     - **Tiles off the edge of a scene:** step 4's coverage flag reads 100% for a lake half off
+       the edge, because cells off the edge are masked and a mean skips them. Such tiles gave two
+       Bhote Koshi lakes 0.03–0.07 km² instead of 0.25–0.33. Each tile is now checked when
+       fetched: 601 of the 4,729 fetched (13%) were cut. Where two 100 km granules overlap, the
+       other one is tried. With the check alone, check 1 fell to 89.8%, a narrow fail; trying the
+       other granule brought it to 91.4%.
+     - **Shadow counted twice:** a ridge shadow mapped as water touched two small Khumbu ponds, and
+       each was given all 0.29 km² of it. Patches are now shared by nearest outline, and shadowed
+       scenes are skipped (41 of the 3,761 first chosen).
+     - **A missing pairing:** the 2022 file rounds a few earlier areas to two decimals, so a 1.1 km²
+       North Sikkim lake (4827) had no 2018 or 2020 outline, and the chart's inventory totals came
+       out 1.1 km² low. `inventory.match` now has a rounded fallback (6 lakes unpaired with 2018
+       and 10 with 2020, of 5,894). Only this step uses it, so steps 4–6 are unchanged.
+   - **What the curves show:**
+     - **Totals,** over lakes mapped every autumn and listed in every inventory year: North Sikkim
+       (73 lakes) grows from 17.3 to 18.1 km², 2017–2025, +5%. Bhote Koshi / Poiqu (29) stays
+       between 17.3 and 17.8. Khumbu (24) swings between 4.6 and 5.1, mostly because of Imja
+       (below).
+     - **South Lhonak:** 1.43 km² in 2017, 1.67 in 2022 and 1.70 in September 2023. After the
+       outburst each scene gives 1.38–1.51, then 1.47 in 2024 and 1.49 in 2025. The Sikkim
+       government's Sentinel-2 figure, 162 to 144 ha, agrees; ISRO's radar figure, 167 to 60 ha,
+       does not. The 2023 autumn value is the lake before the outburst, since two of its three
+       clearest scenes are from September; every 2023 scene is in `growth.json`.
+     - **Large lakes are steady:** the largest, 5.5 km² in Poiqu, is within 0.3–1.8% of the
+       inventory in all three years, and most lakes over 0.3 km² stay within a few percent.
+     - **Small lakes read high:** median mapped / listed is 1.08 for lakes of 0.02–0.05 km², 1.05
+       for 0.05–0.2 and 1.02 above. That fits the mapped edge sitting about half a cell outside
+       the inventory's outline.
+   - **Where it still fails:**
+     - **Imja Tsho** (Khumbu, 1.7 km²): in 2021, 2023 and 2025 the U-Net leaves out the lake's
+       eastern end, bright water full of small icebergs at the glacier front. Those autumns read
+       1.37, 1.36 and 1.45 km² against 1.6–1.75 in the years between. Filling enclosed gaps does
+       not help, as the gap opens onto the glacier. The fix belongs in the model: training
+       examples of calving fronts.
+     - **Two ponds of about 0.02 km² on a Khumbu glacier** (4517, 4776) still read 0.05–0.10 km² in
+       some years, from shadow beside them.
+     - **Lake 4215** (North Sikkim, 0.05 km²) reads zero from 2023. In the scenes it looks filled
+       with sediment; that is not checked against any other source.
+     - **147 lake-autumns have no map:** 133 for want of a clear scene, 13 because every scene was
+       cut by an edge, and 1 for shadow. Khumbu has 92 of them: 62 for cloud, 20 for ice or shadow
+       on the lake and 10 cut by an edge.
+   - **7b, Landsat before 2017. Done 29 Nov 2026, Landsat 8 only, 2013–2016**
+     (`pipeline/scripts/p1_landsat.py`, `moraine/landsat.py`). Every lake and autumn is in
+     `landsat.json`, and the chart is `growth-history.png`.
+     - **Now Landsat 8 only, 2013–2016, without the open-water gate:** decided after the third run
+       (see "Decision after the third run", below). The method that follows was run three times on
+       1988–2016; the decision says what changed.
+     - **Lakes:** the 114 of the 191 that reach 0.05 km² (about 55 Landsat cells) in 1990, 2018,
+       2020 or 2022: 61 in North Sikkim, 28 in Bhote Koshi / Poiqu, 25 in Khumbu.
+     - **Scenes:** Landsat 4, 5, 7 and 8 top-of-atmosphere scenes of 1 September–15 November,
+       their bands renamed to the Sentinel-2 ones they match. A survey of scene counts (no lake
+       maps) found none in 1987, none for Bhote Koshi or Khumbu in 1990, and none for Sikkim in
+       1995. Landsat 7 has striped gaps from mid-2003 and is the only Landsat in 2003 and 2012.
+     - **Flags** as in 7a, with coverage counted so that cells off the scene or in a gap count as
+       uncovered. Cloud was first taken from each scene's own cloud mask (QA_PIXEL); after the first
+       run it is a spectral test instead (see the runs, below). The checks did not change.
+     - **Choosing scenes and areas** as in 7a: up to three scenes per autumn, one per date, whose
+       10 m tile (resampled from 30 m) has no empty cell; the median of their lake probability; the
+       same attribution to inventory outlines. A striped Landsat 7 scene passes only where the tile
+       misses every stripe.
+     - **Mapper, chosen by rule before any history is mapped:** both the step 3 NDWI rule and the
+       U-Net map the Landsat 8 scenes of the inventory autumns (2018, 2020, 2022), and the one whose
+       mapped / listed areas have the smaller median |log ratio| maps 1988–2016.
+     - **Open-water gate, added after the second run** (see the runs, below). A cell the mapper
+       calls water counts only within 30 m (one Landsat cell) of a cell that is open water by its
+       bands: near-infrared (B8) and shortwave (B11) both at or below thresholds taken from Landsat 8.
+       - Snow and ice are bright in near-infrared; debris, rock and dry sediment are bright in
+         shortwave. Water is dark in both, and turbid water is lighter only in near-infrared.
+       - The 30 m allowance keeps the lake's edge cells, which at 30 m mix water with shore.
+       - **Thresholds:** the 98th percentile of each band, each lake weighted equally, over cells at
+         least 30 m inside the outlines of stable lakes. Stable means listed at 0.05 km² or more in
+         2022, with the 2018, 2020 and 2022 areas within 10% of each other. The cells come from the
+         tier 1 Landsat 8 scenes of autumn 2022 that the selection keeps.
+       - **When the percentile was chosen:** after a diagnostic on those same cells, and before any
+         1988–2016 map was gated or compared with 1990. The diagnostic gave near-infrared 0.018 at
+         the median, 0.142 at the 98th percentile and 0.178 at the 99th; shortwave 0.008, 0.103 and
+         0.157. The 99th is pulled up by a few Khumbu lakes with ice or islands inside.
+       - The gate applies to both mappers before the mapper is chosen, and to every year. The checks
+         did not change.
+       - So 7b measures open water: the frozen or snow-covered part of a lake more than 30 m from
+         open water is not counted. Step 7a (Sentinel-2) is not gated.
+   - **7b checks, fixed before the first run** (lakes of 0.05 km² or more; narrowed after the third
+     run, below):
+     1. At least 90% of lake-windows have a mapped autumn, the windows being 1988–1992, 1993–1997,
+        1998–2002, 2003–2007, 2008–2012 and 2013–2016.
+     2. Landsat 8, inventory autumns, the chosen mapper: median mapped / listed area within 10%
+        of 1.
+     3. The same lake-autumns against 7a's Sentinel-2 areas: median ratio within 10% of 1, so the
+        two series join without a step.
+     4. Against the inventory's 1990 areas (lakes of 0.05 km² or more then), using each lake's
+        mapped autumn nearest 1990 within 1988–1992: median ratio within 15% of 1. Wider than 7a's
+        10%, for 30 m cells and an inventory year that may be a nearby year.
+     5. The same, each study area's total within 20% of the inventory's.
+     6. South Lhonak within 20% of its 1990 area, and its latest autumn of 2014–2016 within 10% of
+        7a's 2017 area.
+   - **7b runs.**
+     - **First run, cloud from QA_PIXEL: 3 of 6 checks passed.**
+       - The scene cloud mask calls the cold, bright moraines and glaciers cloud. The median
+         lake-scene came out 98–100% cloudy, so few autumns had a usable scene.
+       - Only 49 Landsat 8 lake-autumns chose the mapper (U-Net 0.045 against the rule's 0.103), and
+         172 of 684 lake-windows were mapped.
+       - Checks 2–4 passed (0.973, 0.964, 1.038 over 19 lakes). Checks 1, 5 (Khumbu had no lake) and
+         6 (no South Lhonak autumn) failed.
+       - Replaced by the spectral cloud test, checked by eye on 8 scenes.
+     - **Second run, spectral cloud test: 4 of 6 checks passed.**
+       - The U-Net was chosen on 290 lake-autumns (0.047 against the rule's 0.164). 2,402
+         lake-autumns of 1988–2016 were mapped.
+       - Passed: check 1 (619 of 684), check 2 (1.022), check 3 (0.985 over 275) and check 4
+         (1.092 over 82 lakes).
+       - Failed, check 5: Sikkim +6%, Bhote Koshi +53%, Khumbu +18%.
+       - Failed, check 6: South Lhonak 1991 was +74.8% of its 1990 area of 0.491 km², though 2016
+         was within 1.6% of 2017.
+       - **The cause, seen in false colour** (shortwave, near-infrared, green): on Landsat 5 and 7,
+         the U-Net calls water much of the ground that the lake fills by 2022. Snow on a flat
+         glacier tongue, glacier ice, debris and dry or silty lake bed were all counted.
+       - South Lhonak's 1991 open water looks like the inventory's 0.49 km². The extra came from the
+         glacier tongue to its west. Lakes 4629, 4630, 4646, 4680, 4688 and 4690 show the same.
+       - The model makes the snow error on Sentinel-2 too: flat snow next to a lake looks like a
+         frozen lake, which the training outlines include.
+       - The errors run one way. 46 of the 82 lakes were within 15% of 1990. The 14 lakes above
+         1.3 times held 6.79 of the 27.11 km² listed in 1990.
+       - Hence the open-water gate above.
+     - **Third run, open-water gate: 4 of 6 checks passed.**
+       - Gate thresholds: near-infrared 0.142 and shortwave 0.104, from 52 stable lakes (310,534
+         cells). The U-Net was chosen on 290 lake-autumns (0.049 against the rule's 0.167).
+       - Passed: check 1 (619 of 684), check 2 (1.006), check 3 (0.963 over 275) and check 4
+         (1.007 over 82 lakes).
+       - Failed, check 5: Sikkim −12% (47 lakes), Bhote Koshi +4% (24 lakes), Khumbu −22% (11 lakes).
+       - Failed, check 6: South Lhonak 1991 was −25.6% of its 1990 area of 0.491 km², though 2016
+         was within 2.6% of 2017.
+       - **Where the gate helped:** Bhote Koshi went from +53% to +4%. The snow, ice and debris on
+         South Lhonak's glacier tongue in 1991 were removed.
+       - **Where it removed lake, seen in false colour:** the inventory counts frozen and silty
+         lake, and the gate does not.
+         - Frozen lake in late autumn: lake 4238 on 2 November 1989 was removed whole. It was
+           0.192 km² before the gate and is listed at 0.187 km² in 1990.
+         - Silty water on Landsat 5: South Lhonak's water read 0.16–0.22 in near-infrared with
+           0.02–0.06 in shortwave. Silt raises near-infrared, and the band on Landsat 4, 5 and 7
+           (0.76–0.90 µm) starts lower than Landsat 8's (0.85–0.88 µm), where silt reflects more.
+         - On 7 October 1991 the gate removed all of South Lhonak. The two other scenes gave 0.38
+           and 0.48 km², and the autumn, a median of the three, came to 0.365 km².
+         - Its later Landsat 5 autumns fell too: 2007 to 0.40 and 2011 to 0.39 km². Before the gate
+           they were 1.10 and 1.19; by 2014 the lake measures 1.33.
+       - Saved outside the repo as pipeline/out/p1_landsat_third_run.json and .log, with
+         growth-history_third_run.png.
+     - **Decision after the third run (29 November 2026): Landsat 8 only, 2013–2016, no gate.**
+       - **Landsat 4, 5 and 7 are dropped.** Without the gate the U-Net overcounts on them (second
+         run); with it, frozen and silty lakes are undercounted (third run). Neither met checks 5
+         and 6. Another gate is not tried. The lake cells removed at 4235, 4238 and 4541 are also
+         bright in shortwave (medians 0.26–0.35), so a shortwave-only gate would remove them too.
+         It would also be a third change of method after seeing the checks.
+       - **The gate goes too.** It was added for Landsat 5 and 7. Without it 7b counts frozen lake,
+         as 7a and the inventory do, so the two series join on the same terms. On Landsat 8, checks
+         2 and 3 and South Lhonak's 2016 join passed in both runs, with and without the gate.
+       - **Before 2013 each lake keeps only the inventory's 1990 area,** drawn as a point. Nothing
+         is drawn between 1990 and 2013.
+       - **Checks 4 and 5, and the 1990 half of check 6, are dropped with the years they test.**
+         They failed in the second and third runs and are not counted as passed.
+       - **The checks for the fourth run,** with the thresholds unchanged:
+         1. At least 90% of lakes have a mapped autumn in 2013–2016 (check 1 on its last window).
+         2. As check 2.
+         3. As check 3.
+         4. South Lhonak's latest autumn of 2014–2016 within 10% of 7a's 2017 area (the second half
+            of check 6).
+       - These are not a fresh test. Checks 2 and 3 and the 2016 join were already met on Landsat 8
+         in the second and third runs. The fourth run confirms them on Landsat 8 alone, without the
+         gate, and counts check 1 on one window.
+       - The rerun reuses the saved maps. Autumns 2013–2016 whose saved scenes included Landsat 7
+         are mapped again from Landsat 8 scenes.
+     - **Fourth run, Landsat 8 only, 2013–2016, no gate: 4 of 4 checks passed.**
+       - The 2013–2016 flags were taken again for Landsat 8 alone. 41 lake-autumns whose saved
+         scenes had included Landsat 7 were mapped again, and the rest were reused. All 884 scenes
+         used are Landsat 8. The U-Net was chosen again (0.047 against the rule's 0.164, over 290
+         lake-autumns).
+       - Check 1: 113 of 114 lakes have a mapped autumn. The one without is Khumbu lake 4544,
+         listed at 0.06–0.11 km² in 2018–2022 and not in 1990.
+       - Check 2: median 1.022. Check 3: median 0.985 over 275 lake-autumns.
+       - Check 4: South Lhonak's 2016 autumn is 1.407 km², 1.6% under 7a's 1.430 in 2017.
+       - Lakes mapped each autumn: 87 in 2013, 105 in 2014, 113 in 2015 and 108 in 2016. 2013 has
+         fewer scenes (6 over Sikkim, against 8–10 later).
+   - **What the 2013–2016 curves show:**
+     - **South Lhonak:** 1.333 km² in 2014, 1.367 in 2015 and 1.407 in 2016, about 0.035 km² a
+       year, running on into 7a's 1.430 in 2017. No 2013 autumn was clear. The inventory gives
+       0.491 km² in 1990.
+     - **Study areas,** over lakes mapped in all four autumns: North Sikkim (39 lakes) 11.48 to
+       12.12 km², Bhote Koshi / Poiqu (22) 7.27 to 7.59, Khumbu (19) 3.67 to 3.73. The same lakes
+       held 10.52, 6.06 and 2.97 km² in the 1990 inventory.
+     - **Bhote Koshi's 2015 and 2016 sit about 3% above 7a's 2017** on the chart, inside the 10%
+       of check 3. It reads as the two series' difference there, not as a lake shrinking.
+     - **The chart** (`growth-history.png`) shows each study area relative to 2017 and South
+       Lhonak in km². Before 2013 there is only the inventory's 1990 point.
