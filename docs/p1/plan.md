@@ -287,5 +287,32 @@ in Sikkim.
      - **147 lake-autumns have no map:** 133 for want of a clear scene, 13 because every scene was
        cut by an edge, and 1 for shadow. Khumbu has 92 of them: 62 for cloud, 20 for ice or shadow
        on the lake and 10 cut by an edge.
-   - **7b, 1987–2016, with Landsat:** lakes of 0.05 km² or more, cross-checked against the
-     inventory's 1990 areas, and joined to 7a where the two overlap.
+   - **7b, 1988–2016, with Landsat** (`pipeline/scripts/p1_landsat.py`, `moraine/landsat.py`).
+     - **Lakes:** the 114 of the 191 that reach 0.05 km² (about 55 Landsat cells) in 1990, 2018,
+       2020 or 2022: 61 in North Sikkim, 28 in Bhote Koshi / Poiqu, 25 in Khumbu.
+     - **Scenes:** Landsat 4, 5, 7 and 8 top-of-atmosphere scenes of 1 September–15 November,
+       their bands renamed to the Sentinel-2 ones they match. A survey of scene counts (no lake
+       maps) found none in 1987, none for Bhote Koshi or Khumbu in 1990, and none for Sikkim in
+       1995. Landsat 7 has striped gaps from mid-2003 and is the only Landsat in 2003 and 2012.
+     - **Flags** as in 7a, from each scene's own cloud and fill mask (QA_PIXEL), with coverage
+       counted so that cells off the scene or in a gap count as uncovered.
+     - **Choosing scenes and areas** as in 7a: up to three scenes per autumn, one per date, whose
+       10 m tile (resampled from 30 m) has no empty cell; the median of their lake probability; the
+       same attribution to inventory outlines. A striped Landsat 7 scene passes only where the tile
+       misses every stripe.
+     - **Mapper, chosen by rule before any history is mapped:** both the step 3 NDWI rule and the
+       U-Net map the Landsat 8 scenes of the inventory autumns (2018, 2020, 2022), and the one whose
+       mapped / listed areas have the smaller median |log ratio| maps 1988–2016.
+   - **7b checks, fixed before the run** (lakes of 0.05 km² or more):
+     1. At least 90% of lake-windows have a mapped autumn, the windows being 1988–1992, 1993–1997,
+        1998–2002, 2003–2007, 2008–2012 and 2013–2016.
+     2. Landsat 8, inventory autumns, the chosen mapper: median mapped / listed area within 10%
+        of 1.
+     3. The same lake-autumns against 7a's Sentinel-2 areas: median ratio within 10% of 1, so the
+        two series join without a step.
+     4. Against the inventory's 1990 areas (lakes of 0.05 km² or more then), using each lake's
+        mapped autumn nearest 1990 within 1988–1992: median ratio within 15% of 1. Wider than 7a's
+        10%, for 30 m cells and an inventory year that may be a nearby year.
+     5. The same, each study area's total within 20% of the inventory's.
+     6. South Lhonak within 20% of its 1990 area, and its latest autumn of 2014–2016 within 10% of
+        7a's 2017 area.
