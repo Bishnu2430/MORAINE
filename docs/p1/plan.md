@@ -17,7 +17,7 @@ in Sikkim.
   - Fallback for the Landsat years: the Hi-MAG database (Chen et al. 2021, annual 2008–2017, 30 m).
 - **Size cut-off.** 0.02 km² from 2017 on (Sentinel-2, 10 m), matching the inventory and the P0
   evidence: Thame's 0.044 km² lake measured well, while Gongbatongsha's 0.017 km² lake did not.
-  For 1987–2016 (Landsat, 30 m) the cut-off is 0.05 km², about 55 cells.
+  For Landsat (30 m; step 7b, now 2013–2016) the cut-off is 0.05 km², about 55 cells.
 
 ## Steps, each with its own check
 
@@ -287,7 +287,10 @@ in Sikkim.
      - **147 lake-autumns have no map:** 133 for want of a clear scene, 13 because every scene was
        cut by an edge, and 1 for shadow. Khumbu has 92 of them: 62 for cloud, 20 for ice or shadow
        on the lake and 10 cut by an edge.
-   - **7b, 1988–2016, with Landsat** (`pipeline/scripts/p1_landsat.py`, `moraine/landsat.py`).
+   - **7b, Landsat before 2017** (`pipeline/scripts/p1_landsat.py`, `moraine/landsat.py`).
+     - **Now Landsat 8 only, 2013–2016, without the open-water gate:** decided after the third run
+       (see "Decision after the third run", below). The method that follows was run three times on
+       1988–2016; the decision says what changed.
      - **Lakes:** the 114 of the 191 that reach 0.05 km² (about 55 Landsat cells) in 1990, 2018,
        2020 or 2022: 61 in North Sikkim, 28 in Bhote Koshi / Poiqu, 25 in Khumbu.
      - **Scenes:** Landsat 4, 5, 7 and 8 top-of-atmosphere scenes of 1 September–15 November,
@@ -322,7 +325,8 @@ in Sikkim.
          did not change.
        - So 7b measures open water: the frozen or snow-covered part of a lake more than 30 m from
          open water is not counted. Step 7a (Sentinel-2) is not gated.
-   - **7b checks, fixed before the run** (lakes of 0.05 km² or more):
+   - **7b checks, fixed before the first run** (lakes of 0.05 km² or more; narrowed after the third
+     run, below):
      1. At least 90% of lake-windows have a mapped autumn, the windows being 1988–1992, 1993–1997,
         1998–2002, 2003–2007, 2008–2012 and 2013–2016.
      2. Landsat 8, inventory autumns, the chosen mapper: median mapped / listed area within 10%
@@ -362,3 +366,50 @@ in Sikkim.
        - The errors run one way. 46 of the 82 lakes were within 15% of 1990. The 14 lakes above
          1.3 times held 6.79 of the 27.11 km² listed in 1990.
        - Hence the open-water gate above.
+     - **Third run, open-water gate: 4 of 6 checks passed.**
+       - Gate thresholds: near-infrared 0.142 and shortwave 0.104, from 52 stable lakes (310,534
+         cells). The U-Net was chosen on 290 lake-autumns (0.049 against the rule's 0.167).
+       - Passed: check 1 (619 of 684), check 2 (1.006), check 3 (0.963 over 275) and check 4
+         (1.007 over 82 lakes).
+       - Failed, check 5: Sikkim −12% (47 lakes), Bhote Koshi +4% (24 lakes), Khumbu −22% (11 lakes).
+       - Failed, check 6: South Lhonak 1991 was −25.6% of its 1990 area of 0.491 km², though 2016
+         was within 2.6% of 2017.
+       - **Where the gate helped:** Bhote Koshi went from +53% to +4%. The snow, ice and debris on
+         South Lhonak's glacier tongue in 1991 were removed.
+       - **Where it removed lake, seen in false colour:** the inventory counts frozen and silty
+         lake, and the gate does not.
+         - Frozen lake in late autumn: lake 4238 on 2 November 1989 was removed whole. It was
+           0.192 km² before the gate and is listed at 0.187 km² in 1990.
+         - Silty water on Landsat 5: South Lhonak's water read 0.16–0.22 in near-infrared with
+           0.02–0.06 in shortwave. Silt raises near-infrared, and the band on Landsat 4, 5 and 7
+           (0.76–0.90 µm) starts lower than Landsat 8's (0.85–0.88 µm), where silt reflects more.
+         - On 7 October 1991 the gate removed all of South Lhonak. The two other scenes gave 0.38
+           and 0.48 km², and the autumn, a median of the three, came to 0.365 km².
+         - Its later Landsat 5 autumns fell too: 2007 to 0.40 and 2011 to 0.39 km². Before the gate
+           they were 1.10 and 1.19; by 2014 the lake measures 1.33.
+       - Saved outside the repo as pipeline/out/p1_landsat_third_run.json and .log, with
+         growth-history_third_run.png.
+     - **Decision after the third run (29 November 2026): Landsat 8 only, 2013–2016, no gate.**
+       - **Landsat 4, 5 and 7 are dropped.** Without the gate the U-Net overcounts on them (second
+         run); with it, frozen and silty lakes are undercounted (third run). Neither met checks 5
+         and 6. Another gate is not tried. The lake cells removed at 4235, 4238 and 4541 are also
+         bright in shortwave (medians 0.26–0.35), so a shortwave-only gate would remove them too.
+         It would also be a third change of method after seeing the checks.
+       - **The gate goes too.** It was added for Landsat 5 and 7. Without it 7b counts frozen lake,
+         as 7a and the inventory do, so the two series join on the same terms. On Landsat 8, checks
+         2 and 3 and South Lhonak's 2016 join passed in both runs, with and without the gate.
+       - **Before 2013 each lake keeps only the inventory's 1990 area,** drawn as a point. Nothing
+         is drawn between 1990 and 2013.
+       - **Checks 4 and 5, and the 1990 half of check 6, are dropped with the years they test.**
+         They failed in the second and third runs and are not counted as passed.
+       - **The checks for the fourth run,** with the thresholds unchanged:
+         1. At least 90% of lakes have a mapped autumn in 2013–2016 (check 1 on its last window).
+         2. As check 2.
+         3. As check 3.
+         4. South Lhonak's latest autumn of 2014–2016 within 10% of 7a's 2017 area (the second half
+            of check 6).
+       - These are not a fresh test. Checks 2 and 3 and the 2016 join were already met on Landsat 8
+         in the second and third runs. The fourth run confirms them on Landsat 8 alone, without the
+         gate, and counts check 1 on one window.
+       - The rerun reuses the saved maps. Autumns 2013–2016 whose saved scenes included Landsat 7
+         are mapped again from Landsat 8 scenes.

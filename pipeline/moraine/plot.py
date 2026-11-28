@@ -446,10 +446,11 @@ def plot_growth(series: list[dict], south_lhonak: dict, outburst: str, path: Pat
 
 
 def plot_history(series: list[dict], sentinel: dict, south_lhonak: int, outburst: str, path: Path) -> None:
-    """Lake area 1988-2025 per study area relative to 2017 (Landsat to 2016, step 7a's Sentinel-2 from 2017),
-    and South Lhonak in km2. A year's value is the area of the lakes mapped that year over the same lakes'
-    2017 area, drawn when they hold at least 80% of the study area's 2017 lake area, so a year missing a
-    few lakes does not dip. Inventory areas are black diamonds."""
+    """Lake area per study area relative to 2017 (step 7b's Landsat 8 to 2016, step 7a's Sentinel-2 from
+    2017), and South Lhonak in km2. A year's value is the area of the lakes mapped that year over the same
+    lakes' 2017 area, drawn when they hold at least 80% of the study area's 2017 lake area, so a year
+    missing a few lakes does not dip. Inventory areas, 1990 included, are black diamonds; before the first
+    Landsat year they are the only points."""
     import datetime
 
     import numpy as np
@@ -460,7 +461,8 @@ def plot_history(series: list[dict], sentinel: dict, south_lhonak: int, outburst
     fig, axes = plt.subplots(1, 4, figsize=(15, 4.2), dpi=150)
     fig.patch.set_facecolor(c["surface"])
     get = lambda d, y: d.get(y, d.get(str(y)))  # noqa: E731 (keys are ints in memory, strings from JSON)
-    landsat_years, sentinel_years = list(range(1988, 2017)), list(range(2017, 2026))
+    first = min(int(y) for s in series for y in s["autumns"])
+    landsat_years, sentinel_years = list(range(first, 2017)), list(range(2017, 2026))
     land = lambda s, y: (get(s["autumns"], y) or {}).get("km2")  # noqa: E731
     sent = lambda s, y: (get(sentinel[s["i22"]]["autumns"], y) or {}).get("km2")  # noqa: E731
 
@@ -487,7 +489,7 @@ def plot_history(series: list[dict], sentinel: dict, south_lhonak: int, outburst
 
         landsat_index = [index(y, land) for y in landsat_years]
         sentinel_index = [index(y, sent) for y in sentinel_years]
-        line(ax, landsat_years, landsat_index, land_c, "Landsat")
+        line(ax, landsat_years, landsat_index, land_c, "Landsat 8")
         line(ax, sentinel_years, sentinel_index, sent_c, "Sentinel-2 (step 7a)")
         inv = [(1990, sum(s["km2_1990"] for s in lakes) / whole)] + [
             (y, sum(get(s["listed_km2"], y) or 0 for s in lakes) / whole) for y in (2018, 2020, 2022)]
@@ -505,7 +507,7 @@ def plot_history(series: list[dict], sentinel: dict, south_lhonak: int, outburst
     ax = axes[3]
     _style(ax, c)
     sl = next(s for s in series if s["i22"] == south_lhonak)
-    line(ax, landsat_years, [land(sl, y) for y in landsat_years], land_c, "Landsat")
+    line(ax, landsat_years, [land(sl, y) for y in landsat_years], land_c, "Landsat 8")
     line(ax, sentinel_years, [sent(sl, y) for y in sentinel_years], sent_c, "Sentinel-2")
     diamonds(ax, [(1990, sl["km2_1990"])] + [(y, get(sl["listed_km2"], y)) for y in (2018, 2020, 2022)])
     burst = datetime.date.fromisoformat(outburst)

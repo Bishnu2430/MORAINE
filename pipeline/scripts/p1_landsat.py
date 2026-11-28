@@ -1,19 +1,17 @@
-"""P1 step 7b: lake areas each autumn 1988-2016 from Landsat, for the lakes of 0.05 km2 or more.
+"""P1 step 7b: lake areas each autumn 2013-2016 from Landsat 8, for the lakes of 0.05 km2 or more.
 
     .venv\\Scripts\\python pipeline\\scripts\\p1_landsat.py --project YOUR-CLOUD-PROJECT
 
-1. Flags (Earth Engine): cloud, shadow, ice and coverage for the 114 lakes in every Landsat 4-8 scene
-   of 1 Sep-15 Nov, 1988-2016, and in the Landsat 8 scenes of 2018, 2020 and 2022 (moraine/landsat.py;
-   cached in pipeline/out/p1_landsat/stats/).
-2. The mapper: both the step 3 NDWI rule and the U-Net map the Landsat 8 inventory autumns (maps in
-   pipeline/data/p1_landsat/select/). The open-water gate's thresholds come from the stable lakes'
-   2022 scenes there (moraine/landsat.py), and the rule fixed in docs/p1/plan.md picks the mapper on
-   gated areas.
-3. History: 1988-2016 mapped by the chosen one (pipeline/data/p1_landsat/<mapper>/). Scenes and areas
-   follow step 7a (moraine/growth.py), with the gate. Stages 2 and 3 save every lake-autumn (with its
-   near-infrared and shortwave bands, for the gate), so a rerun resumes.
-4. Areas and the checks fixed in docs/p1/plan.md (step 7b). Writes docs/p1/landsat.json and
-   docs/p1/growth-history.png.
+1. Flags (Earth Engine): cloud, shadow, ice and coverage for the 114 lakes in every Landsat 8 scene of
+   1 Sep-15 Nov, 2013-2016, 2018, 2020 and 2022 (moraine/landsat.py; cached in
+   pipeline/out/p1_landsat/stats/).
+2. The mapper: both the step 3 NDWI rule and the U-Net map the inventory autumns (maps in
+   pipeline/data/p1_landsat/select/), and the rule fixed in docs/p1/plan.md picks one.
+3. History: 2013-2016 mapped by the chosen one (pipeline/data/p1_landsat/<mapper>/). Scenes and areas
+   follow step 7a (moraine/growth.py). Stages 2 and 3 save every lake-autumn, so a rerun resumes.
+4. Areas and the checks fixed in docs/p1/plan.md (step 7b, narrowed after the third run). Writes
+   docs/p1/landsat.json and docs/p1/growth-history.png, where each lake's 1990 inventory area is the
+   only point before 2013.
 """
 
 from __future__ import annotations
@@ -128,9 +126,7 @@ def run_maps(jobs: list, mappers: tuple[str, ...], model, label: str) -> int:
             for k, mapper in enumerate(mappers):
                 for j, (_, d) in enumerate(kept):
                     probs[k, j] = np.round(lake_probability(d, mapper, model) * 255).astype(np.uint8)
-            bands = {name: np.stack([landsat.pack(d[band]) for _, d in kept]) if kept
-                     else np.zeros((0, size, size), np.uint8) for name, band in (("nir", "B8"), ("swir", "B11"))}
-            np.savez_compressed(path, probs=probs, mappers=np.array(mappers), **bands,
+            np.savez_compressed(path, probs=probs, mappers=np.array(mappers),
                                 ids=kept[0][1]["ids"].astype(np.uint16) if kept else np.zeros((size, size), np.uint16),
                                 scenes=np.array([r["scene"] for r, _ in kept], dtype=str),
                                 dates=np.array([r["date"] for r, _ in kept], dtype=str),
@@ -141,30 +137,12 @@ def run_maps(jobs: list, mappers: tuple[str, ...], model, label: str) -> int:
     return failed
 
 
-def ready(path: Path, ranked: list[dict]) -> bool:
-    """Saved, for the scenes the ranking would try now (step 7a's test), with the bands the gate reads."""
-    if not g7a.done(path, ranked, growth.PER_AUTUMN):
-        return False
-    with np.load(path) as saved:
-        return "nir" in saved.files and "swir" in saved.files
-
-
-def interior_bands(path: Path, i22: int) -> tuple[np.ndarray, np.ndarray]:
-    """Near-infrared and shortwave of the lake's interior cells in a saved lake-autumn's tier 1 scenes."""
-    with np.load(path) as saved:
-        inside = landsat.interior(saved["ids"], i22 + 1)
-        tier1 = saved["tiers"] == 1
-        nir, swir = saved["nir"][tier1], saved["swir"][tier1]
-    return landsat.unpack(nir[:, inside]).ravel(), landsat.unpack(swir[:, inside]).ravel()
-
-
-def autumn(path: Path, i22: int, gate: tuple[float, float], mapper_index: int = 0) -> dict | None:
-    """A saved lake-autumn's area (median of up to three scenes' gated probability) and each scene's."""
+def autumn(path: Path, i22: int, mapper_index: int = 0) -> dict | None:
+    """A saved lake-autumn's area (median of up to three scenes' probability) and each scene's."""
     with np.load(path) as saved:
         if len(saved["scenes"]) == 0:  # every usable scene was cut by an edge or a stripe
             return None
-        probs = np.stack([landsat.open_water(p.astype(np.float32) / 255, landsat.unpack(n), landsat.unpack(w), gate)
-                          for p, n, w in zip(saved["probs"][mapper_index], saved["nir"], saved["swir"])])
+        probs = saved["probs"][mapper_index].astype(np.float32) / 255
         ids, tiers, dates, names = saved["ids"], saved["tiers"], saved["dates"], saved["scenes"]
     scenes = [{"date": str(d), "sensor": landsat.sensor_of(str(s)), "tier": int(t),
                "km2": round(growth.lake_area(p, ids, i22 + 1), 5)} for d, s, t, p in zip(dates, names, tiers, probs)]
@@ -201,7 +179,7 @@ def main() -> int:
 
     # 1. Flags
     rows = {}
-    autumns = [(y, tuple(landsat.SENSORS)) for y in landsat.YEARS] + [(y, ("LC08",)) for y in landsat.INVENTORY_YEARS]
+    autumns = [(y, landsat.USED) for y in landsat.YEARS + landsat.INVENTORY_YEARS]
     for key, (geometry, lakes) in areas.items():
         lakes22 = [by_year[2022][lk["i22"]] for lk in lakes if lk["i22"] in chosen_ids]
         for year, sensors in autumns:
@@ -224,13 +202,13 @@ def main() -> int:
                 ranked = growth.candidates(rows.get((lake["i22"], year), []), year)
                 path = folder / f"{lake['i22']}_{year}.npz"
                 plan[lake["i22"], year] = (path, ranked)
-                if ranked and not ready(path, ranked):
+                if ranked and not g7a.done(path, ranked, growth.PER_AUTUMN):
                     jobs.append((lake, year, ranked, growth.PER_AUTUMN, near[lake["i22"]], path))
         return jobs, plan
 
     def saved(plan, i22, year):
         path, ranked = plan[i22, year]
-        return path if ranked and ready(path, ranked) else None
+        return path if ranked and g7a.done(path, ranked, growth.PER_AUTUMN) else None
 
     # 2. The mapper, chosen on the Landsat 8 inventory autumns
     jobs, select_plan = plan_maps(landsat.INVENTORY_YEARS, MAPS / "select")
@@ -238,23 +216,12 @@ def main() -> int:
     if run_maps(jobs, MAPPERS, model, "select"):
         print("Some lake-autumns failed to fetch; rerun to finish them")
         return 1
-    samples = []
-    for lake in chosen:
-        path = saved(select_plan, lake["i22"], landsat.GATE_YEAR) if landsat.stable(lake["listed_km2"]) else None
-        if path:
-            nir, swir = interior_bands(path, lake["i22"])
-            if len(nir):
-                samples.append((nir, swir))
-    gate = landsat.gate_thresholds(samples)
-    print(f"   open-water gate: near-infrared <= {gate[0]:.3f}, shortwave <= {gate[1]:.3f} "
-          f"(percentile {landsat.GATE_PERCENTILE} of {sum(len(n) for n, _ in samples):,} cells in {len(samples)} "
-          f"stable lakes, Landsat 8 {landsat.GATE_YEAR})", flush=True)
     landsat8 = {m: {} for m in MAPPERS}
     ratios = {m: [] for m in MAPPERS}
     for lake in chosen:
         for year in landsat.INVENTORY_YEARS:
             path = saved(select_plan, lake["i22"], year)
-            got = {m: autumn(path, lake["i22"], gate, k) for k, m in enumerate(MAPPERS)} if path else {}
+            got = {m: autumn(path, lake["i22"], k) for k, m in enumerate(MAPPERS)} if path else {}
             if not got or any(a is None for a in got.values()):
                 continue
             for m in MAPPERS:
@@ -284,57 +251,36 @@ def main() -> int:
                               if (lake["i22"], y) in landsat8[mapper]}}
         for year in landsat.YEARS:
             path = saved(history_plan, lake["i22"], year)
-            got = autumn(path, lake["i22"], gate) if path else None
+            got = autumn(path, lake["i22"]) if path else None
             if got:
                 entry["autumns"][year] = got
         series.append(entry)
 
-    windows = sum(landsat.windows_mapped(set(s["autumns"])) for s in series)
-    total_windows = len(series) * len(landsat.WINDOWS)
+    mapped = sum(bool(s["autumns"]) for s in series)
     accuracy = statistics.median(ratios[mapper])
     join = [s["landsat8"][y] / sentinel[s["i22"]]["autumns"][str(y)]["km2"] for s in series for y in s["landsat8"]
             if s["listed_km2"].get(y, 0) >= landsat.MIN_KM2
             and sentinel[s["i22"]]["autumns"].get(str(y), {}).get("km2", 0) > 0]
-    then = [(s, landsat.near_1990(s["autumns"])) for s in series if s["km2_1990"] >= landsat.MIN_KM2]
-    then = [(s, y) for s, y in then if y is not None]
-    old = [s["autumns"][y]["km2"] / s["km2_1990"] for s, y in then]
-    totals = {}
-    for key in areas:
-        group = [(s, y) for s, y in then if s["area"] == key]
-        totals[key] = (sum(s["autumns"][y]["km2"] for s, y in group), sum(s["km2_1990"] for s, _ in group), len(group))
     sl = next(s for s in series if s["i22"] == south_lhonak["i22"])
-    sl_year = landsat.near_1990(sl["autumns"])
-    sl_then = sl["autumns"][sl_year]["km2"] / sl["km2_1990"] - 1 if sl_year else None
     sl_late = next((y for y in (2016, 2015, 2014) if y in sl["autumns"]), None)
     sl_2017 = sentinel[sl["i22"]]["autumns"]["2017"]["km2"]
     sl_join = sl["autumns"][sl_late]["km2"] / sl_2017 - 1 if sl_late else None
     checks = [
-        ("at least 90% of lake-windows have a mapped autumn", windows >= 0.9 * total_windows,
-         f"{windows} of {total_windows}"),
+        (f"at least 90% of lakes have a mapped autumn in {landsat.YEARS[0]}-{landsat.YEARS[-1]}",
+         mapped >= 0.9 * len(series), f"{mapped} of {len(series)}"),
         (f"Landsat 8 inventory autumns, the {mapper}: median mapped/listed within 10% of 1", abs(accuracy - 1) <= 0.10,
          f"median {accuracy:.3f} over {len(ratios[mapper])} lake-autumns"),
         ("the same against step 7a's Sentinel-2 areas: median within 10% of 1",
          bool(join) and abs(statistics.median(join) - 1) <= 0.10,
          f"median {statistics.median(join):.3f} over {len(join)} lake-autumns" if join else "none"),
-        ("1990 inventory areas, nearest autumn 1988-1992: median ratio within 15% of 1",
-         bool(old) and abs(statistics.median(old) - 1) <= 0.15,
-         f"median {statistics.median(old):.3f} over {len(old)} lakes" if old else "none"),
-        ("the same, each study area's total within 20%",
-         all(n and abs(m / listed - 1) <= 0.20 for m, listed, n in totals.values()),
-         ", ".join(f"{k} {100 * (m / listed - 1):+.0f}% ({n} lakes)" if n else f"{k} none"
-                   for k, (m, listed, n) in totals.items())),
-        ("South Lhonak within 20% of its 1990 area, and 2014-2016 within 10% of 7a's 2017",
-         sl_then is not None and abs(sl_then) <= 0.20 and sl_join is not None and abs(sl_join) <= 0.10,
-         (f"{sl_year} {100 * sl_then:+.1f}% of {sl['km2_1990']} km2" if sl_year else "no autumn 1988-1992")
-         + "; " + (f"{sl_late} {100 * sl_join:+.1f}% of {sl_2017} km2" if sl_late else "no autumn 2014-2016")),
+        ("South Lhonak's latest autumn of 2014-2016 within 10% of 7a's 2017",
+         sl_join is not None and abs(sl_join) <= 0.10,
+         f"{sl_late} {100 * sl_join:+.1f}% of {sl_2017} km2" if sl_late else "no autumn 2014-2016"),
     ]
     result = {"checks": [{"name": n, "passed": ok, "detail": d} for n, ok, d in checks],
               "mapper": {"chosen": mapper, "median_abs_log_ratio": {m: round(s, 4) for m, s in scores.items()},
                          "lake_autumns": len(ratios[mapper])},
-              "gate": {"near_infrared": round(gate[0], 4), "shortwave": round(gate[1], 4),
-                       "percentile": landsat.GATE_PERCENTILE, "lakes": len(samples),
-                       "cells": sum(len(n) for n, _ in samples), "grow_m": landsat.GATE_GROW_CELLS * 10},
-              "south_lhonak_i22": sl["i22"], "lakes": series}
+              "sensors": list(landsat.USED), "south_lhonak_i22": sl["i22"], "lakes": series}
     (DOCS / "landsat.json").write_text(json.dumps(result, indent=1))
     plot.plot_history(series, sentinel, sl["i22"], g7a.OUTBURST, DOCS / "growth-history.png")
     print("\n4. Areas. Checks:")

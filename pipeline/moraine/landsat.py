@@ -1,9 +1,14 @@
-"""P1 step 7b: Landsat 4, 5, 7 and 8 scenes for the growth curves of 1988-2016.
+"""P1 step 7b: Landsat 8 scenes for the growth curves of 2013-2016.
 
 Each scene's six reflective bands are renamed to the Sentinel-2 bands they match (blue B2, green B3,
 red B4, near-infrared B8, shortwave B11 and B12) and scaled like Sentinel-2 Level-1C (reflectance x
 10000), so the step 3 rule and the U-Net read them unchanged. Tiles are resampled bilinearly from 30 m
 to the same 10 m grid as step 7a.
+
+Landsat 4, 5 and 7 stay in SENSORS but are not used: the first three runs mapped 1988-2016 with them,
+and they were dropped after the third (docs/p1/plan.md). On them the U-Net counts snow, glacier ice,
+debris and dry lake bed as water; an open-water gate that removed those also removed frozen and silty
+lake.
 
 Flags per lake and scene, as in moraine/hard_cases.py but with a spectral cloud test:
 - cloud: share of the lake that is thick cloud, bright in blue (TOA > 0.3) without snow's dark
@@ -17,11 +22,6 @@ Flags per lake and scene, as in moraine/hard_cases.py but with a spectral cloud 
 - covered: share of the lake the scene sees. Unlike hard_cases', cells off the scene, fill and
   Landsat 7's striped gaps (after May 2003) count as 0 here, not as missing
 - cloud_near, covered_near: the same in the 1.3 km round the lake
-
-The open-water gate (added after the second run, docs/p1/plan.md): on Landsat 5 and 7 the U-Net calls
-water much of the ground a lake fills by 2022 (snow on a flat glacier tongue, glacier ice, debris, dry
-lake bed). A cell the mapper calls water counts only within GATE_GROW_CELLS of a cell dark enough in
-near-infrared (not snow or ice) and shortwave (not debris or dry ground) to be open water.
 """
 
 from __future__ import annotations
@@ -29,9 +29,8 @@ from __future__ import annotations
 import math
 
 import ee
-import numpy as np
 
-from . import hard_cases, terrain, tiles, watch
+from . import hard_cases, terrain, watch
 
 SENSORS = {  # collection, then its blue, green, red, near-infrared, shortwave 1 and 2 bands
     "LT04": ("LANDSAT/LT04/C02/T1_TOA", ("B1", "B2", "B3", "B4", "B5", "B7")),
@@ -40,8 +39,9 @@ SENSORS = {  # collection, then its blue, green, red, near-infrared, shortwave 1
     "LC08": ("LANDSAT/LC08/C02/T1_TOA", ("B2", "B3", "B4", "B5", "B6", "B7")),
 }
 AS_S2 = ("B2", "B3", "B4", "B8", "B11", "B12")
-YEARS = tuple(range(1988, 2017))
-INVENTORY_YEARS = (2018, 2020, 2022)  # Landsat 8 only: to choose the mapper and to join to step 7a
+USED = ("LC08",)  # the sensors 7b reads (Landsat 8); the others are kept for the record
+YEARS = tuple(range(2013, 2017))
+INVENTORY_YEARS = (2018, 2020, 2022)  # to choose the mapper and to join to step 7a
 SEASON = ("09-01", "11-15")
 SCENE_CLOUD = 80  # % scene cloud allowed; the flags judge each lake
 SCALE = 30
@@ -49,14 +49,6 @@ MIN_KM2 = 0.05  # about 55 Landsat cells
 FILL = 1  # QA_PIXEL bit 0: no data, including Landsat 7's stripes
 CLOUD_BLUE = 0.3  # TOA blue reflectance above which ground that is not snow counts as thick cloud
 SNOW_NDSI = 0.4
-WINDOWS = ((1988, 1992), (1993, 1997), (1998, 2002), (2003, 2007), (2008, 2012), (2013, 2016))
-NEAR_1990 = (1990, 1989, 1991, 1988, 1992)  # the autumn compared with the inventory's 1990 area, in order
-GATE_PERCENTILE = 98  # of open water's near-infrared and shortwave, each lake weighted equally
-GATE_GROW_CELLS = 3  # 30 m at 10 m cells: one Landsat cell, for edge cells that mix water and shore
-GATE_INSIDE_CELLS = 3  # cells for the thresholds lie at least 30 m inside the outline
-GATE_YEAR = 2022  # the Landsat 8 autumn the thresholds come from
-STABLE = 1.1  # a stable lake's listed areas of 2018, 2020 and 2022 lie within 10% of each other
-BAND_STEP = 20  # saved near-infrared and shortwave: reflectance x 10000 / 20 as uint8, steps of 0.002 to 0.51
 
 
 def sensor_of(scene: str) -> str:
@@ -151,60 +143,3 @@ def choose_mapper(ratios: dict[str, list[float]]) -> tuple[str, dict[str, float]
         return logs[n // 2] if n % 2 else (logs[n // 2 - 1] + logs[n // 2]) / 2
     scores = {name: score(values) for name, values in ratios.items()}
     return min(scores, key=lambda name: (scores[name], name)), scores
-
-
-def near_1990(autumns: dict[int, float]) -> int | None:
-    """The year compared with the inventory's 1990 area: the first of NEAR_1990 that has an autumn."""
-    return next((y for y in NEAR_1990 if y in autumns), None)
-
-
-def windows_mapped(years: set[int]) -> int:
-    """How many of the WINDOWS hold at least one of the given mapped years."""
-    return sum(any(a <= y <= b for y in years) for a, b in WINDOWS)
-
-
-# --- The open-water gate (no Earth Engine) ----------------------------------------------------------
-
-def pack(band: np.ndarray) -> np.ndarray:
-    """A band as fetched (reflectance x 10000) to the uint8 saved with each map."""
-    return np.clip(np.round(band.astype(np.float32) / BAND_STEP), 0, 255).astype(np.uint8)
-
-
-def unpack(saved: np.ndarray) -> np.ndarray:
-    """A saved uint8 band back to reflectance."""
-    return saved.astype(np.float32) * BAND_STEP / 10000
-
-
-def stable(listed_km2: dict) -> bool:
-    """Listed in 2018, 2020 and 2022, at MIN_KM2 or more in 2022, the three within STABLE of each other."""
-    areas = [listed_km2.get(y, 0) for y in INVENTORY_YEARS]
-    return listed_km2.get(GATE_YEAR, 0) >= MIN_KM2 and min(areas) > 0 and max(areas) <= STABLE * min(areas)
-
-
-def interior(ids: np.ndarray, lake_id: int, cells: int = GATE_INSIDE_CELLS) -> np.ndarray:
-    """Cells at least `cells` inside the lake's outlines."""
-    return ~tiles.dilate(ids != lake_id, cells)
-
-
-def weighted_percentile(groups: list[np.ndarray], q: float) -> float:
-    """The q-th percentile of all the groups' values, each group's values weighing 1 in all."""
-    groups = [g for g in groups if len(g)]
-    values = np.concatenate(groups)
-    weights = np.concatenate([np.full(len(g), 1 / len(g)) for g in groups])
-    order = np.argsort(values, kind="stable")
-    share = np.cumsum(weights[order]) / weights.sum()
-    return float(values[order][min(np.searchsorted(share, q / 100 - 1e-9), len(values) - 1)])
-
-
-def gate_thresholds(lakes: list[tuple[np.ndarray, np.ndarray]]) -> tuple[float, float]:
-    """(near-infrared, shortwave) thresholds from each stable lake's interior cells (one pair of arrays
-    per lake, its scenes pooled): each band's GATE_PERCENTILE, each lake weighted equally."""
-    return (weighted_percentile([nir for nir, _ in lakes], GATE_PERCENTILE),
-            weighted_percentile([swir for _, swir in lakes], GATE_PERCENTILE))
-
-
-def open_water(probability: np.ndarray, nir: np.ndarray, swir: np.ndarray,
-               thresholds: tuple[float, float]) -> np.ndarray:
-    """The lake probability, set to 0 more than GATE_GROW_CELLS from any open-water cell."""
-    water = (nir <= thresholds[0]) & (swir <= thresholds[1])
-    return np.where(tiles.dilate(water, GATE_GROW_CELLS), probability, 0).astype(probability.dtype)
